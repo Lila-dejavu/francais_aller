@@ -1017,6 +1017,50 @@ body {
     margin-bottom: 12px;
 }
 
+/* 雙語日記樣式 */
+.diary-bilingual {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.diary-chinese, .diary-french {
+    background: var(--bg-primary);
+    padding: 20px;
+    border-radius: 12px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.diary-french {
+    border-left-color: var(--secondary-color);
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8ebf0 100%);
+}
+
+.diary-bilingual h5 {
+    font-size: 1rem;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.diary-french h5 {
+    color: var(--secondary-color);
+}
+
+.diary-bilingual p {
+    line-height: 1.8;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+}
+
+.diary-french .voice-btn-inline {
+    margin-top: 10px;
+    margin-left: 0;
+}
+
 .diary-actions {
     margin-top: 30px;
     padding-top: 20px;
@@ -1348,6 +1392,26 @@ body {
     .filter-btn {
         padding: 6px;
         font-size: 0.8rem;
+    }
+    
+    /* 雙語日記手機版 */
+    .diary-bilingual {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .diary-chinese, .diary-french {
+        padding: 15px;
+    }
+    
+    .diary-bilingual h5 {
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+    }
+    
+    .diary-bilingual p {
+        font-size: 0.9rem;
+        line-height: 1.6;
     }
 }
 

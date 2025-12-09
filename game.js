@@ -781,14 +781,59 @@ class FrenchDiaryGame {
         return 1;
     }
 
-    // 生成日記
+    // 生成日記（中法雙語版本）
     generateDiary() {
+        const chineseReflection = this.currentDayData.diary || 
+            `今天學習了${this.currentDayData.title}，完成了${this.correctAnswers}/${this.currentDayData.questions.length}個挑戰！`;
+        
+        // 生成法文版本的心得
+        const frenchReflection = this.generateFrenchReflection();
+        
         return {
             title: this.currentDayData.title,
             story: this.currentDayData.story,
             learned: this.learnedWords.filter(w => w.day === this.currentDay),
-            reflection: this.currentDayData.diary || `今天學習了${this.currentDayData.title}，完成了${this.correctAnswers}/${this.currentDayData.questions.length}個挑戰！`
+            reflection: {
+                chinese: chineseReflection,
+                french: frenchReflection
+            }
         };
+    }
+
+    // 生成法文版本的學習心得
+    generateFrenchReflection() {
+        const percentage = Math.round((this.correctAnswers / this.currentDayData.questions.length) * 100);
+        const stars = this.calculateStars();
+        
+        const templates = {
+            excellent: [
+                `Aujourd'hui, j'ai étudié "${this.currentDayData.title}" et j'ai réussi ${this.correctAnswers}/${this.currentDayData.questions.length} défis ! C'était excellent !`,
+                `Quelle belle journée d'apprentissage ! J'ai maîtrisé "${this.currentDayData.title}" avec ${percentage}% de réussite.`,
+                `Je suis très fier de moi ! J'ai terminé la leçon "${this.currentDayData.title}" avec succès.`
+            ],
+            good: [
+                `Aujourd'hui, j'ai appris "${this.currentDayData.title}". J'ai obtenu ${this.correctAnswers}/${this.currentDayData.questions.length} bonnes réponses.`,
+                `Une bonne séance d'étude ! J'ai complété "${this.currentDayData.title}" avec ${percentage}% de réussite.`,
+                `Pas mal ! J'ai fait des progrès avec "${this.currentDayData.title}" aujourd'hui.`
+            ],
+            needPractice: [
+                `Aujourd'hui, j'ai pratiqué "${this.currentDayData.title}". J'ai répondu correctement à ${this.correctAnswers}/${this.currentDayData.questions.length} questions. Je dois continuer à pratiquer !`,
+                `J'ai étudié "${this.currentDayData.title}" avec ${percentage}% de réussite. Il y a encore du travail à faire !`,
+                `C'était difficile, mais j'ai terminé "${this.currentDayData.title}". Je vais réviser cette leçon.`
+            ]
+        };
+        
+        let category;
+        if (stars >= 3) {
+            category = templates.excellent;
+        } else if (stars >= 2) {
+            category = templates.good;
+        } else {
+            category = templates.needPractice;
+        }
+        
+        // 隨機選擇一個模板
+        return category[Math.floor(Math.random() * category.length)];
     }
 
     // 顯示完成畫面
@@ -807,11 +852,23 @@ class FrenchDiaryGame {
             <p>正確率: <strong>${Math.round((this.correctAnswers / this.currentDayData.questions.length) * 100)}%</strong></p>
         `;
         
-        // 顯示日記預覽
+        // 顯示日記預覽（中法雙語）
         const diary = this.completedDays.find(d => d.day === this.currentDay).diary;
         document.getElementById('diaryPreview').innerHTML = `
             <h4>${diary.title}</h4>
-            <p>${diary.reflection}</p>
+            <div class="diary-bilingual">
+                <div class="diary-chinese">
+                    <h5>📝 中文</h5>
+                    <p>${diary.reflection.chinese}</p>
+                </div>
+                <div class="diary-french">
+                    <h5>🇫🇷 Français</h5>
+                    <p>${diary.reflection.french}</p>
+                    <button class="voice-btn-inline" onclick="window.game.voiceManager.speak('${diary.reflection.french.replace(/'/g, "\\'")}')">
+                        🔊 朗讀
+                    </button>
+                </div>
+            </div>
             ${diary.learned.length > 0 ? `
                 <div class="learned-words">
                     <strong>今日學會:</strong>
@@ -934,6 +991,12 @@ class FrenchDiaryGame {
         const body = document.getElementById('modalBody');
         
         title.textContent = `第${day}天 - ${completed.diary.title}`;
+        
+        // 處理舊版本的日記格式（兼容性）
+        const hasChineseReflection = completed.diary.reflection && completed.diary.reflection.chinese;
+        const chineseText = hasChineseReflection ? completed.diary.reflection.chinese : completed.diary.reflection;
+        const frenchText = hasChineseReflection ? completed.diary.reflection.french : '';
+        
         body.innerHTML = `
             <div class="diary-detail">
                 <div class="diary-stats">
@@ -947,7 +1010,21 @@ class FrenchDiaryGame {
                 </div>
                 <div class="diary-reflection">
                     <h3>✍️ 學習心得</h3>
-                    <p>${completed.diary.reflection}</p>
+                    <div class="diary-bilingual">
+                        <div class="diary-chinese">
+                            <h5>📝 中文版</h5>
+                            <p>${chineseText}</p>
+                        </div>
+                        ${frenchText ? `
+                        <div class="diary-french">
+                            <h5>🇫🇷 Version Française</h5>
+                            <p>${frenchText}</p>
+                            <button class="voice-btn-inline" onclick="window.game.voiceManager.speak('${frenchText.replace(/'/g, "\\'")}')">
+                                🔊 朗讀法文
+                            </button>
+                        </div>
+                        ` : ''}
+                    </div>
                 </div>
                 ${completed.diary.learned.length > 0 ? `
                 <div class="diary-vocabulary">
