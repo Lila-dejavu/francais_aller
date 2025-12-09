@@ -101,6 +101,13 @@ class FrenchDiaryGame {
             this.completedDays = data.completedDays || [];
             this.totalStars = data.totalStars || 0;
             this.learnedWords = data.learnedWords || [];
+            
+            // 載入當天進度
+            if (data.currentDayProgress) {
+                this.currentQuestionIndex = data.currentDayProgress.questionIndex || 0;
+                this.questionsAnswered = data.currentDayProgress.questionsAnswered || 0;
+                this.correctAnswers = data.currentDayProgress.correctAnswers || 0;
+            }
         }
     }
 
@@ -111,9 +118,16 @@ class FrenchDiaryGame {
             completedDays: this.completedDays,
             totalStars: this.totalStars,
             learnedWords: this.learnedWords,
-            lastPlayed: new Date().toISOString()
+            lastPlayed: new Date().toISOString(),
+            // 保存當天答題進度
+            currentDayProgress: {
+                questionIndex: this.currentQuestionIndex,
+                questionsAnswered: this.questionsAnswered,
+                correctAnswers: this.correctAnswers
+            }
         };
         localStorage.setItem('frenchDiary365', JSON.stringify(data));
+        console.log('✅ 進度已自動保存');
     }
 
     // 初始化UI
@@ -163,6 +177,12 @@ class FrenchDiaryGame {
             this.closeModal();
         });
         
+        // 手動存檔按鈕
+        document.getElementById('manualSaveBtn').addEventListener('click', () => {
+            this.saveProgress();
+            this.showSaveNotification();
+        });
+        
         // 語音控制按鈕
         document.getElementById('autoPlayToggle')?.addEventListener('click', () => {
             this.toggleAutoPlay();
@@ -199,9 +219,32 @@ class FrenchDiaryGame {
     startDay(day) {
         this.currentDay = day;
         this.currentDayData = this.getDayData(day);
-        this.currentQuestionIndex = 0;
-        this.questionsAnswered = 0;
-        this.correctAnswers = 0;
+        
+        // 檢查是否有未完成的進度
+        const saved = localStorage.getItem('frenchDiary365');
+        let hasSavedProgress = false;
+        if (saved) {
+            const data = JSON.parse(saved);
+            if (data.currentDay === day && data.currentDayProgress && 
+                data.currentDayProgress.questionsAnswered > 0 &&
+                data.currentDayProgress.questionsAnswered < this.currentDayData.questions.length) {
+                // 恢復進度
+                this.currentQuestionIndex = data.currentDayProgress.questionIndex;
+                this.questionsAnswered = data.currentDayProgress.questionsAnswered;
+                this.correctAnswers = data.currentDayProgress.correctAnswers;
+                hasSavedProgress = true;
+                console.log('📂 已恢復上次進度');
+            } else {
+                // 新的一天，重置進度
+                this.currentQuestionIndex = 0;
+                this.questionsAnswered = 0;
+                this.correctAnswers = 0;
+            }
+        } else {
+            this.currentQuestionIndex = 0;
+            this.questionsAnswered = 0;
+            this.correctAnswers = 0;
+        }
 
         // 切換到遊戲畫面
         document.getElementById('welcomeScreen').style.display = 'none';
@@ -209,7 +252,14 @@ class FrenchDiaryGame {
         document.getElementById('levelComplete').style.display = 'none';
 
         this.updateLevelHeader();
-        this.showStory();
+        
+        // 如果有保存進度，直接跳到題目
+        if (hasSavedProgress) {
+            this.showQuestion();
+        } else {
+            this.showStory();
+        }
+        
         this.updateStats();
     }
 
@@ -615,6 +665,9 @@ class FrenchDiaryGame {
         this.questionsAnswered++;
         this.updateProgress();
         this.updateNotes();
+        
+        // 每答完一題自動存檔
+        this.saveProgress();
     }
 
     // 顯示反饋
@@ -674,6 +727,9 @@ class FrenchDiaryGame {
         this.questionsAnswered++;
         this.updateProgress();
         this.updateNotes();
+        
+        // 每答完一題自動存檔
+        this.saveProgress();
     }
 
     // 下一題
@@ -703,6 +759,11 @@ class FrenchDiaryGame {
                 diary: this.generateDiary()
             });
         }
+        
+        // 清除當天進度（因為已完成）
+        this.currentQuestionIndex = 0;
+        this.questionsAnswered = 0;
+        this.correctAnswers = 0;
         
         this.saveProgress();
         this.showComplete(stars);
