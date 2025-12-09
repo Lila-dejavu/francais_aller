@@ -290,7 +290,7 @@ class FrenchDiaryGame {
         // 根據問題類型顯示不同的輸入方式
         if (question.type === 'multiple') {
             this.showMultipleChoice(question);
-        } else if (question.type === 'input') {
+        } else if (question.type === 'input' || question.type === 'writing') {
             this.showInputAnswer(question);
         }
     }
