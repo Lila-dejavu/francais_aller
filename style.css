@@ -1017,10 +1017,71 @@ body {
     margin-bottom: 12px;
 }
 
+.diary-actions {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid var(--border-color);
+    text-align: center;
+}
+
+.diary-actions .btn-primary {
+    padding: 12px 30px;
+    font-size: 1rem;
+}
+
 .word-list {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+}
+
+/* 手動存檔按鈕 */
+.save-btn {
+    background: var(--success-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.save-btn:hover {
+    background: #45b86a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.save-btn:active {
+    transform: translateY(0);
+}
+
+/* 存檔通知 */
+.save-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--success-color);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    font-size: 1rem;
+    font-weight: 600;
+    z-index: 10000;
+    opacity: 0;
+    transform: translateX(400px);
+    transition: all 0.3s ease;
+}
+
+.save-notification.show {
+    opacity: 1;
+    transform: translateX(0);
 }
 
 /* 響應式設計 */

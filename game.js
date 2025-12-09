@@ -168,6 +168,10 @@ class FrenchDiaryGame {
         document.getElementById('nextDayBtn').addEventListener('click', () => {
             this.goToNextDay();
         });
+        
+        document.getElementById('rechallengeBtn').addEventListener('click', () => {
+            this.rechallenge(this.currentDay);
+        });
 
         document.getElementById('viewDiaryBtn').addEventListener('click', () => {
             this.showDiaryList();
@@ -953,6 +957,9 @@ class FrenchDiaryGame {
                     </div>
                 </div>
                 ` : ''}
+                <div class="diary-actions">
+                    <button class="btn-primary" onclick="window.game.rechallenge(${day}); window.game.closeModal();">🔄 重新挑戰這一天</button>
+                </div>
             </div>
         `;
         
@@ -985,6 +992,52 @@ class FrenchDiaryGame {
             btn.textContent = isEnabled ? '🔊 自動播放：開' : '🔇 自動播放：關';
             btn.classList.toggle('active', isEnabled);
         }
+    }
+    
+    // 重新挑戰指定天數
+    rechallenge(day) {
+        // 先找到該天的完成記錄並扣除星星
+        const completedDay = this.completedDays.find(d => d.day === day);
+        if (completedDay) {
+            this.totalStars -= completedDay.stars;
+        }
+        
+        // 清除該天的完成記錄（但保留其他天）
+        this.completedDays = this.completedDays.filter(d => d.day !== day);
+        
+        // 重新開始該天
+        this.currentDay = day;
+        this.currentQuestionIndex = 0;
+        this.questionsAnswered = 0;
+        this.correctAnswers = 0;
+        
+        // 儲存進度
+        this.saveProgress();
+        
+        // 開始挑戰
+        this.startDay(day);
+    }
+    
+    // 顯示存檔通知
+    showSaveNotification() {
+        // 創建通知元素
+        const notification = document.createElement('div');
+        notification.className = 'save-notification';
+        notification.innerHTML = '💾 進度已保存';
+        document.body.appendChild(notification);
+        
+        // 顯示動畫
+        setTimeout(() => {
+            notification.classList.add('show');
+        }, 10);
+        
+        // 2秒後移除
+        setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 300);
+        }, 2000);
     }
 }
 
