@@ -40,14 +40,13 @@ function getBeginnerContent(day) {
                     vocabulary: "Merci - 謝謝"
                 },
                 {
-                    type: "writing",
-                    question: "【寫作任務】請用法文寫一段簡短的自我介紹（至少30字）。包含：你的名字、來自哪裡。",
-                    minWords: 30,
-                    frenchText: "Je m'appelle Marie. Je viens de Taiwan.",
-                    sampleAnswer: "Bonjour! Je m'appelle Marie. Je viens de Taiwan. J'aime le français. Je suis étudiante.",
-                    keywords: ["m'appelle", "viens de", "Je suis"],
-                    explanation: "簡單的自我介紹是學習語言的第一步。記得用 Je m'appelle（我叫）和 Je viens de（我來自）。",
-                    vocabulary: "Je m'appelle - 我叫；Je viens de - 我來自"
+                    type: "sorting",
+                    question: "【排序題】將下列單字排成正確的法文句子：「我叫瑪麗」",
+                    words: ["Marie", "m'appelle", "Je"],
+                    answer: "Je m'appelle Marie",
+                    frenchText: "Je m'appelle Marie",
+                    explanation: "Je m'appelle 是「我叫」的意思，這是自我介紹最基本的句型。",
+                    vocabulary: "Je m'appelle - 我叫"
                 },
                 {
                     type: "input",

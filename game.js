@@ -290,6 +290,8 @@ class FrenchDiaryGame {
         // 根據問題類型顯示不同的輸入方式
         if (question.type === 'multiple') {
             this.showMultipleChoice(question);
+        } else if (question.type === 'sorting') {
+            this.showSortingQuestion(question);
         } else if (question.type === 'input' || question.type === 'writing') {
             this.showInputAnswer(question);
         }
@@ -298,6 +300,7 @@ class FrenchDiaryGame {
     // 顯示選擇題
     showMultipleChoice(question) {
         document.getElementById('answerInputContainer').style.display = 'none';
+        document.getElementById('sortingArea').style.display = 'none';
         const optionsContainer = document.getElementById('answerOptions');
         optionsContainer.style.display = 'grid';
         optionsContainer.innerHTML = '';
@@ -329,9 +332,115 @@ class FrenchDiaryGame {
         });
     }
 
+    // 顯示排序題
+    showSortingQuestion(question) {
+        document.getElementById('answerOptions').style.display = 'none';
+        document.getElementById('answerInputContainer').style.display = 'none';
+        document.getElementById('sortingArea').style.display = 'block';
+        
+        const wordBank = document.getElementById('wordBank');
+        const sentenceBuilder = document.getElementById('sentenceBuilder');
+        
+        wordBank.innerHTML = '';
+        sentenceBuilder.innerHTML = '<div class="placeholder">拖曳單字到這裡</div>';
+        
+        // 打亂單字順序
+        const shuffledWords = [...question.words].sort(() => Math.random() - 0.5);
+        
+        // 創建可拖曳的單字卡片
+        shuffledWords.forEach((word, index) => {
+            const wordCard = document.createElement('div');
+            wordCard.className = 'word-card';
+            wordCard.textContent = word;
+            wordCard.draggable = true;
+            wordCard.dataset.word = word;
+            wordCard.dataset.index = index;
+            
+            wordCard.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('text/plain', word);
+                wordCard.classList.add('dragging');
+            });
+            
+            wordCard.addEventListener('dragend', () => {
+                wordCard.classList.remove('dragging');
+            });
+            
+            // 點擊也可以添加單字
+            wordCard.addEventListener('click', () => {
+                this.addWordToSentence(word, wordCard);
+            });
+            
+            wordBank.appendChild(wordCard);
+        });
+        
+        // 設置拖放區域
+        sentenceBuilder.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            sentenceBuilder.classList.add('drag-over');
+        });
+        
+        sentenceBuilder.addEventListener('dragleave', () => {
+            sentenceBuilder.classList.remove('drag-over');
+        });
+        
+        sentenceBuilder.addEventListener('drop', (e) => {
+            e.preventDefault();
+            sentenceBuilder.classList.remove('drag-over');
+            const word = e.dataTransfer.getData('text/plain');
+            const draggedCard = document.querySelector('.word-card.dragging');
+            if (draggedCard) {
+                this.addWordToSentence(word, draggedCard);
+            }
+        });
+        
+        // 綁定提交按鈕
+        const submitBtn = document.getElementById('submitSortingBtn');
+        submitBtn.onclick = () => this.checkSortingAnswer();
+    }
+    
+    addWordToSentence(word, wordCard) {
+        const sentenceBuilder = document.getElementById('sentenceBuilder');
+        const placeholder = sentenceBuilder.querySelector('.placeholder');
+        
+        if (placeholder) {
+            placeholder.remove();
+        }
+        
+        // 創建句子中的單字卡片
+        const sentenceWord = document.createElement('span');
+        sentenceWord.className = 'sentence-word';
+        sentenceWord.textContent = word;
+        sentenceWord.dataset.word = word;
+        
+        // 點擊可以移除
+        sentenceWord.addEventListener('click', () => {
+            sentenceWord.remove();
+            wordCard.style.display = 'block';
+            if (sentenceBuilder.querySelectorAll('.sentence-word').length === 0) {
+                sentenceBuilder.innerHTML = '<div class="placeholder">拖曳單字到這裡</div>';
+            }
+        });
+        
+        sentenceBuilder.appendChild(sentenceWord);
+        wordCard.style.display = 'none';
+    }
+    
+    checkSortingAnswer() {
+        const question = this.currentDayData.questions[this.currentQuestionIndex];
+        const sentenceBuilder = document.getElementById('sentenceBuilder');
+        const words = Array.from(sentenceBuilder.querySelectorAll('.sentence-word'))
+            .map(span => span.textContent);
+        
+        const userAnswer = words.join(' ');
+        const isCorrect = userAnswer === question.answer;
+        
+        this.showFeedback(isCorrect, question);
+    }
+
     // 顯示填空題
     showInputAnswer(question) {
         document.getElementById('answerOptions').style.display = 'none';
+        document.getElementById('sortingArea').style.display = 'none';
         document.getElementById('answerInputContainer').style.display = 'flex';
         const inputField = document.getElementById('answerInput');
         inputField.value = '';
