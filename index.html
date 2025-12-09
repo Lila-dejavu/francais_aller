@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>365法文日記 🇫🇷 | Journal Français 365</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 頁首 -->
+        <header class="header">
+            <h1>📖 365法文日記</h1>
+            <p class="subtitle">每天一個冒險，學習法文不間斷</p>
+            <div class="header-stats">
+                <div class="stat">
+                    <span class="stat-label">第</span>
+                    <span class="stat-value" id="currentDay">1</span>
+                    <span class="stat-label">天</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">完成</span>
+                    <span class="stat-value" id="completedDays">0</span>
+                    <span class="stat-label">/365天</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">⭐</span>
+                    <span class="stat-value" id="totalStars">0</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- 主要內容區 -->
+        <main class="main-content">
+            <!-- 左側：日記列表 -->
+            <aside class="diary-sidebar">
+                <h2>📚 我的日記本</h2>
+                <div class="diary-filter">
+                    <button class="filter-btn active" data-filter="all">全部</button>
+                    <button class="filter-btn" data-filter="completed">已完成</button>
+                    <button class="filter-btn" data-filter="locked">未解鎖</button>
+                </div>
+                <div class="diary-list" id="diaryList">
+                    <!-- 日記列表將由JS動態生成 -->
+                </div>
+            </aside>
+
+            <!-- 中間：遊戲區域 -->
+            <section class="game-area">
+                <!-- 歡迎畫面 -->
+                <div class="welcome-screen" id="welcomeScreen">
+                    <div class="welcome-content">
+                        <h2>🎮 歡迎來到365法文日記！</h2>
+                        <p>這是一個為期365天的法文學習冒險。</p>
+                        <p>每天解鎖一個新關卡，完成挑戰後記錄在你的日記本中。</p>
+                        <div class="difficulty-info">
+                            <div class="diff-card">
+                                <span class="diff-icon">🌱</span>
+                                <h3>第1-100天</h3>
+                                <p>初級 - 基礎單字與問候</p>
+                            </div>
+                            <div class="diff-card">
+                                <span class="diff-icon">🌿</span>
+                                <h3>第101-200天</h3>
+                                <p>中級 - 日常對話與文法</p>
+                            </div>
+                            <div class="diff-card">
+                                <span class="diff-icon">🌳</span>
+                                <h3>第201-365天</h3>
+                                <p>高級 - 複雜句型與文化</p>
+                            </div>
+                        </div>
+                        <button class="btn-primary" id="startBtn">開始冒險 🚀</button>
+                        <button class="btn-secondary" id="continueBtn" style="display:none;">繼續遊戲</button>
+                    </div>
+                </div>
+
+                <!-- 遊戲畫面 -->
+                <div class="game-screen" id="gameScreen" style="display:none;">
+                    <!-- 關卡資訊 -->
+                    <div class="level-header">
+                        <div class="level-info">
+                            <span class="level-badge" id="levelBadge">第1天</span>
+                            <h2 id="levelTitle">今天的冒險</h2>
+                            <p class="level-difficulty" id="levelDifficulty">🌱 初級</p>
+                        </div>
+                        <div class="voice-controls">
+                            <button class="voice-control-btn active" id="autoPlayToggle">🔊 自動播放：開</button>
+                            <div class="speed-control">
+                                <label for="speedControl">語速：</label>
+                                <input type="range" id="speedControl" min="0.5" max="1.5" step="0.1" value="0.9">
+                                <span id="speedValue">0.9x</span>
+                            </div>
+                        </div>
+                        <div class="level-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progressFill"></div>
+                            </div>
+                            <span class="progress-text" id="progressText">0/5 完成</span>
+                        </div>
+                    </div>
+
+                    <!-- 故事敘述 -->
+                    <div class="story-panel" id="storyPanel">
+                        <div class="story-content" id="storyContent">
+                            <!-- 故事內容 -->
+                        </div>
+                    </div>
+
+                    <!-- 問題區域 -->
+                    <div class="question-panel" id="questionPanel">
+                        <h3 class="question-title" id="questionTitle">問題</h3>
+                        <div class="question-content" id="questionContent">
+                            <!-- 問題內容 -->
+                        </div>
+                        <div class="answer-options" id="answerOptions">
+                            <!-- 選項 -->
+                        </div>
+                        <div class="answer-input-container" id="answerInputContainer" style="display:none;">
+                            <input type="text" id="answerInput" class="answer-input" placeholder="輸入你的答案...">
+                            <!-- 法文虛擬鍵盤 -->
+                            <div class="french-keyboard" id="frenchKeyboard" style="display:none;">
+                                <div class="keyboard-title">法文特殊字母</div>
+                                <div class="keyboard-buttons">
+                                    <button class="key-btn" data-char="à">à</button>
+                                    <button class="key-btn" data-char="â">â</button>
+                                    <button class="key-btn" data-char="é">é</button>
+                                    <button class="key-btn" data-char="è">è</button>
+                                    <button class="key-btn" data-char="ê">ê</button>
+                                    <button class="key-btn" data-char="ë">ë</button>
+                                    <button class="key-btn" data-char="î">î</button>
+                                    <button class="key-btn" data-char="ï">ï</button>
+                                    <button class="key-btn" data-char="ô">ô</button>
+                                    <button class="key-btn" data-char="ù">ù</button>
+                                    <button class="key-btn" data-char="û">û</button>
+                                    <button class="key-btn" data-char="ü">ü</button>
+                                    <button class="key-btn" data-char="ç">ç</button>
+                                    <button class="key-btn" data-char="œ">œ</button>
+                                    <button class="key-btn" data-char="æ">æ</button>
+                                    <button class="key-btn uppercase" data-char="À">À</button>
+                                    <button class="key-btn uppercase" data-char="É">É</button>
+                                    <button class="key-btn uppercase" data-char="È">È</button>
+                                    <button class="key-btn uppercase" data-char="Ç">Ç</button>
+                                </div>
+                                <div class="keyboard-hint">💡 點擊字母插入到輸入框</div>
+                            </div>
+                            <button class="btn-submit" id="submitAnswerBtn">提交</button>
+                        </div>
+                    </div>
+
+                    <!-- 結果反饋 -->
+                    <div class="feedback-panel" id="feedbackPanel" style="display:none;">
+                        <div class="feedback-content">
+                            <div class="feedback-icon" id="feedbackIcon"></div>
+                            <h3 id="feedbackTitle"></h3>
+                            <p id="feedbackMessage"></p>
+                            <button class="btn-primary" id="nextQuestionBtn">下一題</button>
+                        </div>
+                    </div>
+
+                    <!-- 關卡完成 -->
+                    <div class="level-complete" id="levelComplete" style="display:none;">
+                        <div class="complete-content">
+                            <h2>🎉 恭喜完成今天的冒險！</h2>
+                            <div class="stars-earned" id="starsEarned"></div>
+                            <div class="level-summary" id="levelSummary"></div>
+                            <div class="diary-preview">
+                                <h3>📝 今日日記</h3>
+                                <div class="diary-entry" id="diaryPreview"></div>
+                            </div>
+                            <div class="complete-actions">
+                                <button class="btn-primary" id="nextDayBtn">繼續下一天 →</button>
+                                <button class="btn-secondary" id="viewDiaryBtn">查看日記本</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 右側：學習筆記 -->
+            <aside class="notes-sidebar">
+                <h2>📝 今日筆記</h2>
+                <div class="notes-content" id="notesContent">
+                    <p class="notes-empty">完成挑戰後會顯示今日學習內容</p>
+                </div>
+                <div class="vocabulary-list" id="vocabularyList">
+                    <!-- 單字列表 -->
+                </div>
+            </aside>
+        </main>
+
+        <!-- 日記詳細視窗 -->
+        <div class="modal" id="diaryModal">
+            <div class="modal-content">
+                <span class="modal-close" id="closeModal">&times;</span>
+                <h2 id="modalTitle">日記詳情</h2>
+                <div class="modal-body" id="modalBody">
+                    <!-- 日記內容 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="game.js"></script>
+    <script>
+        // 語速控制顯示更新
+        document.addEventListener('DOMContentLoaded', () => {
+            const speedControl = document.getElementById('speedControl');
+            const speedValue = document.getElementById('speedValue');
+            if (speedControl && speedValue) {
+                speedControl.addEventListener('input', (e) => {
+                    speedValue.textContent = e.target.value + 'x';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1027 @@
+/* 365法文日記 - 樣式表 */
+
+:root {
+    --primary-color: #4a90e2;
+    --secondary-color: #7b68ee;
+    --success-color: #50c878;
+    --warning-color: #ffa500;
+    --danger-color: #ff6b6b;
+    --bg-primary: #f8f9fa;
+    --bg-secondary: #ffffff;
+    --text-primary: #2c3e50;
+    --text-secondary: #6c757d;
+    --border-color: #dee2e6;
+    --shadow: 0 2px 10px rgba(0,0,0,0.1);
+    --shadow-hover: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* 頁首 */
+.header {
+    background: var(--bg-secondary);
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+.header-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 20px;
+}
+
+.stat {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+/* 主要內容區 */
+.main-content {
+    display: grid;
+    grid-template-columns: 280px 1fr 300px;
+    gap: 20px;
+    min-height: 600px;
+}
+
+/* 側邊欄共用樣式 */
+.diary-sidebar, .notes-sidebar {
+    background: var(--bg-secondary);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    overflow-y: auto;
+    max-height: calc(100vh - 250px);
+}
+
+.diary-sidebar h2, .notes-sidebar h2 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    color: var(--primary-color);
+}
+
+/* 日記篩選 */
+.diary-filter {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 15px;
+}
+
+.filter-btn {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.3s;
+}
+
+.filter-btn:hover {
+    background: var(--bg-primary);
+}
+
+.filter-btn.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* 日記列表 */
+.diary-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.diary-item {
+    padding: 15px;
+    background: var(--bg-primary);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-left: 4px solid transparent;
+}
+
+.diary-item:hover:not(.locked) {
+    transform: translateX(5px);
+    box-shadow: var(--shadow);
+    border-left-color: var(--primary-color);
+}
+
+.diary-item.current {
+    border-left-color: var(--warning-color);
+    background: #fff8dc;
+}
+
+.diary-item.locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.diary-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.diary-day {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.diary-stars {
+    font-size: 0.9rem;
+}
+
+.diary-lock {
+    font-size: 1.2rem;
+}
+
+.diary-item-title {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+/* 遊戲區域 */
+.game-area {
+    background: var(--bg-secondary);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: var(--shadow);
+    position: relative;
+}
+
+/* 歡迎畫面 */
+.welcome-screen {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.welcome-content h2 {
+    color: var(--primary-color);
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.welcome-content p {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    color: var(--text-secondary);
+}
+
+.difficulty-info {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin: 40px 0;
+}
+
+.diff-card {
+    background: var(--bg-primary);
+    padding: 25px;
+    border-radius: 12px;
+    transition: all 0.3s;
+}
+
+.diff-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+}
+
+.diff-icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.diff-card h3 {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.diff-card p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+/* 按鈕樣式 */
+.btn-primary, .btn-secondary, .btn-submit {
+    padding: 15px 40px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin: 10px;
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #3a7bc8;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.btn-secondary {
+    background: var(--text-secondary);
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+}
+
+.btn-submit {
+    background: var(--success-color);
+    color: white;
+    padding: 12px 30px;
+}
+
+.btn-submit:hover {
+    background: #40a868;
+}
+
+/* 遊戲畫面 */
+.level-header {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.level-info {
+    margin-bottom: 15px;
+}
+
+.level-badge {
+    display: inline-block;
+    background: var(--primary-color);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.level-info h2 {
+    font-size: 1.8rem;
+    color: var(--text-primary);
+    margin: 10px 0;
+}
+
+.level-difficulty {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+}
+
+/* 語音控制 */
+.voice-controls {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin: 15px 0;
+    padding: 15px;
+    background: var(--bg-primary);
+    border-radius: 10px;
+}
+
+.voice-control-btn {
+    padding: 10px 20px;
+    border: 2px solid var(--border-color);
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.voice-control-btn:hover {
+    background: var(--bg-primary);
+    transform: translateY(-2px);
+}
+
+.voice-control-btn.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.speed-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.speed-control label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.speed-control input[type="range"] {
+    width: 100px;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--border-color);
+    outline: none;
+    cursor: pointer;
+}
+
+.speed-control input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+}
+
+.speed-control input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+    border: none;
+}
+
+#speedValue {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    min-width: 40px;
+}
+
+/* 語音按鈕 */
+.voice-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+}
+
+.voice-btn:hover {
+    background: var(--secondary-color);
+    transform: scale(1.1);
+}
+
+.voice-btn-inline {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-left: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.voice-btn-inline:hover {
+    background: var(--secondary-color);
+    transform: scale(1.05);
+}
+
+/* 選項按鈕調整 */
+.option-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.option-text {
+    flex: 1;
+    text-align: left;
+}
+
+/* 進度條 */
+.level-progress {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 20px;
+    background: var(--bg-primary);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+.progress-text {
+    font-weight: bold;
+    color: var(--primary-color);
+    min-width: 80px;
+}
+
+/* 故事面板 */
+.story-panel {
+    margin-bottom: 30px;
+}
+
+.story-text {
+    background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+    padding: 30px;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.btn-start-quest {
+    display: block;
+    margin: 0 auto;
+}
+
+/* 問題面板 */
+.question-panel {
+    margin-top: 20px;
+}
+
+.question-title {
+    color: var(--primary-color);
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+}
+
+.question-content {
+    font-size: 1.2rem;
+    margin-bottom: 25px;
+    padding: 20px;
+    background: var(--bg-primary);
+    border-radius: 10px;
+}
+
+.hint {
+    margin-top: 15px;
+    padding: 12px;
+    background: #fff8dc;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: var(--warning-color);
+    border-left: 3px solid var(--warning-color);
+}
+
+/* 選項按鈕 */
+.answer-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.option-btn {
+    padding: 20px;
+    border: 2px solid var(--border-color);
+    background: white;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.option-btn:hover {
+    border-color: var(--primary-color);
+    background: var(--bg-primary);
+    transform: scale(1.02);
+}
+
+.option-btn.selected {
+    border-color: var(--primary-color);
+    background: var(--primary-color);
+    color: white;
+}
+
+/* 輸入答案 */
+.answer-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.answer-input {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    font-size: 1.1rem;
+    transition: border-color 0.3s;
+    min-height: 50px;
+}
+
+.answer-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+/* 法文虛擬鍵盤 */
+.french-keyboard {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border: 2px solid var(--primary-color);
+    border-radius: 15px;
+    padding: 20px;
+    margin: 10px 0;
+    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.2);
+}
+
+.keyboard-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.keyboard-title::before {
+    content: "⌨️";
+}
+
+.keyboard-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.key-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 8px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    min-width: 45px;
+}
+
+.key-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+.key-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.key-btn.uppercase {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.key-btn.uppercase:hover {
+    background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+}
+
+.keyboard-hint {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-top: 8px;
+    font-style: italic;
+}
+
+/* 反饋面板 */
+.feedback-panel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+}
+
+.feedback-content {
+    text-align: center;
+    padding: 40px;
+    max-width: 500px;
+}
+
+.feedback-icon {
+    font-size: 5rem;
+    margin-bottom: 20px;
+}
+
+.feedback-content h3 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+.feedback-content p {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    color: var(--text-secondary);
+}
+
+.vocab-learned {
+    background: var(--bg-primary);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    text-align: left;
+}
+
+/* 寫作題型樣式 */
+.writing-feedback {
+    text-align: left;
+    margin-top: 15px;
+}
+
+.user-writing {
+    background: #fff8e1;
+    border-left: 4px solid #ffa500;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 8px;
+    font-size: 1rem;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.sample-answer {
+    background: #e8f5e9;
+    border-left: 4px solid #50c878;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 8px;
+    font-size: 1rem;
+    line-height: 1.8;
+    position: relative;
+}
+
+.keywords {
+    background: #e3f2fd;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin: 10px 0;
+    font-size: 0.95rem;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.writing-feedback p {
+    margin: 10px 0;
+}
+
+.writing-feedback strong {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* 完成畫面 */
+.level-complete {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 500px;
+}
+
+.complete-content {
+    text-align: center;
+    max-width: 600px;
+}
+
+.complete-content h2 {
+    font-size: 2rem;
+    color: var(--success-color);
+    margin-bottom: 25px;
+}
+
+.stars-earned {
+    font-size: 4rem;
+    margin-bottom: 25px;
+}
+
+.level-summary {
+    background: var(--bg-primary);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+
+.level-summary p {
+    font-size: 1.1rem;
+    margin: 10px 0;
+}
+
+/* 日記預覽 */
+.diary-preview {
+    background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.diary-preview h3 {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.diary-entry h4 {
+    margin-bottom: 10px;
+}
+
+.learned-words {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+}
+
+.word-tag {
+    display: inline-block;
+    background: var(--primary-color);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    margin: 5px;
+}
+
+.complete-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+/* 筆記側邊欄 */
+.notes-content {
+    margin-bottom: 20px;
+}
+
+.notes-empty {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 30px 10px;
+    font-style: italic;
+}
+
+.note-item {
+    background: var(--bg-primary);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.note-item h4 {
+    color: var(--primary-color);
+    margin-bottom: 8px;
+    font-size: 1rem;
+}
+
+.note-item p {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+}
+
+/* 模態框 */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    max-width: 700px;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: var(--shadow-hover);
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+}
+
+.modal-close:hover {
+    color: var(--text-primary);
+}
+
+#modalTitle {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    padding-right: 30px;
+}
+
+/* 日記詳情 */
+.diary-detail {
+    line-height: 1.8;
+}
+
+.diary-stats {
+    display: flex;
+    justify-content: space-around;
+    background: var(--bg-primary);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+}
+
+.diary-story, .diary-reflection, .diary-vocabulary {
+    margin-bottom: 25px;
+}
+
+.diary-story h3, .diary-reflection h3, .diary-vocabulary h3 {
+    color: var(--primary-color);
+    margin-bottom: 12px;
+}
+
+.word-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* 響應式設計 */
+@media (max-width: 1200px) {
+    .main-content {
+        grid-template-columns: 250px 1fr;
+    }
+    
+    .notes-sidebar {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .diary-sidebar {
+        max-height: 300px;
+    }
+    
+    .header-stats {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .difficulty-info {
+        grid-template-columns: 1fr;
+    }
+    
+    .answer-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .complete-actions {
+        flex-direction: column;
+    }
+    
+    /* 手機版虛擬鍵盤優化 */
+    .keyboard-buttons {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 6px;
+    }
+    
+    .key-btn {
+        padding: 10px 6px;
+        font-size: 1.1rem;
+        min-width: 40px;
+    }
+    
+    .french-keyboard {
+        padding: 15px;
+    }
+    
+    .keyboard-title {
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+    }
+}
+
+/* 動畫 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.story-panel, .question-panel, .feedback-panel, .level-complete {
+    animation: fadeIn 0.5s ease;
+}
+
+/* 滾動條美化 */
+.diary-sidebar::-webkit-scrollbar,
+.notes-sidebar::-webkit-scrollbar,
+.modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.diary-sidebar::-webkit-scrollbar-thumb,
+.notes-sidebar::-webkit-scrollbar-thumb,
+.modal-content::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+}
+
+.diary-sidebar::-webkit-scrollbar-track,
+.notes-sidebar::-webkit-scrollbar-track,
+.modal-content::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+}
