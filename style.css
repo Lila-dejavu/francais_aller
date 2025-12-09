@@ -1096,50 +1096,258 @@ body {
 }
 
 @media (max-width: 768px) {
+    /* 容器調整 */
+    .container {
+        padding: 10px;
+    }
+    
     .main-content {
         grid-template-columns: 1fr;
+        gap: 10px;
     }
     
     .diary-sidebar {
         max-height: 300px;
+        padding: 12px;
+    }
+    
+    /* 標題區域 */
+    .header {
+        padding: 20px 15px;
+        margin-bottom: 10px;
+    }
+    
+    .header h1 {
+        font-size: 1.6rem;
+    }
+    
+    .subtitle {
+        font-size: 0.9rem;
+        margin-bottom: 15px;
     }
     
     .header-stats {
         flex-direction: column;
-        gap: 15px;
+        gap: 10px;
+    }
+    
+    .stat-label {
+        font-size: 0.8rem;
+    }
+    
+    .stat-value {
+        font-size: 1.5rem;
+    }
+    
+    /* 歡迎畫面 */
+    .welcome-content h2 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+    
+    .welcome-content p {
+        font-size: 0.95rem;
+        margin-bottom: 10px;
     }
     
     .difficulty-info {
         grid-template-columns: 1fr;
+        gap: 12px;
+        margin: 25px 0;
     }
     
+    .diff-card {
+        padding: 18px;
+    }
+    
+    .diff-icon {
+        font-size: 2.2rem;
+        margin-bottom: 8px;
+    }
+    
+    .diff-card h3 {
+        font-size: 1.1rem;
+        margin-bottom: 8px;
+    }
+    
+    .diff-card p {
+        font-size: 0.85rem;
+    }
+    
+    /* 按鈕 */
+    .btn-primary, .btn-secondary, .btn-submit {
+        padding: 12px 25px;
+        font-size: 0.95rem;
+        margin: 8px;
+    }
+    
+    /* 關卡資訊 */
+    .level-header {
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+    }
+    
+    .level-badge {
+        font-size: 0.8rem;
+        padding: 4px 12px;
+    }
+    
+    .level-info h2 {
+        font-size: 1.4rem;
+        margin: 8px 0;
+    }
+    
+    .level-difficulty {
+        font-size: 0.95rem;
+    }
+    
+    /* 語音控制 */
+    .voice-controls {
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 12px;
+    }
+    
+    .voice-control-btn {
+        padding: 8px 15px;
+        font-size: 0.85rem;
+    }
+    
+    .speed-control {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    /* 故事與問題 */
+    .story-text {
+        padding: 20px 15px;
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+    
+    .question-title {
+        font-size: 1.1rem;
+        margin-bottom: 12px;
+    }
+    
+    .question-content {
+        font-size: 1rem;
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .hint {
+        padding: 10px;
+        font-size: 0.85rem;
+        margin-top: 12px;
+    }
+    
+    /* 選項按鈕 */
     .answer-options {
         grid-template-columns: 1fr;
+        gap: 10px;
     }
     
-    .complete-actions {
-        flex-direction: column;
+    .option-btn {
+        padding: 15px;
+        font-size: 0.95rem;
+    }
+    
+    /* 輸入框 */
+    .answer-input {
+        padding: 12px;
+        font-size: 1rem;
+        min-height: 45px;
     }
     
     /* 手機版虛擬鍵盤優化 */
-    .keyboard-buttons {
-        grid-template-columns: repeat(5, 1fr);
-        gap: 6px;
-    }
-    
-    .key-btn {
-        padding: 10px 6px;
-        font-size: 1.1rem;
-        min-width: 40px;
-    }
-    
     .french-keyboard {
-        padding: 15px;
+        padding: 12px;
+        margin: 8px 0;
     }
     
     .keyboard-title {
-        font-size: 0.9rem;
-        margin-bottom: 10px;
+        font-size: 0.85rem;
+        margin-bottom: 8px;
+    }
+    
+    .keyboard-buttons {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 5px;
+        margin-bottom: 8px;
+    }
+    
+    .key-btn {
+        padding: 10px 5px;
+        font-size: 1rem;
+        min-width: 38px;
+    }
+    
+    .keyboard-hint {
+        font-size: 0.75rem;
+        margin-top: 6px;
+    }
+    
+    /* 排序題 */
+    .word-card {
+        padding: 10px 18px;
+        font-size: 0.95rem;
+    }
+    
+    .sentence-builder {
+        padding: 18px;
+        min-height: 80px;
+    }
+    
+    .sentence-word {
+        padding: 10px 18px;
+        font-size: 0.95rem;
+    }
+    
+    /* 反饋面板 */
+    .feedback-content {
+        padding: 30px 20px;
+    }
+    
+    .feedback-icon {
+        font-size: 3.5rem;
+        margin-bottom: 15px;
+    }
+    
+    .feedback-content h3 {
+        font-size: 1.5rem;
+        margin-bottom: 12px;
+    }
+    
+    .feedback-content p {
+        font-size: 0.95rem;
+        margin-bottom: 12px;
+    }
+    
+    .vocab-learned {
+        padding: 15px;
+    }
+    
+    /* 完成畫面 */
+    .complete-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    /* 日記相關 */
+    .diary-sidebar h2,
+    .notes-sidebar h2 {
+        font-size: 1.1rem;
+        margin-bottom: 12px;
+    }
+    
+    .diary-item {
+        padding: 12px;
+    }
+    
+    .filter-btn {
+        padding: 6px;
+        font-size: 0.8rem;
     }
 }
 
