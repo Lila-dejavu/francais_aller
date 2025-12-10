@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel 題庫轉換工具</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        .content {
+            padding: 30px;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .section-title {
+            font-size: 1.3em;
+            color: #667eea;
+            margin-bottom: 15px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .step-number {
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9em;
+        }
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Courier New', monospace;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .example-box {
+            background: #f5f7ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .example-box code {
+            display: block;
+            font-family: 'Courier New', monospace;
+            white-space: pre;
+            color: #333;
+        }
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+            min-width: 150px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        .btn-success:hover {
+            background: #218838;
+        }
+        .result-box {
+            background: #f8f9fa;
+            border: 2px dashed #667eea;
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 300px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .info-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            color: #856404;
+        }
+        .success-box {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            color: #155724;
+        }
+        .format-selector {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .format-option {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        .format-option:hover {
+            border-color: #667eea;
+            background: #f5f7ff;
+        }
+        .format-option.active {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .format-option h3 {
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+        .format-option p {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Excel 題庫轉換工具</h1>
+            <p>快速將 Excel 中法句子轉換成遊戲題目</p>
+        </div>
+        
+        <div class="content">
+            <!-- 步驟 1: 選擇格式 -->
+            <div class="section">
+                <div class="section-title">
+                    <span class="step-number">1</span>
+                    <span>選擇 Excel 格式</span>
+                </div>
+                <div class="format-selector">
+                    <div class="format-option active" onclick="selectFormat('tab')">
+                        <h3>🔖 Tab 分隔</h3>
+                        <p>中文[Tab]法文</p>
+                    </div>
+                    <div class="format-option" onclick="selectFormat('pipe')">
+                        <h3>📌 豎線分隔</h3>
+                        <p>中文|法文</p>
+                    </div>
+                    <div class="format-option" onclick="selectFormat('comma')">
+                        <h3>📍 逗號分隔</h3>
+                        <p>中文,法文</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 步驟 2: 貼上資料 -->
+            <div class="section">
+                <div class="section-title">
+                    <span class="step-number">2</span>
+                    <span>從 Excel 複製貼上句子</span>
+                </div>
+                <div class="example-box">
+                    <strong>Excel 格式範例:</strong>
+                    <code>中文句子	法文句子
+我餓了	J'ai faim
+我渴了	J'ai soif
+我累了	Je suis fatigué
+晚安	Bonne nuit</code>
+                </div>
+                <textarea id="inputText" placeholder="在這裡貼上從 Excel 複製的內容...&#10;&#10;範例:&#10;我餓了	J'ai faim&#10;我渴了	J'ai soif&#10;我累了	Je suis fatigué"></textarea>
+            </div>
+
+            <!-- 步驟 3: 轉換 -->
+            <div class="section">
+                <div class="section-title">
+                    <span class="step-number">3</span>
+                    <span>轉換成題目</span>
+                </div>
+                <div class="button-group">
+                    <button class="btn-primary" onclick="convertToQuestions()">🔄 轉換成題目</button>
+                    <button class="btn-secondary" onclick="clearAll()">🗑️ 清空</button>
+                </div>
+                <div class="info-box" id="statusBox" style="display:none;"></div>
+            </div>
+
+            <!-- 步驟 4: 結果 -->
+            <div class="section">
+                <div class="section-title">
+                    <span class="step-number">4</span>
+                    <span>複製結果到 custom_questions.js</span>
+                </div>
+                <div class="result-box" id="resultBox">轉換結果會顯示在這裡...</div>
+                <div class="button-group">
+                    <button class="btn-success" onclick="copyResult()">📋 複製結果</button>
+                    <button class="btn-primary" onclick="downloadResult()">💾 下載 .js 檔案</button>
+                </div>
+                <div class="success-box" id="successBox" style="display:none;">✅ 已複製到剪貼簿!</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentFormat = 'tab';
+        
+        function selectFormat(format) {
+            currentFormat = format;
+            document.querySelectorAll('.format-option').forEach(el => {
+                el.classList.remove('active');
+            });
+            event.target.closest('.format-option').classList.add('active');
+        }
+
+        function convertToQuestions() {
+            const input = document.getElementById('inputText').value.trim();
+            if (!input) {
+                showStatus('❌ 請先貼上 Excel 資料!', 'error');
+                return;
+            }
+
+            const lines = input.split('\n').filter(line => line.trim());
+            const questions = [];
+            let skipped = 0;
+
+            // 選擇分隔符
+            let separator = '\t';
+            if (currentFormat === 'pipe') separator = '|';
+            if (currentFormat === 'comma') separator = ',';
+
+            lines.forEach((line, index) => {
+                const parts = line.split(separator).map(p => p.trim());
+                
+                if (parts.length < 2) {
+                    skipped++;
+                    return;
+                }
+
+                const chinese = parts[0];
+                const french = parts[1];
+
+                if (!chinese || !french) {
+                    skipped++;
+                    return;
+                }
+
+                // 生成選擇題
+                const question = {
+                    type: "multiple",
+                    question: `「${chinese}」的法文是?`,
+                    options: generateOptions(french),
+                    answer: 0,
+                    frenchText: french,
+                    explanation: `${french} 是「${chinese}」的法文表達。`,
+                    vocabulary: [
+                        { french: french.toLowerCase(), chinese: chinese, pronunciation: "請補充發音" }
+                    ]
+                };
+
+                questions.push(question);
+            });
+
+            if (questions.length === 0) {
+                showStatus('❌ 沒有成功轉換任何題目,請檢查格式!', 'error');
+                return;
+            }
+
+            // 生成 JavaScript 程式碼
+            const result = generateCode(questions);
+            document.getElementById('resultBox').textContent = result;
+            
+            showStatus(`✅ 成功轉換 ${questions.length} 題${skipped > 0 ? ` (跳過 ${skipped} 行)` : ''}`, 'success');
+        }
+
+        function generateOptions(correctAnswer) {
+            // 常用的干擾選項
+            const distractors = [
+                "Bonjour", "Merci", "Au revoir", "S'il vous plaît",
+                "Oui", "Non", "Pardon", "Excusez-moi",
+                "Je suis", "J'ai", "Tu es", "Il est",
+                "Bonne nuit", "Bon matin", "Ça va", "Comment allez-vous"
+            ];
+            
+            const options = [correctAnswer];
+            const availableDistractors = distractors.filter(d => d !== correctAnswer);
+            
+            // 隨機選3個干擾項
+            while (options.length < 4 && availableDistractors.length > 0) {
+                const randomIndex = Math.floor(Math.random() * availableDistractors.length);
+                options.push(availableDistractors.splice(randomIndex, 1)[0]);
+            }
+            
+            // 如果干擾項不夠,補充通用選項
+            while (options.length < 4) {
+                options.push(`選項 ${options.length}`);
+            }
+            
+            return options;
+        }
+
+        function generateCode(questions) {
+            let code = '// 從 Excel 轉換的題目\n// 請複製以下內容到 custom_questions.js 的 customQuestions 陣列中\n\n';
+            
+            questions.forEach((q, index) => {
+                code += `    // 題目 ${index + 1}\n`;
+                code += `    {\n`;
+                code += `        type: "${q.type}",\n`;
+                code += `        question: "${q.question}",\n`;
+                code += `        options: ${JSON.stringify(q.options)},\n`;
+                code += `        answer: ${q.answer},\n`;
+                code += `        frenchText: "${q.frenchText}",\n`;
+                code += `        explanation: "${q.explanation}",\n`;
+                code += `        vocabulary: [\n`;
+                code += `            { french: "${q.vocabulary[0].french}", chinese: "${q.vocabulary[0].chinese}", pronunciation: "${q.vocabulary[0].pronunciation}" }\n`;
+                code += `        ]\n`;
+                code += `    },\n\n`;
+            });
+            
+            return code;
+        }
+
+        function showStatus(message, type) {
+            const statusBox = document.getElementById('statusBox');
+            statusBox.textContent = message;
+            statusBox.style.display = 'block';
+            statusBox.className = type === 'success' ? 'success-box' : 'info-box';
+            
+            setTimeout(() => {
+                statusBox.style.display = 'none';
+            }, 3000);
+        }
+
+        function copyResult() {
+            const resultBox = document.getElementById('resultBox');
+            const text = resultBox.textContent;
+            
+            if (!text || text === '轉換結果會顯示在這裡...') {
+                showStatus('❌ 沒有可複製的內容!', 'error');
+                return;
+            }
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const successBox = document.getElementById('successBox');
+                successBox.style.display = 'block';
+                setTimeout(() => {
+                    successBox.style.display = 'none';
+                }, 2000);
+            });
+        }
+
+        function downloadResult() {
+            const resultBox = document.getElementById('resultBox');
+            const text = resultBox.textContent;
+            
+            if (!text || text === '轉換結果會顯示在這裡...') {
+                showStatus('❌ 沒有可下載的內容!', 'error');
+                return;
+            }
+            
+            const blob = new Blob([text], { type: 'text/javascript' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'my_questions.js';
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showStatus('✅ 已下載檔案!', 'success');
+        }
+
+        function clearAll() {
+            document.getElementById('inputText').value = '';
+            document.getElementById('resultBox').textContent = '轉換結果會顯示在這裡...';
+            showStatus('🗑️ 已清空', 'success');
+        }
+    </script>
+</body>
+</html>
