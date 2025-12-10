@@ -261,11 +261,11 @@
                 </div>
                 <div class="example-box" id="exampleBox">
                     <strong>筆記本格式範例:</strong>
-                    <code>Ça va vraiment m'aider.
+                    <code>1. Ça va vraiment m'aider.
 ( ＝ 這真的有幫到我。)
-J'ai faim.
+2. J'ai faim.
 ( ＝ 我餓了。)
-Merci beaucoup.
+3. Merci beaucoup.
 ( ＝ 非常感謝。)</code>
                 </div>
                 <textarea id="inputText" placeholder="在這裡貼上你的筆記內容...&#10;&#10;範例:&#10;Ça va vraiment m'aider.&#10;( ＝ 這真的有幫到我。)&#10;J'ai faim.&#10;( ＝ 我餓了。)"></textarea>
@@ -320,13 +320,13 @@ Merci beaucoup.
             
             if (format === 'notebook') {
                 exampleBox.innerHTML = `<strong>筆記本格式範例:</strong>
-                    <code>Ça va vraiment m'aider.
+                    <code>1. Ça va vraiment m'aider.
 ( ＝ 這真的有幫到我。)
-J'ai faim.
+2. J'ai faim.
 ( ＝ 我餓了。)
-Merci beaucoup.
+3. Merci beaucoup.
 ( ＝ 非常感謝。)</code>`;
-                inputText.placeholder = "在這裡貼上你的筆記內容...\n\n範例:\nÇa va vraiment m'aider.\n( ＝ 這真的有幫到我。)\nJ'ai faim.\n( ＝ 我餓了。)";
+                inputText.placeholder = "在這裡貼上你的筆記內容...\n\n範例:\n1. Ça va vraiment m'aider.\n( ＝ 這真的有幫到我。)\n2. J'ai faim.\n( ＝ 我餓了。)";
             } else {
                 exampleBox.innerHTML = `<strong>Excel 格式範例:</strong>
                     <code>中文句子	法文句子
@@ -361,8 +361,16 @@ Merci beaucoup.
                         continue; // 跳過翻譯行，等待配對
                     }
                     
-                    // 這是法文行
-                    const french = line;
+                    // 移除題號（如 1. 或 2. 等）
+                    let french = line.replace(/^\d+\.\s*/, '').trim();
+                    
+                    // 如果移除題號後為空，跳過
+                    if (!french) {
+                        skipped++;
+                        skippedLines.push(`第 ${i + 1} 行：移除題號後內容為空`);
+                        continue;
+                    }
+                    
                     const nextLine = i + 1 < lines.length ? lines[i + 1] : '';
                     
                     // 檢查下一行是否為翻譯
