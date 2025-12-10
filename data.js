@@ -74,6 +74,87 @@ function getBeginnerContent(day) {
                     frenchText: "Oui",
                     explanation: "Oui 是法文的「是」，發音類似「wi」。",
                     vocabulary: "Oui - 是"
+                },
+                {
+                    type: "multiple",
+                    question: "Non 是什麼意思？",
+                    options: ["不", "是", "好的", "不好"],
+                    answer: "不",
+                    frenchText: "Non",
+                    explanation: "Non 是法文的「不」，發音類似「no」。",
+                    vocabulary: "Non - 不"
+                },
+                {
+                    type: "multiple",
+                    question: "如何用法文說「對不起」？",
+                    options: ["Pardon", "Merci", "Bonjour", "Au revoir"],
+                    answer: "Pardon",
+                    frenchText: "Pardon",
+                    explanation: "Pardon 或 Excusez-moi 是「對不起」的意思。",
+                    vocabulary: "Pardon - 對不起"
+                },
+                {
+                    type: "multiple",
+                    question: "Salut 是什麼意思？",
+                    options: ["嗨（非正式問候）", "再見（正式）", "謝謝", "對不起"],
+                    answer: "嗨（非正式問候）",
+                    frenchText: "Salut",
+                    explanation: "Salut 是朋友間的非正式問候語，也可以用來說再見。",
+                    vocabulary: "Salut - 嗨/拜拜（非正式）"
+                },
+                {
+                    type: "multiple",
+                    question: "如何用法文說「晚安」？",
+                    options: ["Bonsoir", "Bonjour", "Bonne nuit", "Salut"],
+                    answer: "Bonsoir",
+                    frenchText: "Bonsoir",
+                    explanation: "Bonsoir 是「晚上好」，用於傍晚和晚上的問候。",
+                    vocabulary: "Bonsoir - 晚上好"
+                },
+                {
+                    type: "multiple",
+                    question: "Bonne nuit 是什麼意思？",
+                    options: ["晚安（睡前）", "晚上好", "早安", "午安"],
+                    answer: "晚安（睡前）",
+                    frenchText: "Bonne nuit",
+                    explanation: "Bonne nuit 是睡前說的「晚安」，與 Bonsoir（晚上好）不同。",
+                    vocabulary: "Bonne nuit - 晚安（睡前）"
+                },
+                {
+                    type: "sorting",
+                    question: "【排序題】將下列單字排成正確的法文句子：「早安」",
+                    words: ["matin", "Bon"],
+                    answer: "Bon matin",
+                    frenchText: "Bon matin",
+                    explanation: "Bon matin 是「早安」，不過法國人更常用 Bonjour。",
+                    vocabulary: "Bon matin - 早安"
+                },
+                {
+                    type: "multiple",
+                    question: "De rien 是什麼意思？",
+                    options: ["不客氣", "謝謝", "對不起", "再見"],
+                    answer: "不客氣",
+                    frenchText: "De rien",
+                    explanation: "De rien 是「不客氣」，回應 Merci 時使用。",
+                    vocabulary: "De rien - 不客氣"
+                },
+                {
+                    type: "multiple",
+                    question: "如何用法文說「請問」？",
+                    options: ["Excusez-moi", "Merci", "Pardon", "Bonjour"],
+                    answer: "Excusez-moi",
+                    frenchText: "Excusez-moi",
+                    explanation: "Excusez-moi 可以表示「請問」或「對不起」，用於禮貌地引起注意。",
+                    vocabulary: "Excusez-moi - 請問/對不起"
+                },
+                {
+                    type: "multiple",
+                    question: "À bientôt 是什麼意思？",
+                    options: ["待會見", "再見", "你好", "謝謝"],
+                    answer: "待會見",
+                    frenchText: "À bientôt",
+                    explanation: "À bientôt 表示「待會見/回頭見」，比 Au revoir 更親切。",
+                    vocabulary: "À bientôt - 待會見"
                 }
             ],
             diary: "今天是我法文學習之旅的第一天！我學會了最基本的問候語：Bonjour（你好）、Merci（謝謝）、S'il vous plaît（請）和 Au revoir（再見）。這些是在法國生存的必備用語！"
@@ -102,11 +183,11 @@ function getBeginnerContent(day) {
                     vocabulary: "Je suis - 我是"
                 },
                 {
-                    type: "input",
-                    question: "法文的「你好嗎？」是什麼？",
+                    type: "sorting",
+                    question: "【排序題】將下列單字排成正確的法文句子：「你好嗎？（正式）」",
+                    words: ["allez-vous", "Comment"],
                     answer: "Comment allez-vous",
                     frenchText: "Comment allez-vous",
-                    hint: "提示：Comment allez-vous（正式）",
                     explanation: "Comment allez-vous? 是正式的「你好嗎？」，朋友間可以說 Ça va?",
                     vocabulary: "Comment allez-vous? - 你好嗎？(正式)"
                 },
@@ -115,6 +196,7 @@ function getBeginnerContent(day) {
                     question: "Enchanté 是什麼意思？",
                     options: ["很高興認識你", "謝謝", "對不起", "再見"],
                     answer: "很高興認識你",
+                    frenchText: "Enchanté",
                     explanation: "Enchanté(e) 是「很高興認識你」，初次見面時使用。",
                     vocabulary: "Enchanté(e) - 很高興認識你"
                 },
@@ -123,8 +205,99 @@ function getBeginnerContent(day) {
                     question: "如何用法文說「我來自台灣」？",
                     options: ["Je viens de Taïwan", "J'ai Taïwan", "Je suis Taïwan", "Mon Taïwan"],
                     answer: "Je viens de Taïwan",
+                    frenchText: "Je viens de Taïwan",
                     explanation: "Je viens de 是「我來自」的意思，de 後面接地點。",
                     vocabulary: "Je viens de - 我來自"
+                },
+                {
+                    type: "multiple",
+                    question: "Ça va? 是什麼意思？",
+                    options: ["你好嗎？（非正式）", "再見", "謝謝", "對不起"],
+                    answer: "你好嗎？（非正式）",
+                    frenchText: "Ça va",
+                    explanation: "Ça va? 是朋友間問候的非正式說法，也可以回答「Ça va!」（我很好）。",
+                    vocabulary: "Ça va? - 你好嗎？（非正式）"
+                },
+                {
+                    type: "multiple",
+                    question: "如何用法文說「我是老師」？",
+                    options: ["Je suis professeur", "Je m'appelle professeur", "J'ai professeur", "Mon professeur"],
+                    answer: "Je suis professeur",
+                    frenchText: "Je suis professeur",
+                    explanation: "Je suis professeur 表示「我是老師」。",
+                    vocabulary: "professeur - 老師"
+                },
+                {
+                    type: "multiple",
+                    question: "Tu t'appelles comment? 是什麼意思？",
+                    options: ["你叫什麼名字？", "你好嗎？", "你來自哪裡？", "你幾歲？"],
+                    answer: "你叫什麼名字？",
+                    frenchText: "Tu t'appelles comment",
+                    explanation: "這是非正式的問法，正式用法是 Comment vous appelez-vous?",
+                    vocabulary: "Tu t'appelles comment? - 你叫什麼名字？（非正式）"
+                },
+                {
+                    type: "sorting",
+                    question: "【排序題】將下列單字排成正確的法文句子：「我很好」",
+                    words: ["bien", "vais", "Je"],
+                    answer: "Je vais bien",
+                    frenchText: "Je vais bien",
+                    explanation: "Je vais bien 是「我很好」的意思，用來回答 Comment allez-vous?",
+                    vocabulary: "Je vais bien - 我很好"
+                },
+                {
+                    type: "multiple",
+                    question: "如何用法文說「你呢？」",
+                    options: ["Et toi?", "Tu es?", "Ça va?", "Comment?"],
+                    answer: "Et toi?",
+                    frenchText: "Et toi",
+                    explanation: "Et toi?（非正式）或 Et vous?（正式）表示「你呢？」",
+                    vocabulary: "Et toi? - 你呢？（非正式）"
+                },
+                {
+                    type: "multiple",
+                    question: "J'ai 25 ans 是什麼意思？",
+                    options: ["我25歲", "我有25個", "我是25號", "我要25個"],
+                    answer: "我25歲",
+                    frenchText: "J'ai 25 ans",
+                    explanation: "法文用「avoir（有）+ 年齡 + ans（年）」來表達年齡。",
+                    vocabulary: "J'ai ... ans - 我...歲"
+                },
+                {
+                    type: "multiple",
+                    question: "如何用法文問「你幾歲？」",
+                    options: ["Tu as quel âge?", "Tu es quel âge?", "Tu appelles quel âge?", "Tu viens quel âge?"],
+                    answer: "Tu as quel âge?",
+                    frenchText: "Tu as quel âge",
+                    explanation: "Tu as quel âge?（非正式）或 Quel âge avez-vous?（正式）。",
+                    vocabulary: "Quel âge? - 幾歲？"
+                },
+                {
+                    type: "multiple",
+                    question: "Où habites-tu? 是什麼意思？",
+                    options: ["你住哪裡？", "你叫什麼？", "你幾歲？", "你是誰？"],
+                    answer: "你住哪裡？",
+                    frenchText: "Où habites-tu",
+                    explanation: "Où habites-tu?（非正式）詢問居住地點。",
+                    vocabulary: "Où habites-tu? - 你住哪裡？"
+                },
+                {
+                    type: "sorting",
+                    question: "【排序題】將下列單字排成正確的法文句子：「我住在巴黎」",
+                    words: ["Paris", "à", "J'habite"],
+                    answer: "J'habite à Paris",
+                    frenchText: "J'habite à Paris",
+                    explanation: "J'habite à + 城市名，表示「我住在...」。",
+                    vocabulary: "J'habite à - 我住在"
+                },
+                {
+                    type: "multiple",
+                    question: "Quelle est ta nationalité? 是什麼意思？",
+                    options: ["你的國籍是什麼？", "你叫什麼名字？", "你住哪裡？", "你幾歲？"],
+                    answer: "你的國籍是什麼？",
+                    frenchText: "Quelle est ta nationalité",
+                    explanation: "用來詢問國籍，可以回答 Je suis taïwanais(e)（我是台灣人）。",
+                    vocabulary: "nationalité - 國籍"
                 }
             ],
             diary: "今天學會了自我介紹！我現在可以說 Je m'appelle（我叫...）、Je suis étudiant（我是學生）和 Je viens de Taïwan（我來自台灣）。終於可以和法國人聊聊天了！"
@@ -148,24 +321,45 @@ function getBeginnerContent(day) {
                     question: "Deux 是什麼數字？",
                     options: ["2", "3", "4", "5"],
                     answer: "2",
+                    frenchText: "deux",
                     explanation: "Deux 是法文的「2」，發音類似「的」。",
                     vocabulary: "deux - 二"
                 },
                 {
-                    type: "input",
-                    question: "法文的「5」怎麼拼寫？",
+                    type: "multiple",
+                    question: "Trois 是什麼意思？",
+                    options: ["3", "2", "4", "5"],
+                    answer: "3",
+                    frenchText: "trois",
+                    explanation: "Trois 是「3」，發音類似「特哇」。",
+                    vocabulary: "trois - 三"
+                },
+                {
+                    type: "multiple",
+                    question: "法文的「4」怎麼說？",
+                    options: ["quatre", "cinq", "six", "trois"],
+                    answer: "quatre",
+                    frenchText: "quatre",
+                    explanation: "Quatre 是「4」，發音類似「卡特」。",
+                    vocabulary: "quatre - 四"
+                },
+                {
+                    type: "sorting",
+                    question: "【排序題】將下列字母排成正確的法文數字「5」",
+                    words: ["c", "i", "n", "q"],
                     answer: "cinq",
-                    hint: "提示：c開頭，4個字母",
+                    frenchText: "cinq",
                     explanation: "Cinq 是「5」，發音類似「桑克」。",
                     vocabulary: "cinq - 五"
                 },
                 {
                     type: "multiple",
-                    question: "如何用法文說「10」？",
-                    options: ["dix", "six", "sept", "huit"],
-                    answer: "dix",
-                    explanation: "Dix 是「10」，發音類似「迪斯」。",
-                    vocabulary: "dix - 十"
+                    question: "Six 是什麼數字？",
+                    options: ["6", "7", "8", "9"],
+                    answer: "6",
+                    frenchText: "six",
+                    explanation: "Six 是「6」，發音類似「西斯」。",
+                    vocabulary: "six - 六"
                 },
                 {
                     type: "multiple",
@@ -175,6 +369,78 @@ function getBeginnerContent(day) {
                     frenchText: "sept",
                     explanation: "Sept 是「7」，一週七天：sept jours。",
                     vocabulary: "sept - 七"
+                },
+                {
+                    type: "multiple",
+                    question: "法文的「8」怎麼說？",
+                    options: ["huit", "sept", "neuf", "six"],
+                    answer: "huit",
+                    frenchText: "huit",
+                    explanation: "Huit 是「8」，發音類似「喂特」。",
+                    vocabulary: "huit - 八"
+                },
+                {
+                    type: "multiple",
+                    question: "Neuf 是什麼數字？",
+                    options: ["9", "8", "10", "7"],
+                    answer: "9",
+                    frenchText: "neuf",
+                    explanation: "Neuf 是「9」，發音類似「呢夫」。",
+                    vocabulary: "neuf - 九"
+                },
+                {
+                    type: "multiple",
+                    question: "如何用法文說「10」？",
+                    options: ["dix", "six", "sept", "huit"],
+                    answer: "dix",
+                    frenchText: "dix",
+                    explanation: "Dix 是「10」，發音類似「迪斯」。",
+                    vocabulary: "dix - 十"
+                },
+                {
+                    type: "sorting",
+                    question: "【排序題】將下列單字排成正確的法文句子：「我想要兩個蘋果」",
+                    words: ["pommes", "deux", "veux", "Je"],
+                    answer: "Je veux deux pommes",
+                    frenchText: "Je veux deux pommes",
+                    explanation: "Je veux 是「我想要」，deux 是「兩個」，pommes 是「蘋果」。",
+                    vocabulary: "Je veux - 我想要"
+                },
+                {
+                    type: "multiple",
+                    question: "法文的「零」怎麼說？",
+                    options: ["zéro", "un", "deux", "dix"],
+                    answer: "zéro",
+                    frenchText: "zéro",
+                    explanation: "Zéro 是「0」，發音類似「賻羅」。",
+                    vocabulary: "zéro - 零"
+                },
+                {
+                    type: "multiple",
+                    question: "如何用法文說「三個人」？",
+                    options: ["trois personnes", "trois homme", "trois gens", "trois femme"],
+                    answer: "trois personnes",
+                    frenchText: "trois personnes",
+                    explanation: "Personnes 是「人」的複數，數字 + personnes 表示「幾個人」。",
+                    vocabulary: "personne(s) - 人"
+                },
+                {
+                    type: "multiple",
+                    question: "在法文中，哪個數字的發音與「neuf」相似？",
+                    options: ["9", "8", "7", "6"],
+                    answer: "9",
+                    frenchText: "neuf",
+                    explanation: "Neuf (9) 的發音類似「呢夫」。",
+                    vocabulary: "neuf - 九"
+                },
+                {
+                    type: "multiple",
+                    question: "Combien? 是什麼意思？",
+                    options: ["多少？", "什麼？", "哪裡？", "何時？"],
+                    answer: "多少？",
+                    frenchText: "Combien",
+                    explanation: "Combien 用來詢問數量或價格，例如：Combien ça coûte? (這個多少錢？)",
+                    vocabulary: "Combien? - 多少？"
                 }
             ],
             diary: "今天掌握了法文數字1-10！Un, deux, trois, quatre, cinq, six, sept, huit, neuf, dix。現在可以在市場買東西了！"
@@ -189,6 +455,7 @@ function getBeginnerContent(day) {
                     question: "法文的「紅色」是？",
                     options: ["rouge", "bleu", "vert", "jaune"],
                     answer: "rouge",
+                    frenchText: "rouge",
                     explanation: "Rouge 是「紅色」，例如：une pomme rouge（紅蘋果）。",
                     vocabulary: "rouge - 紅色"
                 },
@@ -197,22 +464,34 @@ function getBeginnerContent(day) {
                     question: "Bleu 是什麼顏色？",
                     options: ["藍色", "綠色", "黃色", "白色"],
                     answer: "藍色",
+                    frenchText: "bleu",
                     explanation: "Bleu 是「藍色」，例如：le ciel bleu（藍色的天空）。",
                     vocabulary: "bleu - 藍色"
                 },
                 {
-                    type: "input",
-                    question: "「綠色」的法文拼寫是？",
+                    type: "sorting",
+                    question: "【排序題】將下列字母排成正確的法文顏色「綠色」",
+                    words: ["v", "e", "r", "t"],
                     answer: "vert",
-                    hint: "提示：4個字母，v開頭",
+                    frenchText: "vert",
                     explanation: "Vert 是「綠色」，例如：l'herbe verte（綠草）。",
                     vocabulary: "vert - 綠色"
+                },
+                {
+                    type: "multiple",
+                    question: "Jaune 是什麼顏色？",
+                    options: ["黃色", "綠色", "藍色", "紅色"],
+                    answer: "黃色",
+                    frenchText: "jaune",
+                    explanation: "Jaune 是「黃色」，例如：le soleil jaune（黃色的太陽）。",
+                    vocabulary: "jaune - 黃色"
                 },
                 {
                     type: "multiple",
                     question: "Noir 是什麼意思？",
                     options: ["黑色", "白色", "灰色", "棕色"],
                     answer: "黑色",
+                    frenchText: "noir",
                     explanation: "Noir 是「黑色」，例如：un chat noir（黑貓）。",
                     vocabulary: "noir - 黑色"
                 },
@@ -221,11 +500,93 @@ function getBeginnerContent(day) {
                     question: "如何用法文說「白色」？",
                     options: ["blanc", "noir", "gris", "rose"],
                     answer: "blanc",
+                    frenchText: "blanc",
                     explanation: "Blanc 是「白色」，陰性形式是 blanche。",
                     vocabulary: "blanc - 白色"
+                },
+                {
+                    type: "multiple",
+                    question: "Rose 是什麼顏色？",
+                    options: ["粉紅色", "紅色", "紫色", "橘色"],
+                    answer: "粉紅色",
+                    frenchText: "rose",
+                    explanation: "Rose 是「粉紅色」，也是「玫瑰花」的意思。",
+                    vocabulary: "rose - 粉紅色"
+                },
+                {
+                    type: "multiple",
+                    question: "法文的「灰色」怎麼說？",
+                    options: ["gris", "noir", "blanc", "brun"],
+                    answer: "gris",
+                    frenchText: "gris",
+                    explanation: "Gris 是「灰色」，例如：un ciel gris（灰色的天空）。",
+                    vocabulary: "gris - 灰色"
+                },
+                {
+                    type: "multiple",
+                    question: "Orange 是什麼顏色？",
+                    options: ["橘色", "紅色", "黃色", "紫色"],
+                    answer: "橘色",
+                    frenchText: "orange",
+                    explanation: "Orange 是「橘色」，也是「橘子」的意思。",
+                    vocabulary: "orange - 橘色/橘子"
+                },
+                {
+                    type: "multiple",
+                    question: "Violet 是什麼顏色？",
+                    options: ["紫色", "粉紅色", "藍色", "灰色"],
+                    answer: "紫色",
+                    frenchText: "violet",
+                    explanation: "Violet 是「紫色」，由藍色和紅色混合而成。",
+                    vocabulary: "violet - 紫色"
+                },
+                {
+                    type: "multiple",
+                    question: "法文的「棕色」怎麼說？",
+                    options: ["brun", "marron", "noir", "gris"],
+                    answer: "brun",
+                    frenchText: "brun",
+                    explanation: "Brun 或 marron 都是「棕色」，brun 更常用於頭髮顏色。",
+                    vocabulary: "brun / marron - 棕色"
+                },
+                {
+                    type: "sorting",
+                    question: "【排序題】將下列單字排成正確的法文句子：「我喜歡藍色」",
+                    words: ["bleu", "le", "J'aime"],
+                    answer: "J'aime le bleu",
+                    frenchText: "J'aime le bleu",
+                    explanation: "J'aime 是「我喜歡」，le 是陰性冠詞。",
+                    vocabulary: "J'aime - 我喜歡"
+                },
+                {
+                    type: "multiple",
+                    question: "Quelle couleur? 是什麼意思？",
+                    options: ["什麼顏色？", "什麼時候？", "多少顏色？", "哪裡？"],
+                    answer: "什麼顏色？",
+                    frenchText: "Quelle couleur",
+                    explanation: "Quelle couleur 用來詢問顏色，可以回答 C'est rouge (是紅色)。",
+                    vocabulary: "Quelle couleur? - 什麼顏色？"
+                },
+                {
+                    type: "multiple",
+                    question: "Beige 是什麼顏色？",
+                    options: ["米色/淡棕色", "灰色", "白色", "黃色"],
+                    answer: "米色/淡棕色",
+                    frenchText: "beige",
+                    explanation: "Beige 是「米色」或「淡棕色」，常用於服飾。",
+                    vocabulary: "beige - 米色/淡棕色"
+                },
+                {
+                    type: "multiple",
+                    question: "如何用法文形容「深藍色」？",
+                    options: ["bleu foncé", "bleu clair", "bleu grand", "bleu petit"],
+                    answer: "bleu foncé",
+                    frenchText: "bleu foncé",
+                    explanation: "Foncé 表示「深、暗」，clair 表示「淡、明」。",
+                    vocabulary: "foncé - 深色的; clair - 淡色的"
                 }
             ],
-            diary: "今天學了各種顏色！Rouge（紅）、Bleu（藍）、Vert（綠）、Noir（黑）、Blanc（白）。世界變得更加多彩了！"
+            diary: "今天學了各種顏色！Rouge（紅）、Bleu（藍）、Vert（綠）、Jaune（黃）、Noir（黑）、Blanc（白）、Rose（粉紅）、Gris（灰）、Orange（橘）、Violet（紫）。世界變得更加多彩了！"
         },
 
         5: {
@@ -237,6 +598,7 @@ function getBeginnerContent(day) {
                     question: "法文的「麵包」怎麼說？",
                     options: ["pain", "vin", "eau", "café"],
                     answer: "pain",
+                    frenchText: "pain",
                     explanation: "Pain 是「麵包」，法國麵包非常有名！",
                     vocabulary: "pain - 麵包"
                 },
@@ -245,14 +607,16 @@ function getBeginnerContent(day) {
                     question: "Eau 是什麼意思？",
                     options: ["水", "酒", "咖啡", "茶"],
                     answer: "水",
+                    frenchText: "eau",
                     explanation: "Eau 是「水」，發音類似「喔」。",
                     vocabulary: "eau - 水"
                 },
                 {
-                    type: "input",
-                    question: "「咖啡」的法文是？",
+                    type: "sorting",
+                    question: "【排序題】將下列字母排成正確的法文單字「咖啡」",
+                    words: ["c", "a", "f", "é"],
                     answer: "café",
-                    hint: "提示：和英文很像",
+                    frenchText: "café",
                     explanation: "Café 是「咖啡」，也指咖啡館。",
                     vocabulary: "café - 咖啡"
                 },
@@ -261,6 +625,7 @@ function getBeginnerContent(day) {
                     question: "Fromage 是什麼食物？",
                     options: ["起司", "麵包", "葡萄酒", "蛋糕"],
                     answer: "起司",
+                    frenchText: "fromage",
                     explanation: "Fromage 是「起司」，法國起司世界聞名！",
                     vocabulary: "fromage - 起司"
                 },
@@ -269,11 +634,111 @@ function getBeginnerContent(day) {
                     question: "如何用法文說「葡萄酒」？",
                     options: ["vin", "eau", "lait", "jus"],
                     answer: "vin",
+                    frenchText: "vin",
                     explanation: "Vin 是「葡萄酒」，法國葡萄酒享譽全球。",
                     vocabulary: "vin - 葡萄酒"
+                },
+                {
+                    type: "multiple",
+                    question: "Lait 是什麼意思？",
+                    options: ["牛奶", "果汁", "茶", "水"],
+                    answer: "牛奶",
+                    frenchText: "lait",
+                    explanation: "Lait 是「牛奶」，café au lait 是「咖啡牛奶」。",
+                    vocabulary: "lait - 牛奶"
+                },
+                {
+                    type: "multiple",
+                    question: "法文的「肉」怎麼說？",
+                    options: ["viande", "poisson", "légume", "fruit"],
+                    answer: "viande",
+                    frenchText: "viande",
+                    explanation: "Viande 是「肉類」的總稱。",
+                    vocabulary: "viande - 肉"
+                },
+                {
+                    type: "multiple",
+                    question: "Poisson 是什麼食物？",
+                    options: ["魚", "肉", "蔬菜", "水果"],
+                    answer: "魚",
+                    frenchText: "poisson",
+                    explanation: "Poisson 是「魚」，法式料理中常見的食材。",
+                    vocabulary: "poisson - 魚"
+                },
+                {
+                    type: "multiple",
+                    question: "Légume 是什麼意思？",
+                    options: ["蔬菜", "水果", "肉類", "飲料"],
+                    answer: "蔬菜",
+                    frenchText: "légume",
+                    explanation: "Légume 是「蔬菜」，例如：tomate（番茄）、carotte（紅蘿蔔）。",
+                    vocabulary: "légume - 蔬菜"
+                },
+                {
+                    type: "multiple",
+                    question: "如何用法文說「水果」？",
+                    options: ["fruit", "légume", "viande", "dessert"],
+                    answer: "fruit",
+                    frenchText: "fruit",
+                    explanation: "Fruit 是「水果」，例如：pomme（蘋果）、banane（香蕉）。",
+                    vocabulary: "fruit - 水果"
+                },
+                {
+                    type: "multiple",
+                    question: "Beurre 是什麼食物？",
+                    options: ["奶油", "牛奶", "起司", "麵包"],
+                    answer: "奶油",
+                    frenchText: "beurre",
+                    explanation: "Beurre 是「奶油」，法國料理不可或缺的材料。",
+                    vocabulary: "beurre - 奶油"
+                },
+                {
+                    type: "sorting",
+                    question: "【排序題】將下列單字排成正確的法文句子：「我想要一杯咖啡」",
+                    words: ["café", "un", "veux", "Je"],
+                    answer: "Je veux un café",
+                    frenchText: "Je veux un café",
+                    explanation: "Je veux 是「我想要」，un 是「一個/一杯」。",
+                    vocabulary: "Je veux - 我想要"
+                },
+                {
+                    type: "multiple",
+                    question: "Thé 是什麼飲料？",
+                    options: ["茶", "咖啡", "水", "果汁"],
+                    answer: "茶",
+                    frenchText: "thé",
+                    explanation: "Thé 是「茶」，例如：thé vert（綠茶）、thé noir（紅茶）。",
+                    vocabulary: "thé - 茶"
+                },
+                {
+                    type: "multiple",
+                    question: "Sucre 是什麼意思？",
+                    options: ["糖", "鹽", "胡椒", "奶油"],
+                    answer: "糖",
+                    frenchText: "sucre",
+                    explanation: "Sucre 是「糖」，加在咖啡或茶裡。",
+                    vocabulary: "sucre - 糖"
+                },
+                {
+                    type: "multiple",
+                    question: "如何用法文說「鹽」？",
+                    options: ["sel", "sucre", "poivre", "beurre"],
+                    answer: "sel",
+                    frenchText: "sel",
+                    explanation: "Sel 是「鹽」，烹飪的基本調味料。",
+                    vocabulary: "sel - 鹽"
+                },
+                {
+                    type: "multiple",
+                    question: "Bon appétit 是什麼意思？",
+                    options: ["祝你好胃口", "好吃", "謝謝", "再見"],
+                    answer: "祝你好胃口",
+                    frenchText: "Bon appétit",
+                    explanation: "Bon appétit 是用餐前的祝福語，類似英文的「Enjoy your meal」。",
+                    vocabulary: "Bon appétit - 祝你好胃口"
                 }
             ],
-            diary: "今天學習了食物單字！Pain（麵包）、Eau（水）、Café（咖啡）、Fromage（起司）、Vin（葡萄酒）。我已經可以點一頓法式大餐了！"
+            diary: "今天學習了食物單字！Pain（麵包）、Eau（水）、Café（咖啡）、Fromage（起司）、Vin（葡萄酒）、Lait（牛奶）、Viande（肉）、Poisson（魚）、Légume（蔬菜）、Fruit（水果）。我已經可以點一頓法式大餐了！"
         },
         
         30: {
@@ -309,11 +774,11 @@ function getBeginnerContent(day) {
                     vocabulary: "Tu es libre? - 你有空嗎？"
                 },
                 {
-                    type: "input",
-                    question: "「星期六」法文怎麼拼？",
+                    type: "sorting",
+                    question: "【排序題】將下列字母排成正確的法文單字「星期六」",
+                    words: ["s", "a", "m", "e", "d", "i"],
                     answer: "samedi",
                     frenchText: "samedi",
-                    hint: "s 開頭",
                     explanation: "Samedi 是「星期六」，法文的星期不需要大寫。",
                     vocabulary: "samedi - 星期六"
                 },
@@ -983,27 +1448,138 @@ function generateIntermediateTemplate(day) {
         questions: [
             {
                 type: "multiple",
-                question: "選擇正確的動詞變位",
+                question: "選擇正確的動詞變位：Être (是)",
                 options: ["je suis", "je es", "je être", "je sont"],
                 answer: "je suis",
+                frenchText: "je suis",
                 explanation: "Être（是）動詞的第一人稱單數是 je suis。",
                 vocabulary: "être - 是（動詞）"
             },
             {
-                type: "input",
-                question: "完成句子：Je ____ français (學習)",
-                answer: "apprends",
-                hint: "apprendre 的第一人稱單數",
-                explanation: "Apprendre（學習）的第一人稱現在式是 apprends。",
+                type: "multiple",
+                question: "Avoir (有) 的第一人稱單數是？",
+                options: ["j'ai", "je suis", "je avoir", "j'avoir"],
+                answer: "j'ai",
+                frenchText: "j'ai",
+                explanation: "J'ai 是 avoir 的第一人稱變位。",
+                vocabulary: "avoir - 有"
+            },
+            {
+                type: "sorting",
+                question: "【排序題】排列成否定句：「我不說法語」",
+                words: ["ne", "parle", "Je", "pas"],
+                answer: "Je ne parle pas",
+                frenchText: "Je ne parle pas",
+                explanation: "法文否定句用 ne...pas 包圍動詞。",
+                vocabulary: "ne...pas - 不（否定）"
+            },
+            {
+                type: "multiple",
+                question: "如何說「我正在學法文」？",
+                options: ["J'apprends le français", "Je apprendre français", "J'ai apprendre", "Je suis apprendre"],
+                answer: "J'apprends le français",
+                frenchText: "J'apprends le français",
+                explanation: "Apprendre 的第一人稱現在式是 j'apprends。",
                 vocabulary: "apprendre - 學習"
             },
             {
                 type: "multiple",
-                question: "哪個是正確的否定句？",
-                options: ["Je ne parle pas", "Je parle ne pas", "Je pas parle", "Ne je parle pas"],
-                answer: "Je ne parle pas",
-                explanation: "法文否定句用 ne...pas 包圍動詞。",
-                vocabulary: "ne...pas - 不（否定）"
+                question: "Aller (去) 的第一人稱單數是？",
+                options: ["je vais", "je alle", "j'aller", "je suis"],
+                answer: "je vais",
+                frenchText: "je vais",
+                explanation: "Je vais 是 aller 的第一人稱變位。",
+                vocabulary: "aller - 去"
+            },
+            {
+                type: "multiple",
+                question: "Faire (做) 的第一人稱單數是？",
+                options: ["je fais", "je faire", "je fes", "j'ai faire"],
+                answer: "je fais",
+                frenchText: "je fais",
+                explanation: "Je fais 是 faire 的第一人稱變位。",
+                vocabulary: "faire - 做"
+            },
+            {
+                type: "sorting",
+                question: "【排序題】排列成疑問句：「你去哪裡？」",
+                words: ["vas", "tu", "Où"],
+                answer: "Où vas tu",
+                frenchText: "Où vas-tu",
+                explanation: "疑問詞 + 動詞 + 主語，注意加連字號。",
+                vocabulary: "où - 哪裡"
+            },
+            {
+                type: "multiple",
+                question: "Vouloir (想要) 的第一人稱單數是？",
+                options: ["je veux", "je vouloir", "je voule", "j'ai vouloir"],
+                answer: "je veux",
+                frenchText: "je veux",
+                explanation: "Je veux 是 vouloir 的第一人稱變位。",
+                vocabulary: "vouloir - 想要"
+            },
+            {
+                type: "multiple",
+                question: "Pouvoir (能夠) 的第一人稱單數是？",
+                options: ["je peux", "je pouvoir", "je peut", "j'ai pouvoir"],
+                answer: "je peux",
+                frenchText: "je peux",
+                explanation: "Je peux 是 pouvoir 的第一人稱變位。",
+                vocabulary: "pouvoir - 能夠"
+            },
+            {
+                type: "multiple",
+                question: "Devoir (必須) 的第一人稱單數是？",
+                options: ["je dois", "je devoir", "je doit", "j'ai devoir"],
+                answer: "je dois",
+                frenchText: "je dois",
+                explanation: "Je dois 是 devoir 的第一人稱變位。",
+                vocabulary: "devoir - 必須"
+            },
+            {
+                type: "multiple",
+                question: "如何說「我有一本書」？",
+                options: ["J'ai un livre", "Je suis un livre", "J'avoir un livre", "Je livre"],
+                answer: "J'ai un livre",
+                frenchText: "J'ai un livre",
+                explanation: "J'ai (avoir) 表示擁有。",
+                vocabulary: "un livre - 一本書"
+            },
+            {
+                type: "sorting",
+                question: "【排序題】排列成：「我去學校」",
+                words: ["à", "vais", "l'école", "Je"],
+                answer: "Je vais à l'école",
+                frenchText: "Je vais à l'école",
+                explanation: "Aller à 表示「去」某地。",
+                vocabulary: "l'école - 學校"
+            },
+            {
+                type: "multiple",
+                question: "如何說「我喜歡音樂」？",
+                options: ["J'aime la musique", "Je suis musique", "J'ai musique", "Je musique"],
+                answer: "J'aime la musique",
+                frenchText: "J'aime la musique",
+                explanation: "Aimer 表示喜歡。",
+                vocabulary: "aimer - 喜歡"
+            },
+            {
+                type: "multiple",
+                question: "Parler (說話) 的第一人稱單數是？",
+                options: ["je parle", "je parler", "j'ai parler", "je suis parler"],
+                answer: "je parle",
+                frenchText: "je parle",
+                explanation: "Je parle 是 parler 的第一人稱變位。",
+                vocabulary: "parler - 說話"
+            },
+            {
+                type: "multiple",
+                question: "如何說「我住在巴黎」？",
+                options: ["J'habite à Paris", "Je suis à Paris", "J'ai Paris", "Je Paris"],
+                answer: "J'habite à Paris",
+                frenchText: "J'habite à Paris",
+                explanation: "Habiter 表示居住。",
+                vocabulary: "habiter - 居住"
             }
         ],
         diary: `第${day}天，中級課程讓我更深入理解法文的語法結構。`
@@ -1032,25 +1608,52 @@ function generateAdvancedTemplate(day) {
         questions: [
             {
                 type: "multiple",
-                question: "選擇正確的高級語法結構",
-                options: ["qui", "que", "dont", "où"],
-                answer: "qui",
+                question: "關係代名詞 qui 的用法？",
+                options: ["作為主語", "作為直接賓語", "作為間接賓語", "表示地點"],
+                answer: "作為主語",
                 frenchText: "qui",
-                explanation: "關係代名詞的選擇取決於其在從句中的語法功能。",
-                vocabulary: "Pronoms relatifs - 關係代名詞"
+                explanation: "Qui 在從句中作為主語。",
+                vocabulary: "qui - 關係代名詞（主語）"
             },
             {
-                type: "input",
-                question: "完成複雜句型",
-                answer: "est aimé",
-                frenchText: "est aimé",
-                hint: "être + 過去分詞",
-                explanation: "法文被動語態使用 être + 過去分詞。",
+                type: "multiple",
+                question: "關係代名詞 que 的用法？",
+                options: ["作為直接賓語", "作為主語", "取代 de", "表示地點"],
+                answer: "作為直接賓語",
+                frenchText: "que",
+                explanation: "Que 在從句中作為直接賓語。",
+                vocabulary: "que - 關係代名詞（賓語）"
+            },
+            {
+                type: "multiple",
+                question: "關係代名詞 dont 的用法？",
+                options: ["取代 de + 名詞", "作為主語", "作為直接賓語", "表示時間"],
+                answer: "取代 de + 名詞",
+                frenchText: "dont",
+                explanation: "Dont 取代 de + 名詞，如 parler de。",
+                vocabulary: "dont - 關係代名詞（de）"
+            },
+            {
+                type: "multiple",
+                question: "關係代名詞 où 的用法？",
+                options: ["表示地點或時間", "作為主語", "取代 de", "作為賓語"],
+                answer: "表示地點或時間",
+                frenchText: "où",
+                explanation: "Où 表示地點或時間。",
+                vocabulary: "où - 關係代名詞（地點/時間）"
+            },
+            {
+                type: "sorting",
+                question: "【排序題】排列被動語態：「他被愛」",
+                words: ["est", "aimé", "Il"],
+                answer: "Il est aimé",
+                frenchText: "Il est aimé",
+                explanation: "被動語態：être + 過去分詞。",
                 vocabulary: "Voix passive - 被動語態"
             },
             {
                 type: "multiple",
-                question: "虛擬語氣的觸發詞包括？",
+                question: "虛擬語氣的觸發詞？",
                 options: ["il faut que", "je pense que", "je sais que", "il est clair que"],
                 answer: "il faut que",
                 frenchText: "il faut que",
@@ -1058,27 +1661,85 @@ function generateAdvancedTemplate(day) {
                 vocabulary: "Il faut que - 必須（接虛擬語氣）"
             },
             {
-                type: "input",
-                question: "用法文表達複雜概念",
-                answer: "néanmoins",
-                frenchText: "néanmoins",
-                hint: "表示「然而、儘管如此」",
-                explanation: "Néanmoins 是書面語中的「然而」，比 mais 更正式。",
-                vocabulary: "néanmoins - 然而、儘管如此"
+                type: "multiple",
+                question: "哪個不是虛擬語氣觸發詞？",
+                options: ["je sais que", "bien que", "pour que", "avant que"],
+                answer: "je sais que",
+                frenchText: "je sais que",
+                explanation: "Je sais que 後面用直陳式，不用虛擬語氣。",
+                vocabulary: "je sais que - 我知道（直陳式）"
             },
             {
                 type: "multiple",
-                question: `在${currentTheme.topic}的語境中，如何表達觀點？`,
-                options: [
-                    "À mon sens, ...",
-                    "Je pense que...",
-                    "Peut-être...",
-                    "Oui..."
-                ],
-                answer: "À mon sens, ...",
+                question: "「然而」的正式連接詞？",
+                options: ["cependant", "mais", "et", "ou"],
+                answer: "cependant",
+                frenchText: "cependant",
+                explanation: "Cependant 比 mais 更正式。",
+                vocabulary: "cependant - 然而"
+            },
+            {
+                type: "multiple",
+                question: "「儘管如此」的高級詞彙？",
+                options: ["néanmoins", "mais", "et", "donc"],
+                answer: "néanmoins",
+                frenchText: "néanmoins",
+                explanation: "Néanmoins 是書面語中的高級表達。",
+                vocabulary: "néanmoins - 儘管如此"
+            },
+            {
+                type: "multiple",
+                question: "「依我之見」的正式表達？",
+                options: ["À mon sens", "Je pense", "Peut-être", "Oui"],
+                answer: "À mon sens",
                 frenchText: "À mon sens",
-                explanation: "'À mon sens'（依我之見）是高級正式的觀點表達方式。",
+                explanation: "À mon sens 是高級正式的觀點表達。",
                 vocabulary: "à mon sens - 依我之見"
+            },
+            {
+                type: "multiple",
+                question: "「事實上」的法文？",
+                options: ["En effet", "Mais", "Et", "Ou"],
+                answer: "En effet",
+                frenchText: "En effet",
+                explanation: "En effet 表示「事實上」。",
+                vocabulary: "en effet - 事實上"
+            },
+            {
+                type: "multiple",
+                question: "「此外」的正式連接詞？",
+                options: ["Par ailleurs", "Et", "Mais", "Donc"],
+                answer: "Par ailleurs",
+                frenchText: "Par ailleurs",
+                explanation: "Par ailleurs 表示「此外、另外」。",
+                vocabulary: "par ailleurs - 此外"
+            },
+            {
+                type: "multiple",
+                question: "「首先」的正式說法？",
+                options: ["Tout d'abord", "D'abord", "Après", "Enfin"],
+                answer: "Tout d'abord",
+                frenchText: "Tout d'abord",
+                explanation: "Tout d'abord 是「首先」的正式表達。",
+                vocabulary: "tout d'abord - 首先"
+            },
+            {
+                type: "multiple",
+                question: "「最後」的正式連接詞？",
+                options: ["Finalement", "Enfin", "Après", "Puis"],
+                answer: "Finalement",
+                frenchText: "Finalement",
+                explanation: "Finalement 表示「最後、終於」。",
+                vocabulary: "finalement - 最後"
+            },
+            {
+                type: "sorting",
+                question: "【排序題】排列虛擬語氣句：「必須你來」",
+                words: ["que", "tu", "Il faut", "viennes"],
+                answer: "Il faut que tu viennes",
+                frenchText: "Il faut que tu viennes",
+                explanation: "Il faut que + 虛擬語氣。",
+                vocabulary: "Il faut que - 必須"
             }
         ],
         diary: `第${day}天，${currentTheme.topic}的學習讓我的法文達到 ${currentTheme.level} 水準。距離母語者又近了一步！`
@@ -1087,13 +1748,59 @@ function generateAdvancedTemplate(day) {
 
 // 生成簡單問題
 function generateSimpleQuestions(vocab) {
-    return vocab.slice(0, 3).map((word, index) => ({
-        type: index % 2 === 0 ? "multiple" : "input",
-        question: `這個法文單字是什麼意思：${word}？`,
-        options: index % 2 === 0 ? [word, "autre", "mot", "chose"] : undefined,
-        answer: word,
-        hint: `提示：${word}`,
-        explanation: `${word} 是今天學習的重點單字之一。`,
-        vocabulary: `${word} - （單字）`
-    }));
+    const questions = [];
+    
+    // 對每個單字生成多種題型
+    vocab.forEach((word, index) => {
+        // 題型1: 認識單字
+        questions.push({
+            type: "multiple",
+            question: `這個法文單字是什麼意思：${word}？`,
+            options: [word, "autre", "mot", "chose"],
+            answer: word,
+            frenchText: word,
+            explanation: `${word} 是今天學習的重點單字之一。`,
+            vocabulary: `${word} - （單字）`
+        });
+        
+        // 題型2: 拼寫單字（排序題）
+        if (word.length >= 3) {
+            const letters = word.split('');
+            questions.push({
+                type: "sorting",
+                question: `【排序題】將下列字母排成正確的法文單字`,
+                words: [...letters].sort(() => Math.random() - 0.5),
+                answer: word,
+                frenchText: word,
+                explanation: `${word} 是今天學習的重點單字之一。`,
+                vocabulary: `${word} - （單字）`
+            });
+        }
+        
+        // 題型3: 聽力辨識（選擇題）
+        questions.push({
+            type: "multiple",
+            question: `哪個單字是 ${word}？`,
+            options: [word, "bonjour", "merci", "oui"],
+            answer: word,
+            frenchText: word,
+            explanation: `${word} 的發音和拼寫要牢記。`,
+            vocabulary: `${word} - （單字）`
+        });
+    });
+    
+    // 確保至少15題
+    while (questions.length < 15) {
+        questions.push({
+            type: "multiple",
+            question: `複習：以下哪個是今天學的單字？`,
+            options: vocab.slice(0, 4),
+            answer: vocab[0],
+            frenchText: vocab[0],
+            explanation: `今天學習了這些單字：${vocab.join(', ')}。`,
+            vocabulary: `${vocab[0]} - （單字）`
+        });
+    }
+    
+    return questions.slice(0, 15);
 }
