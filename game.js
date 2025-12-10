@@ -934,9 +934,12 @@ class FrenchDiaryGame {
         const listContainer = document.getElementById('diaryList');
         listContainer.innerHTML = '';
         
-        for (let i = 1; i <= Math.min(this.currentDay + 2, 365); i++) {
+        // 計算可解鎖的最大天數：已完成天數 + 1
+        const maxUnlockedDay = this.completedDays.length + 1;
+        
+        for (let i = 1; i <= Math.min(maxUnlockedDay + 2, 365); i++) {
             const completed = this.completedDays.find(d => d.day === i);
-            const isLocked = i > this.currentDay;
+            const isLocked = i > maxUnlockedDay;
             const isCurrent = i === this.currentDay;
             
             const item = document.createElement('div');
