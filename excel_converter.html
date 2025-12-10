@@ -227,6 +227,23 @@
         </div>
         
         <div class="content">
+            <!-- 當前練習狀態 -->
+            <div class="section" id="currentPracticeSection" style="display: none;">
+                <div class="info-box" style="background: #fff3cd; border-left-color: #ffc107; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <strong>📝 目前有待練習的題目：</strong>
+                        <span id="currentPracticeCount">0 題</span>
+                    </div>
+                    <div>
+                        <button class="btn-secondary" onclick="clearDailyPractice()" style="margin-right: 10px;">
+                            🗑️ 清空練習
+                        </button>
+                        <a href="index.html" class="btn-success" style="text-decoration: none; display: inline-block;">
+                            ▶️ 開始練習
+                        </a>
+                    </div>
+                </div>
+            </div>
             <!-- 步驟 1: 選擇格式 -->
             <div class="section">
                 <div class="section-title">
@@ -292,14 +309,29 @@
             <div class="section">
                 <div class="section-title">
                     <span class="step-number">4</span>
-                    <span>複製結果到 custom_questions.js</span>
+                    <span>加入題庫</span>
                 </div>
-                <div class="result-box" id="resultBox">轉換結果會顯示在這裡...</div>
+                <div class="info-box" style="background: #e8f4fd; border-left-color: #2196F3;">
+                    💡 <strong>兩種方式任選:</strong><br>
+                    <strong>方式1（推薦）:</strong> 點擊「自動加入每日練習」→ 題目會儲存在瀏覽器中 → 打開主遊戲即可練習 → 練習完可清空<br>
+                    <strong>方式2（永久保存）:</strong> 點擊「複製代碼」→ 手動貼到 custom_questions.js → 題目會永久保存
+                </div>
                 <div class="button-group">
-                    <button class="btn-success" onclick="copyResult()">📋 複製結果</button>
-                    <button class="btn-primary" onclick="downloadResult()">💾 下載 .js 檔案</button>
+                    <button class="btn-success" onclick="addToDailyPractice()" style="font-size: 1.1em; padding: 15px 30px;">
+                        ⚡ 自動加入每日練習（推薦）
+                    </button>
+                    <button class="btn-secondary" onclick="copyResult()">📋 複製代碼（手動貼上）</button>
+                    <button class="btn-secondary" onclick="downloadResult()">💾 下載 .js 檔案</button>
                 </div>
                 <div class="success-box" id="successBox" style="display:none;">✅ 已複製到剪貼簿!</div>
+                
+                <!-- 轉換結果 -->
+                <details style="margin-top: 20px;">
+                    <summary style="cursor: pointer; color: #667eea; font-weight: bold; margin-bottom: 10px;">
+                        📄 查看轉換後的代碼（選用）
+                    </summary>
+                    <div class="result-box" id="resultBox">轉換結果會顯示在這裡...</div>
+                </details>
             </div>
         </div>
     </div>
@@ -577,6 +609,122 @@
             showStatus('🗑️ 已清空', 'success');
         }
 
+        // 新增: 自動加入每日練習
+        function addToDailyPractice() {
+            const input = document.getElementById('inputText').value.trim();
+            if (!input) {
+                showStatus('❌ 請先貼上資料!', 'error');
+                return;
+            }
+
+            // 先轉換成題目
+            const questions = [];
+            let skipped = 0;
+
+            if (currentFormat === 'notebook') {
+                const lines = input.split('\n').map(l => l.trim()).filter(l => l);
+                
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i];
+                    if (line.match(/[（(]\s*[=＝]\s*.+[）)]/)) continue;
+                    
+                    let french = line.replace(/^\d+\.\s*/, '').trim();
+                    if (!french) {
+                        skipped++;
+                        continue;
+                    }
+                    
+                    const nextLine = i + 1 < lines.length ? lines[i + 1] : '';
+                    const match = nextLine.match(/[（(]\s*[=＝]\s*(.+)[）)]/);
+                    
+                    if (match) {
+                        const chinese = match[1].trim();
+                        questions.push(createSimpleQuestion(french, chinese));
+                        i++;
+                    } else {
+                        skipped++;
+                    }
+                }
+            } else {
+                // Excel 格式處理
+                const lines = input.split('\n').map(l => l.trim()).filter(l => l);
+                
+                lines.forEach(line => {
+                    let parts;
+                    if (currentFormat === 'tab') {
+                        parts = line.split('\t');
+                    } else if (currentFormat === 'pipe') {
+                        parts = line.split('|');
+                    } else {
+                        parts = line.split(',');
+                    }
+                    
+                    if (parts.length >= 2) {
+                        const chinese = parts[0].trim();
+                        const french = parts[1].trim();
+                        if (chinese && french) {
+                            questions.push(createSimpleQuestion(french, chinese));
+                        }
+                    }
+                });
+            }
+
+            if (questions.length === 0) {
+                showStatus('❌ 沒有成功轉換任何題目!', 'error');
+                return;
+            }
+
+            // 儲存到 localStorage
+            try {
+                // 格式化為正確的結構
+                const formattedQuestions = questions.map(q => ({
+                    type: "multiple",
+                    question: q.question,
+                    options: q.options,
+                    answer: q.options[q.answer], // 轉換索引為實際答案
+                    frenchText: q.frenchText,
+                    explanation: q.explanation,
+                    vocabulary: `${q.vocabulary[0].french} - ${q.vocabulary[0].chinese}`
+                }));
+
+                localStorage.setItem('dailyPracticeQuestions', JSON.stringify(formattedQuestions));
+                
+                // 顯示成功訊息並提供連結
+                const successMsg = document.getElementById('successBox');
+                successMsg.innerHTML = `
+                    ✅ 已成功加入 ${questions.length} 題到每日練習！<br>
+                    <a href="index.html" style="color: #667eea; text-decoration: underline; font-weight: bold;">
+                        → 點此打開主遊戲開始練習
+                    </a>
+                `;
+                successMsg.style.display = 'block';
+                successMsg.style.padding = '20px';
+                successMsg.style.fontSize = '1.1em';
+                
+                setTimeout(() => {
+                    successMsg.style.display = 'none';
+                }, 10000);
+
+            } catch (error) {
+                showStatus('❌ 儲存失敗: ' + error.message, 'error');
+            }
+        }
+
+        // 輔助函數: 創建簡單題目
+        function createSimpleQuestion(french, chinese) {
+            return {
+                type: "multiple",
+                question: `「${chinese}」的法文是?`,
+                options: generateOptions(french),
+                answer: 0,
+                frenchText: french,
+                explanation: `${french} 是「${chinese}」的法文表達。`,
+                vocabulary: [
+                    { french: french.toLowerCase(), chinese: chinese, pronunciation: "" }
+                ]
+            };
+        }
+
         // 插入分隔符
         function insertSeparator() {
             const inputField = document.getElementById('inputText');
@@ -600,6 +748,37 @@
             inputField.focus();
         }
 
+        // 清空每日練習
+        function clearDailyPractice() {
+            if (confirm('確定要清空所有練習題目嗎？此操作無法復原。')) {
+                localStorage.removeItem('dailyPracticeQuestions');
+                showStatus('✅ 已清空所有練習題目！', 'success');
+                checkCurrentPractice();
+            }
+        }
+
+        // 檢查當前練習狀態
+        function checkCurrentPractice() {
+            const section = document.getElementById('currentPracticeSection');
+            const countElement = document.getElementById('currentPracticeCount');
+            const savedQuestions = localStorage.getItem('dailyPracticeQuestions');
+            
+            if (savedQuestions) {
+                try {
+                    const questions = JSON.parse(savedQuestions);
+                    if (questions.length > 0) {
+                        countElement.textContent = `${questions.length} 題`;
+                        section.style.display = 'block';
+                        return;
+                    }
+                } catch (e) {
+                    console.error('讀取練習失敗:', e);
+                }
+            }
+            
+            section.style.display = 'none';
+        }
+
         // 防止 Tab 鍵跳出輸入框
         document.addEventListener('DOMContentLoaded', () => {
             const inputText = document.getElementById('inputText');
@@ -609,6 +788,9 @@
                     insertSeparator();
                 }
             });
+            
+            // 檢查當前練習狀態
+            checkCurrentPractice();
         });
     </script>
 </body>
