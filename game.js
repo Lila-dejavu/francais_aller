@@ -134,11 +134,38 @@ class FrenchDiaryGame {
     initializeUI() {
         this.updateStats();
         this.renderDiaryList();
+        this.initializeCustomPhrases();
         
         // 如果有進度，顯示繼續按鈕
         if (this.completedDays.length > 0) {
             document.getElementById('continueBtn').style.display = 'block';
         }
+    }
+
+    // 初始化自訂句型按鈕
+    initializeCustomPhrases() {
+        const customPhrasesBtn = document.getElementById('customPhrasesBtn');
+        const hasCustomQuestions = typeof window.customQuestions !== 'undefined' && 
+                                   window.customQuestions.length > 0;
+        
+        if (hasCustomQuestions) {
+            customPhrasesBtn.style.display = 'block';
+            customPhrasesBtn.querySelector('.phrases-button').addEventListener('click', () => {
+                this.startCustomPhrases();
+            });
+        }
+    }
+
+    // 開始自訂句型練習
+    startCustomPhrases() {
+        this.currentDay = 'custom';
+        this.currentDayData = window.getCustomPhrasesContent();
+        this.currentQuestionIndex = 0;
+        this.correctAnswers = 0;
+        this.questionsAnswered = 0;
+        
+        this.showGameArea();
+        this.startDay();
     }
 
     // 綁定事件
@@ -276,7 +303,8 @@ class FrenchDiaryGame {
     // 更新關卡標題
     updateLevelHeader() {
         const data = this.currentDayData;
-        document.getElementById('levelBadge').textContent = `第${this.currentDay}天`;
+        const badge = this.currentDay === 'custom' ? '必學句型' : `第${this.currentDay}天`;
+        document.getElementById('levelBadge').textContent = badge;
         document.getElementById('levelTitle').textContent = data.title;
         
         const difficulty = this.getDifficulty(this.currentDay);
@@ -762,18 +790,22 @@ class FrenchDiaryGame {
         }
         
         const stars = this.calculateStars();
-        this.totalStars += stars;
         
-        // 記錄完成
-        if (!this.completedDays.find(d => d.day === this.currentDay)) {
-            this.completedDays.push({
-                day: this.currentDay,
-                stars: stars,
-                score: this.correctAnswers,
-                total: this.currentDayData.questions.length,
-                date: new Date().toISOString(),
-                diary: this.generateDiary()
-            });
+        // 只有正常天數才累加星星和記錄完成
+        if (this.currentDay !== 'custom') {
+            this.totalStars += stars;
+            
+            // 記錄完成
+            if (!this.completedDays.find(d => d.day === this.currentDay)) {
+                this.completedDays.push({
+                    day: this.currentDay,
+                    stars: stars,
+                    score: this.correctAnswers,
+                    total: this.currentDayData.questions.length,
+                    date: new Date().toISOString(),
+                    diary: this.generateDiary()
+                });
+            }
         }
         
         // 保存當前的正確率數據，用於顯示
@@ -913,7 +945,8 @@ class FrenchDiaryGame {
 
     // 更新統計
     updateStats() {
-        document.getElementById('currentDay').textContent = this.currentDay;
+        const dayText = this.currentDay === 'custom' ? '必學' : this.currentDay;
+        document.getElementById('currentDay').textContent = dayText;
         document.getElementById('completedDays').textContent = this.completedDays.length;
         document.getElementById('totalStars').textContent = this.totalStars;
     }

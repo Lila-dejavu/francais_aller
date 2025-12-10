@@ -1,28 +1,8 @@
 // 365法文日記 - 內容資料庫
 // 包含365天的法文學習內容，從簡單到困難
 
-// 載入自訂題庫 (如果存在)
-let customQuestions = [];
-try {
-    // 嘗試從 custom_questions.js 載入
-    if (typeof window.customQuestions !== 'undefined') {
-        customQuestions = window.customQuestions;
-    }
-} catch(e) {
-    console.log('未載入自訂題庫');
-}
-
 // 內容生成器
 window.getDayContent = function(day) {
-    // 第 366 天：自訂題庫練習
-    if (day === 366 && customQuestions.length > 0) {
-        return {
-            title: "自訂題庫練習",
-            story: "這裡是你自己新增的法文句子練習!",
-            questions: customQuestions
-        };
-    }
-    
     // 根據天數返回相應難度的內容
     if (day <= 100) {
         return getBeginnerContent(day);
@@ -31,6 +11,16 @@ window.getDayContent = function(day) {
     } else {
         return getAdvancedContent(day);
     }
+};
+
+// 取得自訂題庫內容
+window.getCustomPhrasesContent = function() {
+    const customQuestions = window.customQuestions || [];
+    return {
+        title: "必學句型",
+        story: "這裡是你自己新增的法文句子練習!",
+        questions: customQuestions
+    };
 };
 
 // 初級內容 (第1-100天)

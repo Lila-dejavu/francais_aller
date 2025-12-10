@@ -105,6 +105,56 @@ body {
     color: var(--primary-color);
 }
 
+/* 自訂句型按鈕 */
+.custom-phrases-btn {
+    margin-bottom: 15px;
+}
+
+.phrases-button {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3);
+}
+
+.phrases-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(245, 87, 108, 0.4);
+}
+
+.phrases-icon {
+    font-size: 1.8em;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.phrases-text {
+    text-align: left;
+    color: white;
+}
+
+.phrases-text strong {
+    display: block;
+    font-size: 1.1em;
+    margin-bottom: 3px;
+}
+
+.phrases-text small {
+    opacity: 0.9;
+    font-size: 0.85em;
+}
+
 /* 日記篩選 */
 .diary-filter {
     display: flex;

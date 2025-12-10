@@ -191,6 +191,32 @@
             font-size: 0.9em;
             opacity: 0.8;
         }
+        .input-helper {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .input-helper small {
+            color: #666;
+            flex: 1;
+            min-width: 200px;
+        }
+        .separator-btn {
+            padding: 8px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .separator-btn:hover {
+            background: #5568d3;
+            transform: translateY(-1px);
+        }
     </style>
 </head>
 <body>
@@ -238,6 +264,10 @@
 晚安	Bonne nuit</code>
                 </div>
                 <textarea id="inputText" placeholder="在這裡貼上從 Excel 複製的內容...&#10;&#10;範例:&#10;我餓了	J'ai faim&#10;我渴了	J'ai soif&#10;我累了	Je suis fatigué"></textarea>
+                <div class="input-helper">
+                    <small>💡 提示: 直接從 Excel 複製貼上即可,或手動輸入時可點擊下方按鈕插入分隔符</small>
+                    <button class="separator-btn" onclick="insertSeparator()">➜ 插入分隔符</button>
+                </div>
             </div>
 
             <!-- 步驟 3: 轉換 -->
@@ -441,6 +471,40 @@
             document.getElementById('resultBox').textContent = '轉換結果會顯示在這裡...';
             showStatus('🗑️ 已清空', 'success');
         }
+
+        // 插入分隔符
+        function insertSeparator() {
+            const inputField = document.getElementById('inputText');
+            const cursorPos = inputField.selectionStart;
+            const currentValue = inputField.value;
+            
+            // 根據當前選擇的格式決定分隔符
+            let separator = '\t';
+            if (currentFormat === 'pipe') separator = '|';
+            if (currentFormat === 'comma') separator = ',';
+            
+            // 在游標位置插入分隔符
+            const newValue = currentValue.substring(0, cursorPos) + 
+                            separator + 
+                            currentValue.substring(inputField.selectionEnd);
+            
+            inputField.value = newValue;
+            
+            // 將游標移到分隔符之後
+            inputField.selectionStart = inputField.selectionEnd = cursorPos + separator.length;
+            inputField.focus();
+        }
+
+        // 防止 Tab 鍵跳出輸入框
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputText = document.getElementById('inputText');
+            inputText.addEventListener('keydown', (e) => {
+                if (e.key === 'Tab') {
+                    e.preventDefault();
+                    insertSeparator();
+                }
+            });
+        });
     </script>
 </body>
 </html>

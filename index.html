@@ -14,14 +14,14 @@
             <p class="subtitle">每天一個冒險，學習法文不間斷</p>
             <div class="header-stats">
                 <div class="stat">
-                    <span class="stat-label">第</span>
-                    <span class="stat-value" id="currentDay">1</span>
-                    <span class="stat-label">天</span>
+                    <span class="stat-label">完成</span>
+                    <span class="stat-value" id="completedDays">0</span>
+                    <span class="stat-label" id="totalDaysLabel">/365天</span>
                 </div>
                 <div class="stat">
                     <span class="stat-label">完成</span>
                     <span class="stat-value" id="completedDays">0</span>
-                    <span class="stat-label">/365天</span>
+                    <span class="stat-label" id="totalDaysLabel">/365天</span>
                 </div>
                 <div class="stat">
                     <span class="stat-label">⭐</span>
@@ -35,6 +35,18 @@
             <!-- 左側：日記列表 -->
             <aside class="diary-sidebar">
                 <h2>📚 我的日記本</h2>
+                
+                <!-- 自訂句型按鈕 -->
+                <div class="custom-phrases-btn" id="customPhrasesBtn" style="display: none;">
+                    <button class="phrases-button">
+                        <span class="phrases-icon">⭐</span>
+                        <div class="phrases-text">
+                            <strong>必學句型</strong>
+                            <small>自訂題庫練習</small>
+                        </div>
+                    </button>
+                </div>
+                
                 <div class="diary-filter">
                     <button class="filter-btn active" data-filter="all">全部</button>
                     <button class="filter-btn" data-filter="completed">已完成</button>
