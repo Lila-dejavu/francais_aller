@@ -1,25 +1,36 @@
-// 自訂題庫 - 在這裡新增你自己的中法文句子
-// Custom Question Bank - Add your own Chinese-French sentences here
-
-// ⚡ 最簡單的新增方式：
-// 1. 打開 excel_converter.html
-// 2. 貼上你的句子 → 點「轉換」
-// 3. 點「📋 自動複製」
-// 4. 回到這個檔案，在陣列最後按 Ctrl+V 貼上 → 完成！
+// ================================================================
+// 📚 自訂題庫主檔案 - Custom Questions Main File
+// ================================================================
 //
-// 💡 提示：貼上位置在最後一個 }, 之後、]; 之前
+// 🎯 新架構說明：
+// 所有題目已經按主題分類到 custom_questions/ 資料夾中
+// 這個檔案會自動載入所有分類的題目
+//
+// 📁 題庫分類：
+// - basic_examples.js  (基礎範例)
+// - intentions.js      (意願表達)
+// - effects.js         (影響與改變)
+// - laziness.js        (懶散表達)
+// - colloquial.js      (口語俚語)
+// - emotions.js        (情感與反應)
+//
+// ⚡ 新增題目方式：
+// 1. 選擇適合的分類檔案（或創建新分類）
+// 2. 在該檔案中新增題目
+// 3. 重新整理網頁即可看到新題目
+//
+// 💡 如果要創建新分類：
+// 1. 在 custom_questions/ 資料夾中創建新檔案（例如：new_category.js）
+// 2. 參考其他檔案的格式
+// 3. 在下方的 customQuestions 陣列中引入
+// ================================================================
+
+// 注意：以下檔案會在 index.html 中載入
+// 這裡只是整合所有題目
 
 const customQuestions = [
-    // 範例 1: 選擇題
-    {
-        type: "multiple",
-        question: "「早安」的法文是?",
-        options: ["Bonjour", "Bonsoir", "Bonne nuit", "Salut"],
-        answer: "Bonjour",
-        frenchText: "Bonjour",
-        explanation: "Bonjour 用於早上到傍晚的問候。",
-        vocabulary: "Bonjour - 早安/你好 (崩住)"
-    },
+    // 這個陣列會由各個分類檔案填充
+    // 請在 custom_questions/ 資料夾中編輯各個分類檔案
 
     // 範例 2: 排序題(拖曳排列)
     {
