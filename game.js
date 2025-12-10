@@ -164,8 +164,14 @@ class FrenchDiaryGame {
         this.correctAnswers = 0;
         this.questionsAnswered = 0;
         
-        this.showGameArea();
-        this.startDay();
+        // 切換到遊戲畫面
+        document.getElementById('welcomeScreen').style.display = 'none';
+        document.getElementById('gameScreen').style.display = 'block';
+        document.getElementById('levelComplete').style.display = 'none';
+
+        this.updateLevelHeader();
+        this.showStory();
+        this.updateStats();
     }
 
     // 綁定事件
