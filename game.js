@@ -366,16 +366,17 @@ class FrenchDiaryGame {
             // 只有正確答案才顯示播放按鈕
             const isCorrectAnswer = option === question.answer;
             
-            // 檢查是否為法文（正確答案且包含法文字母或有frenchText）
-            const isFrench = isCorrectAnswer && (
-                /[àâäéèêëïîôùûüÿæœç]/i.test(option) || 
-                question.frenchText
-            );
+            // 檢查是否需要播放按鈕：
+            // 1. 必須是正確答案
+            // 2. 必須有 frenchText 屬性（表示這題有法文內容需要發音）
+            const shouldShowVoiceButton = isCorrectAnswer && question.frenchText;
             
-            if (isFrench) {
+            if (shouldShowVoiceButton) {
+                // 使用 frenchText 或 answer 作為發音內容
+                const textToSpeak = question.frenchText || option;
                 btn.innerHTML = `
                     <span class="option-text">${option}</span>
-                    <button class="voice-btn" onclick="event.stopPropagation(); window.game.voiceManager.speak('${option.replace(/'/g, "\\'")}')">🔊</button>
+                    <button class="voice-btn" onclick="event.stopPropagation(); window.game.voiceManager.speak('${textToSpeak.replace(/'/g, "\\'")}')">🔊</button>
                 `;
             } else {
                 btn.textContent = option;
