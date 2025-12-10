@@ -305,33 +305,32 @@
                 <div class="info-box" id="statusBox" style="display:none;"></div>
             </div>
 
-            <!-- 步驟 4: 結果 -->
+            <!-- 步驟 4: 複製加入題庫 -->
             <div class="section">
                 <div class="section-title">
                     <span class="step-number">4</span>
-                    <span>加入題庫</span>
+                    <span>複製加入題庫</span>
                 </div>
                 <div class="info-box" style="background: #e8f4fd; border-left-color: #2196F3;">
-                    💡 <strong>兩種方式任選:</strong><br>
-                    <strong>方式1（推薦）:</strong> 點擊「自動加入每日練習」→ 題目會儲存在瀏覽器中 → 打開主遊戲即可練習 → 練習完可清空<br>
-                    <strong>方式2（永久保存）:</strong> 點擊「複製代碼」→ 手動貼到 custom_questions.js → 題目會永久保存
+                    💡 <strong>超簡單！只要 3 步驟：</strong><br>
+                    ① 點擊下方「📋 自動複製」按鈕<br>
+                    ② 打開 <code>custom_questions.js</code> 檔案<br>
+                    ③ 在陣列最後一個題目下方，按 <kbd>Ctrl+V</kbd> 貼上 → 完成！
                 </div>
-                <div class="button-group">
-                    <button class="btn-success" onclick="addToDailyPractice()" style="font-size: 1.1em; padding: 15px 30px;">
-                        ⚡ 自動加入每日練習（推薦）
-                    </button>
-                    <button class="btn-secondary" onclick="copyResult()">📋 複製代碼（手動貼上）</button>
-                    <button class="btn-secondary" onclick="downloadResult()">💾 下載 .js 檔案</button>
-                </div>
-                <div class="success-box" id="successBox" style="display:none;">✅ 已複製到剪貼簿!</div>
                 
-                <!-- 轉換結果 -->
-                <details style="margin-top: 20px;">
-                    <summary style="cursor: pointer; color: #667eea; font-weight: bold; margin-bottom: 10px;">
-                        📄 查看轉換後的代碼（選用）
-                    </summary>
-                    <div class="result-box" id="resultBox">轉換結果會顯示在這裡...</div>
-                </details>
+                <div class="result-box" id="resultBox">轉換結果會顯示在這裡...</div>
+                
+                <div class="button-group">
+                    <button class="btn-success" onclick="copyResult()" style="font-size: 1.2em; padding: 18px 35px;">
+                        📋 自動複製（推薦）
+                    </button>
+                    <button class="btn-secondary" onclick="openCustomQuestionsFile()">📂 打開 custom_questions.js</button>
+                    <button class="btn-secondary" onclick="downloadResult()">💾 下載備份</button>
+                </div>
+                <div class="success-box" id="successBox" style="display:none;">
+                    ✅ 已複製到剪貼簿！<br>
+                    <strong>下一步：</strong>打開 custom_questions.js，在陣列最後按 Ctrl+V 貼上即可
+                </div>
             </div>
         </div>
     </div>
@@ -534,20 +533,17 @@
         }
 
         function generateCode(questions) {
-            let code = '// 從 Excel 轉換的題目\n// 請複製以下內容到 custom_questions.js 的 customQuestions 陣列中\n\n';
+            let code = '';
             
             questions.forEach((q, index) => {
-                code += `    // 題目 ${index + 1}\n`;
                 code += `    {\n`;
-                code += `        type: "${q.type}",\n`;
+                code += `        type: "multiple",\n`;
                 code += `        question: "${q.question}",\n`;
                 code += `        options: ${JSON.stringify(q.options)},\n`;
-                code += `        answer: ${q.answer},\n`;
+                code += `        answer: "${q.options[q.answer]}",\n`;
                 code += `        frenchText: "${q.frenchText}",\n`;
                 code += `        explanation: "${q.explanation}",\n`;
-                code += `        vocabulary: [\n`;
-                code += `            { french: "${q.vocabulary[0].french}", chinese: "${q.vocabulary[0].chinese}", pronunciation: "${q.vocabulary[0].pronunciation}" }\n`;
-                code += `        ]\n`;
+                code += `        vocabulary: "${q.vocabulary[0].french} - ${q.vocabulary[0].chinese}"\n`;
                 code += `    },\n\n`;
             });
             
