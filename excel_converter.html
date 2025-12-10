@@ -234,7 +234,11 @@
                     <span>選擇 Excel 格式</span>
                 </div>
                 <div class="format-selector">
-                    <div class="format-option active" onclick="selectFormat('tab')">
+                    <div class="format-option active" onclick="selectFormat('notebook')">
+                        <h3>📓 筆記本格式</h3>
+                        <p>法文<br>(＝中文)</p>
+                    </div>
+                    <div class="format-option" onclick="selectFormat('tab')">
                         <h3>🔖 Tab 分隔</h3>
                         <p>中文[Tab]法文</p>
                     </div>
@@ -255,15 +259,16 @@
                     <span class="step-number">2</span>
                     <span>從 Excel 複製貼上句子</span>
                 </div>
-                <div class="example-box">
-                    <strong>Excel 格式範例:</strong>
-                    <code>中文句子	法文句子
-我餓了	J'ai faim
-我渴了	J'ai soif
-我累了	Je suis fatigué
-晚安	Bonne nuit</code>
+                <div class="example-box" id="exampleBox">
+                    <strong>筆記本格式範例:</strong>
+                    <code>Ça va vraiment m'aider.
+( ＝ 這真的有幫到我。)
+J'ai faim.
+( ＝ 我餓了。)
+Merci beaucoup.
+( ＝ 非常感謝。)</code>
                 </div>
-                <textarea id="inputText" placeholder="在這裡貼上從 Excel 複製的內容...&#10;&#10;範例:&#10;我餓了	J'ai faim&#10;我渴了	J'ai soif&#10;我累了	Je suis fatigué"></textarea>
+                <textarea id="inputText" placeholder="在這裡貼上你的筆記內容...&#10;&#10;範例:&#10;Ça va vraiment m'aider.&#10;( ＝ 這真的有幫到我。)&#10;J'ai faim.&#10;( ＝ 我餓了。)"></textarea>
                 <div class="input-helper">
                     <small>💡 提示: 直接從 Excel 複製貼上即可,或手動輸入時可點擊下方按鈕插入分隔符</small>
                     <button class="separator-btn" onclick="insertSeparator()">➜ 插入分隔符</button>
@@ -300,7 +305,7 @@
     </div>
 
     <script>
-        let currentFormat = 'tab';
+        let currentFormat = 'notebook';
         
         function selectFormat(format) {
             currentFormat = format;
@@ -308,72 +313,139 @@
                 el.classList.remove('active');
             });
             event.target.closest('.format-option').classList.add('active');
+            
+            // 更新範例
+            const exampleBox = document.getElementById('exampleBox');
+            const inputText = document.getElementById('inputText');
+            
+            if (format === 'notebook') {
+                exampleBox.innerHTML = `<strong>筆記本格式範例:</strong>
+                    <code>Ça va vraiment m'aider.
+( ＝ 這真的有幫到我。)
+J'ai faim.
+( ＝ 我餓了。)
+Merci beaucoup.
+( ＝ 非常感謝。)</code>`;
+                inputText.placeholder = "在這裡貼上你的筆記內容...\n\n範例:\nÇa va vraiment m'aider.\n( ＝ 這真的有幫到我。)\nJ'ai faim.\n( ＝ 我餓了。)";
+            } else {
+                exampleBox.innerHTML = `<strong>Excel 格式範例:</strong>
+                    <code>中文句子	法文句子
+我餓了	J'ai faim
+我渴了	J'ai soif
+我累了	Je suis fatigué
+晚安	Bonne nuit</code>`;
+                inputText.placeholder = "在這裡貼上從 Excel 複製的內容...\n\n範例:\n我餓了	J'ai faim\n我渴了	J'ai soif\n我累了	Je suis fatigué";
+            }
         }
 
         function convertToQuestions() {
             const input = document.getElementById('inputText').value.trim();
             if (!input) {
-                showStatus('❌ 請先貼上 Excel 資料!', 'error');
+                showStatus('❌ 請先貼上資料!', 'error');
                 return;
             }
 
-            const lines = input.split('\n').filter(line => line.trim());
             const questions = [];
             let skipped = 0;
-
-            // 選擇分隔符
-            let separator = '\t';
-            if (currentFormat === 'pipe') separator = '|';
-            if (currentFormat === 'comma') separator = ',';
-
             const skippedLines = []; // 記錄被跳過的行
 
-            lines.forEach((line, index) => {
-                const parts = line.split(separator).map(p => p.trim());
+            // 筆記本格式處理
+            if (currentFormat === 'notebook') {
+                const lines = input.split('\n').map(l => l.trim()).filter(l => l);
                 
-                if (parts.length < 2) {
-                    skipped++;
-                    skippedLines.push(`第 ${index + 1} 行：找不到分隔符 "${currentFormat === 'tab' ? 'Tab' : separator}"`);
-                    return;
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i];
+                    
+                    // 檢查是否為中文翻譯行 (包含括號和等號)
+                    if (line.match(/[（(]\s*[=＝]\s*.+[）)]/)) {
+                        continue; // 跳過翻譯行，等待配對
+                    }
+                    
+                    // 這是法文行
+                    const french = line;
+                    const nextLine = i + 1 < lines.length ? lines[i + 1] : '';
+                    
+                    // 檢查下一行是否為翻譯
+                    const match = nextLine.match(/[（(]\s*[=＝]\s*(.+)[）)]/);
+                    
+                    if (match) {
+                        const chinese = match[1].trim();
+                        
+                        // 生成選擇題
+                        const question = {
+                            type: "multiple",
+                            question: `「${chinese}」的法文是?`,
+                            options: generateOptions(french),
+                            answer: 0,
+                            frenchText: french,
+                            explanation: `${french} 是「${chinese}」的法文表達。`,
+                            vocabulary: [
+                                { french: french.toLowerCase(), chinese: chinese, pronunciation: "請補充發音" }
+                            ]
+                        };
+                        questions.push(question);
+                        i++; // 跳過已處理的翻譯行
+                    } else {
+                        skipped++;
+                        skippedLines.push(`第 ${i + 1} 行：找不到對應的中文翻譯`);
+                    }
                 }
+            } else {
+                // 原有的分隔符格式處理
+                const lines = input.split('\n').filter(line => line.trim());
+                
+                // 選擇分隔符
+                let separator = '\t';
+                if (currentFormat === 'pipe') separator = '|';
+                if (currentFormat === 'comma') separator = ',';
 
-                const chinese = parts[0];
-                const french = parts[1];
+                lines.forEach((line, index) => {
+                    const parts = line.split(separator).map(p => p.trim());
+                    
+                    if (parts.length < 2) {
+                        skipped++;
+                        skippedLines.push(`第 ${index + 1} 行：找不到分隔符 "${currentFormat === 'tab' ? 'Tab' : separator}"`);
+                        return;
+                    }
 
-                // 跳過標題行（檢查是否為常見的標題文字）
-                if (index === 0 && (
-                    chinese.toLowerCase().includes('中文') || 
-                    chinese.toLowerCase().includes('chinese') ||
-                    french.toLowerCase().includes('法文') ||
-                    french.toLowerCase().includes('french') ||
-                    french.toLowerCase().includes('français')
-                )) {
-                    skipped++;
-                    skippedLines.push(`第 ${index + 1} 行：偵測到標題行，已跳過`);
-                    return;
-                }
+                    const chinese = parts[0];
+                    const french = parts[1];
 
-                if (!chinese || !french) {
-                    skipped++;
-                    skippedLines.push(`第 ${index + 1} 行：中文或法文為空`);
-                    return;
-                }
+                    // 跳過標題行
+                    if (index === 0 && (
+                        chinese.toLowerCase().includes('中文') || 
+                        chinese.toLowerCase().includes('chinese') ||
+                        french.toLowerCase().includes('法文') ||
+                        french.toLowerCase().includes('french') ||
+                        french.toLowerCase().includes('français')
+                    )) {
+                        skipped++;
+                        skippedLines.push(`第 ${index + 1} 行：偵測到標題行，已跳過`);
+                        return;
+                    }
 
-                // 生成選擇題
-                const question = {
-                    type: "multiple",
-                    question: `「${chinese}」的法文是?`,
-                    options: generateOptions(french),
-                    answer: 0,
-                    frenchText: french,
-                    explanation: `${french} 是「${chinese}」的法文表達。`,
-                    vocabulary: [
-                        { french: french.toLowerCase(), chinese: chinese, pronunciation: "請補充發音" }
-                    ]
-                };
+                    if (!chinese || !french) {
+                        skipped++;
+                        skippedLines.push(`第 ${index + 1} 行：中文或法文為空`);
+                        return;
+                    }
 
-                questions.push(question);
-            });
+                    // 生成選擇題
+                    const question = {
+                        type: "multiple",
+                        question: `「${chinese}」的法文是?`,
+                        options: generateOptions(french),
+                        answer: 0,
+                        frenchText: french,
+                        explanation: `${french} 是「${chinese}」的法文表達。`,
+                        vocabulary: [
+                            { french: french.toLowerCase(), chinese: chinese, pronunciation: "請補充發音" }
+                        ]
+                    };
+
+                    questions.push(question);
+                });
+            }
 
             if (questions.length === 0) {
                 let errorMsg = '❌ 沒有成功轉換任何題目,請檢查格式!\n\n';
