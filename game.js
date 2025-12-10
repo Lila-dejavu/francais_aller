@@ -96,17 +96,29 @@ class FrenchDiaryGame {
     loadProgress() {
         const saved = localStorage.getItem('frenchDiary365');
         if (saved) {
-            const data = JSON.parse(saved);
-            this.currentDay = data.currentDay || 1;
-            this.completedDays = data.completedDays || [];
-            this.totalStars = data.totalStars || 0;
-            this.learnedWords = data.learnedWords || [];
-            
-            // 載入當天進度
-            if (data.currentDayProgress) {
-                this.currentQuestionIndex = data.currentDayProgress.questionIndex || 0;
-                this.questionsAnswered = data.currentDayProgress.questionsAnswered || 0;
-                this.correctAnswers = data.currentDayProgress.correctAnswers || 0;
+            try {
+                const data = JSON.parse(saved);
+                this.currentDay = data.currentDay || 1;
+                this.completedDays = data.completedDays || [];
+                this.totalStars = data.totalStars || 0;
+                this.learnedWords = data.learnedWords || [];
+
+                // 載入當天進度
+                if (data.currentDayProgress) {
+                    this.currentQuestionIndex = data.currentDayProgress.questionIndex || 0;
+                    this.questionsAnswered = data.currentDayProgress.questionsAnswered || 0;
+                    this.correctAnswers = data.currentDayProgress.correctAnswers || 0;
+                }
+            } catch (err) {
+                console.warn('⚠️ 無效或損壞的本地儲存資料 (frenchDiary365)，已忽略並使用預設值。', err);
+                // 使用預設值以確保 UI 能初始化
+                this.currentDay = 1;
+                this.completedDays = [];
+                this.totalStars = 0;
+                this.currentQuestionIndex = 0;
+                this.questionsAnswered = 0;
+                this.correctAnswers = 0;
+                this.learnedWords = [];
             }
         }
     }
