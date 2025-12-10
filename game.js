@@ -749,6 +749,11 @@ class FrenchDiaryGame {
 
     // 完成當天
     completeDay() {
+        // 確保questionsAnswered與currentDayData的題目數量一致
+        if (this.questionsAnswered < this.currentDayData.questions.length) {
+            this.questionsAnswered = this.currentDayData.questions.length;
+        }
+        
         const stars = this.calculateStars();
         this.totalStars += stars;
         
@@ -764,13 +769,17 @@ class FrenchDiaryGame {
             });
         }
         
+        // 保存當前的正確率數據，用於顯示
+        const finalCorrectAnswers = this.correctAnswers;
+        const finalTotalQuestions = this.currentDayData.questions.length;
+        
         // 清除當天進度（因為已完成）
         this.currentQuestionIndex = 0;
         this.questionsAnswered = 0;
         this.correctAnswers = 0;
         
         this.saveProgress();
-        this.showComplete(stars);
+        this.showComplete(stars, finalCorrectAnswers, finalTotalQuestions);
     }
 
     // 計算星星數
@@ -837,7 +846,7 @@ class FrenchDiaryGame {
     }
 
     // 顯示完成畫面
-    showComplete(stars) {
+    showComplete(stars, correctAnswers, totalQuestions) {
         document.getElementById('questionPanel').style.display = 'none';
         document.getElementById('feedbackPanel').style.display = 'none';
         document.getElementById('levelComplete').style.display = 'flex';
@@ -848,8 +857,8 @@ class FrenchDiaryGame {
         
         // 顯示摘要
         document.getElementById('levelSummary').innerHTML = `
-            <p>答對 <strong>${this.correctAnswers}</strong> / ${this.currentDayData.questions.length} 題</p>
-            <p>正確率: <strong>${Math.round((this.correctAnswers / this.currentDayData.questions.length) * 100)}%</strong></p>
+            <p>答對 <strong>${correctAnswers}</strong> / ${totalQuestions} 題</p>
+            <p>正確率: <strong>${Math.round((correctAnswers / totalQuestions) * 100)}%</strong></p>
         `;
         
         // 顯示日記預覽（中法雙語）

@@ -49,11 +49,11 @@ function getBeginnerContent(day) {
                     vocabulary: "Je m'appelle - 我叫"
                 },
                 {
-                    type: "input",
-                    question: "請輸入法文的「請」",
+                    type: "sorting",
+                    question: "【排序題】將下列單字排成正確的法文句子：「請」",
+                    words: ["plaît", "vous", "s'il"],
                     answer: "s'il vous plaît",
                     frenchText: "s'il vous plaît",
-                    hint: "提示：這是一個短語，包含3個單字",
                     explanation: "S'il vous plaît 意思是「請」，是正式且禮貌的說法。",
                     vocabulary: "S'il vous plaît - 請 (正式)"
                 },
