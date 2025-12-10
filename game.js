@@ -154,61 +154,6 @@ class FrenchDiaryGame {
                 this.startCustomPhrases();
             });
         }
-
-        // 初始化每日練習按鈕
-        this.initializeDailyPractice();
-    }
-
-    // 初始化每日練習
-    initializeDailyPractice() {
-        const dailyPracticeBtn = document.getElementById('dailyPracticeBtn');
-        const countElement = document.getElementById('dailyPracticeCount');
-        
-        // 檢查 localStorage 中是否有每日練習題目
-        const savedQuestions = localStorage.getItem('dailyPracticeQuestions');
-        
-        if (savedQuestions) {
-            try {
-                const questions = JSON.parse(savedQuestions);
-                if (questions.length > 0) {
-                    countElement.textContent = `${questions.length} 題待練習`;
-                    dailyPracticeBtn.style.display = 'block';
-                }
-            } catch (e) {
-                console.error('讀取每日練習失敗:', e);
-            }
-        }
-        
-        dailyPracticeBtn.querySelector('.daily-practice-button').addEventListener('click', () => {
-            this.startDailyPractice();
-        });
-    }
-
-    // 開始每日練習
-    startDailyPractice() {
-        const savedQuestions = localStorage.getItem('dailyPracticeQuestions');
-        if (!savedQuestions) {
-            alert('沒有每日練習題目！請先使用 Excel 轉換工具新增題目。');
-            return;
-        }
-        
-        try {
-            const questions = JSON.parse(savedQuestions);
-            this.currentDay = 'daily';
-            this.currentDayData = {
-                title: "每日練習",
-                story: "這是你今天從 Excel 轉換的練習內容！完成後可以到轉換工具清空，準備新的練習。",
-                questions: questions
-            };
-            this.currentQuestionIndex = 0;
-            this.correctAnswers = 0;
-            this.questionsAnswered = 0;
-            
-            this.showGameArea();
-            this.startDay();
-        } catch (e) {
-            alert('讀取每日練習失敗: ' + e.message);
-        }
     }
 
     // 開始自訂句型練習

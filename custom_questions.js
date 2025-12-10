@@ -1,11 +1,13 @@
 // 自訂題庫 - 在這裡新增你自己的中法文句子
 // Custom Question Bank - Add your own Chinese-French sentences here
 
-// 使用說明:
-// 1. 在 customQuestions 陣列中新增問題
-// 2. 每個問題可以是選擇題、排序題或填空題
-// 3. 設定 frenchText 屬性來啟用語音播放功能
-// 4. 儲存檔案後,在 data.js 中引用這些題目
+// ⚡ 最簡單的新增方式：
+// 1. 打開 excel_converter.html
+// 2. 貼上你的句子 → 點「轉換」
+// 3. 點「📋 自動複製」
+// 4. 回到這個檔案，在陣列最後按 Ctrl+V 貼上 → 完成！
+//
+// 💡 提示：貼上位置在最後一個 }, 之後、]; 之前
 
 const customQuestions = [
     // 範例 1: 選擇題
@@ -53,22 +55,24 @@ const customQuestions = [
         frenchText: "J'ai faim",
         explanation: "J'ai faim 是「我餓了」的表達方式,faim 是名詞「飢餓」。",
         vocabulary: "J'ai faim - 我餓了 (熱 番)"
-    },
+    }
+
+    // ⚠️ 重要：上面的題目請不要動！
+    // ⚠️ 從這裡開始貼上你的新題目 ↓↓↓
+    // ============================================
+    // 📝 新題目貼上區（安全區域）
+    // 使用方法：
+    // 1. 在 excel_converter.html 轉換完成後
+    // 2. 點擊「📋 自動複製」
+    // 3. 回到這裡，把游標放在下面這一行
+    // 4. 按 Ctrl+V 貼上
+    // ============================================
     
-    // 你的題目範例:
-    /*
-    {
-        type: "multiple",  // 或 "sorting" 或 "input"
-        question: "你的中文問題",
-        options: ["選項1", "選項2", "選項3", "選項4"],  // 僅選擇題需要
-        answer: "選項1",  // 選擇題:正確答案的文字 | 排序題/填空題:正確答案字串
-        frenchText: "法文發音文字",  // 設定後會顯示播放按鈕
-        explanation: "答案解釋",
-        vocabulary: "法文 - 中文 (發音)"
-    },
-    */
+    // ← 在這一行按 Ctrl+V 貼上新題目
 
 ];
+
+// ⚠️ 注意：]; 這行不要刪除！
 
 // 匯出題庫供 data.js 使用
 // Export for use in data.js
