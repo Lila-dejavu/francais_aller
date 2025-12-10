@@ -363,9 +363,14 @@ class FrenchDiaryGame {
             const btn = document.createElement('button');
             btn.className = 'option-btn';
             
-            // 檢查選項是否為法文（包含法文字母）
-            const isFrench = /[àâäéèêëïîôùûüÿæœç]/i.test(option) || 
-                           question.type === 'multiple' && index === 0;
+            // 只有正確答案才顯示播放按鈕
+            const isCorrectAnswer = option === question.answer;
+            
+            // 檢查是否為法文（正確答案且包含法文字母或有frenchText）
+            const isFrench = isCorrectAnswer && (
+                /[àâäéèêëïîôùûüÿæœç]/i.test(option) || 
+                question.frenchText
+            );
             
             if (isFrench) {
                 btn.innerHTML = `
@@ -728,6 +733,7 @@ class FrenchDiaryGame {
             }
         }
         
+        // 只增加一次計數
         this.questionsAnswered++;
         this.updateProgress();
         this.updateNotes();
@@ -749,8 +755,8 @@ class FrenchDiaryGame {
 
     // 完成當天
     completeDay() {
-        // 確保questionsAnswered與currentDayData的題目數量一致
-        if (this.questionsAnswered < this.currentDayData.questions.length) {
+        // 確保questionsAnswered不超過總題數
+        if (this.questionsAnswered > this.currentDayData.questions.length) {
             this.questionsAnswered = this.currentDayData.questions.length;
         }
         
@@ -784,8 +790,11 @@ class FrenchDiaryGame {
 
     // 計算星星數
     calculateStars() {
-        const percentage = (this.correctAnswers / this.currentDayData.questions.length) * 100;
-        if (percentage === 100) return 3;
+        const totalQuestions = this.currentDayData.questions.length;
+        const percentage = (this.correctAnswers / totalQuestions) * 100;
+        
+        // 全對或正確率 >= 99.5% 算三星
+        if (this.correctAnswers >= totalQuestions || percentage >= 99.5) return 3;
         if (percentage >= 60) return 2;
         return 1;
     }
