@@ -326,19 +326,36 @@
             if (currentFormat === 'pipe') separator = '|';
             if (currentFormat === 'comma') separator = ',';
 
+            const skippedLines = []; // 記錄被跳過的行
+
             lines.forEach((line, index) => {
                 const parts = line.split(separator).map(p => p.trim());
                 
                 if (parts.length < 2) {
                     skipped++;
+                    skippedLines.push(`第 ${index + 1} 行：找不到分隔符 "${currentFormat === 'tab' ? 'Tab' : separator}"`);
                     return;
                 }
 
                 const chinese = parts[0];
                 const french = parts[1];
 
+                // 跳過標題行（檢查是否為常見的標題文字）
+                if (index === 0 && (
+                    chinese.toLowerCase().includes('中文') || 
+                    chinese.toLowerCase().includes('chinese') ||
+                    french.toLowerCase().includes('法文') ||
+                    french.toLowerCase().includes('french') ||
+                    french.toLowerCase().includes('français')
+                )) {
+                    skipped++;
+                    skippedLines.push(`第 ${index + 1} 行：偵測到標題行，已跳過`);
+                    return;
+                }
+
                 if (!chinese || !french) {
                     skipped++;
+                    skippedLines.push(`第 ${index + 1} 行：中文或法文為空`);
                     return;
                 }
 
@@ -359,7 +376,11 @@
             });
 
             if (questions.length === 0) {
-                showStatus('❌ 沒有成功轉換任何題目,請檢查格式!', 'error');
+                let errorMsg = '❌ 沒有成功轉換任何題目,請檢查格式!\n\n';
+                if (skippedLines.length > 0) {
+                    errorMsg += '被跳過的行：\n' + skippedLines.join('\n');
+                }
+                showStatus(errorMsg, 'error');
                 return;
             }
 
@@ -367,7 +388,11 @@
             const result = generateCode(questions);
             document.getElementById('resultBox').textContent = result;
             
-            showStatus(`✅ 成功轉換 ${questions.length} 題${skipped > 0 ? ` (跳過 ${skipped} 行)` : ''}`, 'success');
+            let statusMsg = `✅ 成功轉換 ${questions.length} 題`;
+            if (skipped > 0) {
+                statusMsg += ` (跳過 ${skipped} 行)\n\n跳過原因：\n${skippedLines.join('\n')}`;
+            }
+            showStatus(statusMsg, 'success');
         }
 
         function generateOptions(correctAnswer) {
