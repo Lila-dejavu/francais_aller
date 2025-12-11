@@ -1,5 +1,129 @@
 // 365法文日記 - 核心遊戲邏輯
 
+// 熟練度管理器（間隔重複學習系統）
+class ProficiencyManager {
+    constructor() {
+        this.proficiencyData = this.loadProficiency();
+    }
+    
+    // 載入熟練度資料
+    loadProficiency() {
+        const saved = localStorage.getItem('frenchDiary_proficiency');
+        if (saved) {
+            try {
+                return JSON.parse(saved);
+            } catch (err) {
+                console.warn('⚠️ 無法載入熟練度資料', err);
+                return {};
+            }
+        }
+        return {};
+    }
+    
+    // 儲存熟練度資料
+    saveProficiency() {
+        localStorage.setItem('frenchDiary_proficiency', JSON.stringify(this.proficiencyData));
+        console.log('✅ 熟練度資料已保存');
+    }
+    
+    // 記錄熟練度
+    recordProficiency(questionText, level) {
+        const key = questionText.trim();
+        
+        if (!this.proficiencyData[key]) {
+            this.proficiencyData[key] = {
+                level: 0,
+                lastReviewed: new Date().toISOString(),
+                reviewCount: 0
+            };
+        }
+        
+        const data = this.proficiencyData[key];
+        data.reviewCount++;
+        data.lastReviewed = new Date().toISOString();
+        
+        // 調整熟練度等級 (0-5)
+        if (level === 'proficient') {
+            data.level = Math.min(5, data.level + 1);
+            console.log(`✅ ${questionText} - 熟練度提升至 ${data.level}`);
+        } else {
+            data.level = Math.max(0, data.level - 1);
+            console.log(`❌ ${questionText} - 熟練度降至 ${data.level}`);
+        }
+        
+        this.saveProficiency();
+    }
+    
+    // 取得題目的權重（熟練度越低，權重越高）
+    getWeight(questionText) {
+        const key = questionText.trim();
+        const data = this.proficiencyData[key];
+        
+        if (!data) {
+            return 10; // 新題目給予最高權重
+        }
+        
+        // 熟練度 0-5 對應權重 10-1
+        return Math.max(1, 10 - data.level * 1.8);
+    }
+    
+    // 根據熟練度選擇題目
+    selectQuestions(allQuestions, maxCount = 30) {
+        if (allQuestions.length <= maxCount) {
+            return allQuestions;
+        }
+        
+        // 計算每個題目的權重
+        const weightedQuestions = allQuestions.map(q => ({
+            question: q,
+            weight: this.getWeight(q.frenchText || q.answer)
+        }));
+        
+        // 使用加權隨機選擇
+        const selected = [];
+        const remaining = [...weightedQuestions];
+        
+        while (selected.length < maxCount && remaining.length > 0) {
+            const totalWeight = remaining.reduce((sum, item) => sum + item.weight, 0);
+            let random = Math.random() * totalWeight;
+            
+            let index = 0;
+            for (let i = 0; i < remaining.length; i++) {
+                random -= remaining[i].weight;
+                if (random <= 0) {
+                    index = i;
+                    break;
+                }
+            }
+            
+            selected.push(remaining[index].question);
+            remaining.splice(index, 1);
+        }
+        
+        console.log(`📊 熟練度分布:`, this.getProficiencyStats(selected));
+        return selected;
+    }
+    
+    // 取得熟練度統計
+    getProficiencyStats(questions) {
+        const stats = { new: 0, low: 0, medium: 0, high: 0 };
+        questions.forEach(q => {
+            const key = (q.frenchText || q.answer).trim();
+            const data = this.proficiencyData[key];
+            if (!data) {
+                stats.new++;
+            } else if (data.level <= 1) {
+                stats.low++;
+            } else if (data.level <= 3) {
+                stats.medium++;
+            } else {
+                stats.high++;
+            }
+        });
+        return stats;
+    }
+}
+
 // 語音管理器
 class VoiceManager {
     constructor() {
@@ -185,6 +309,7 @@ class FrenchDiaryGame {
         this.correctAnswers = 0;
         this.learnedWords = [];
         this.voiceManager = new VoiceManager();
+        this.proficiencyManager = new ProficiencyManager();
         
         this.loadProgress();
         this.initializeUI();
@@ -939,8 +1064,70 @@ class FrenchDiaryGame {
         this.updateProgress();
         this.updateNotes();
         
+        // 如果是自訂題庫，顯示熟練度選擇按鈕
+        if (this.currentDay === 'custom') {
+            this.showProficiencyButtons(question);
+        }
+        
         // 每答完一題自動存檔
         this.saveProgress();
+    }
+    
+    // 顯示熟練度選擇按鈕（僅用於自訂題庫）
+    showProficiencyButtons(question) {
+        const nextBtn = document.getElementById('nextQuestionBtn');
+        
+        // 創建熟練度選擇容器
+        const proficiencyDiv = document.createElement('div');
+        proficiencyDiv.id = 'proficiencyButtons';
+        proficiencyDiv.className = 'proficiency-buttons';
+        proficiencyDiv.innerHTML = `
+            <p style="margin: 15px 0 10px 0; color: #666; font-size: 14px;">📊 這句話你覺得：</p>
+            <div style="display: flex; gap: 10px; justify-content: center;">
+                <button class="btn-proficiency btn-not-proficient" onclick="window.game.handleProficiency('${this.escapeQuotes(question.frenchText || question.answer)}', 'not_proficient')">❌ 不熟練</button>
+                <button class="btn-proficiency btn-proficient" onclick="window.game.handleProficiency('${this.escapeQuotes(question.frenchText || question.answer)}', 'proficient')">✅ 熟練</button>
+            </div>
+        `;
+        
+        // 插入到下一題按鈕前
+        nextBtn.parentNode.insertBefore(proficiencyDiv, nextBtn);
+        
+        // 隱藏下一題按鈕，等選擇熟練度後才顯示
+        nextBtn.style.display = 'none';
+    }
+    
+    // 處理熟練度選擇
+    handleProficiency(questionText, level) {
+        // 記錄熟練度
+        this.proficiencyManager.recordProficiency(questionText, level);
+        
+        // 移除熟練度按鈕
+        const proficiencyDiv = document.getElementById('proficiencyButtons');
+        if (proficiencyDiv) {
+            proficiencyDiv.remove();
+        }
+        
+        // 顯示下一題按鈕
+        const nextBtn = document.getElementById('nextQuestionBtn');
+        nextBtn.style.display = 'block';
+        
+        // 顯示反饋訊息
+        const feedback = level === 'proficient' 
+            ? '👍 已標記為熟練，下次出現機會較低' 
+            : '💪 已標記為不熟練，會多練習這一句';
+        const feedbackMsg = document.createElement('p');
+        feedbackMsg.className = 'proficiency-feedback';
+        feedbackMsg.textContent = feedback;
+        feedbackMsg.style.cssText = 'color: #4CAF50; margin: 10px 0; font-size: 14px;';
+        nextBtn.parentNode.insertBefore(feedbackMsg, nextBtn);
+        
+        // 3秒後移除反饋訊息
+        setTimeout(() => feedbackMsg.remove(), 3000);
+    }
+    
+    // 轉義引號（用於HTML屬性）
+    escapeQuotes(text) {
+        return text.replace(/'/g, "\\'").replace(/"/g, '&quot;');
     }
 
     // 下一題

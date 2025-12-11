@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>熟練度系統測試</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 { color: #4a90e2; }
+        h2 { color: #666; margin-top: 0; }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .btn-test {
+            background: #4a90e2;
+            color: white;
+        }
+        .btn-reset {
+            background: #ff6b6b;
+            color: white;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+        .proficiency-level {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            margin: 2px;
+            font-size: 12px;
+        }
+        .level-0 { background: #ff6b6b; color: white; }
+        .level-1 { background: #ffa500; color: white; }
+        .level-2 { background: #ffd700; color: black; }
+        .level-3 { background: #50c878; color: white; }
+        .level-4 { background: #4a90e2; color: white; }
+        .level-5 { background: #7b68ee; color: white; }
+    </style>
+</head>
+<body>
+    <h1>📊 熟練度系統測試工具</h1>
+    
+    <div class="test-section">
+        <h2>1. 測試熟練度管理器</h2>
+        <button class="btn-test" onclick="testProficiencyManager()">測試基本功能</button>
+        <button class="btn-test" onclick="testWeightCalculation()">測試權重計算</button>
+        <button class="btn-test" onclick="testQuestionSelection()">測試題目選擇</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>2. 查看當前熟練度資料</h2>
+        <button class="btn-test" onclick="showProficiencyData()">顯示所有資料</button>
+        <button class="btn-test" onclick="showStatistics()">顯示統計</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>3. 模擬學習過程</h2>
+        <button class="btn-test" onclick="simulateLearning()">模擬10次學習</button>
+        <button class="btn-test" onclick="testSelectionBias()">測試選題偏好</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>4. 資料管理</h2>
+        <button class="btn-reset" onclick="resetProficiencyData()">重置所有熟練度</button>
+        <button class="btn-test" onclick="exportData()">匯出資料</button>
+    </div>
+    
+    <div id="result"></div>
+    
+    <script src="game.js"></script>
+    <script>
+        const pm = new ProficiencyManager();
+        
+        function log(message) {
+            const result = document.getElementById('result');
+            result.textContent = message + '\n' + result.textContent;
+        }
+        
+        function testProficiencyManager() {
+            log('=== 測試熟練度管理器 ===');
+            
+            // 測試記錄熟練度
+            pm.recordProficiency('Bonjour', 'proficient');
+            pm.recordProficiency('Merci', 'not_proficient');
+            pm.recordProficiency('Bonjour', 'proficient');
+            
+            log('已記錄: Bonjour (熟練x2), Merci (不熟練x1)');
+            log('Bonjour 權重: ' + pm.getWeight('Bonjour'));
+            log('Merci 權重: ' + pm.getWeight('Merci'));
+            log('新句子權重: ' + pm.getWeight('Au revoir'));
+            log('✅ 基本功能測試完成\n');
+        }
+        
+        function testWeightCalculation() {
+            log('=== 測試權重計算 ===');
+            
+            const testCases = [
+                { text: 'Level 0', level: 0 },
+                { text: 'Level 1', level: 1 },
+                { text: 'Level 2', level: 2 },
+                { text: 'Level 3', level: 3 },
+                { text: 'Level 4', level: 4 },
+                { text: 'Level 5', level: 5 }
+            ];
+            
+            testCases.forEach(tc => {
+                // 手動設定等級
+                pm.proficiencyData[tc.text] = {
+                    level: tc.level,
+                    lastReviewed: new Date().toISOString(),
+                    reviewCount: 1
+                };
+                const weight = pm.getWeight(tc.text);
+                log(`${tc.text}: 權重 = ${weight.toFixed(2)}`);
+            });
+            
+            pm.saveProficiency();
+            log('✅ 權重計算測試完成\n');
+        }
+        
+        function testQuestionSelection() {
+            log('=== 測試題目選擇 ===');
+            
+            // 創建測試題目
+            const testQuestions = [];
+            for (let i = 1; i <= 50; i++) {
+                testQuestions.push({
+                    question: `測試句子 ${i}`,
+                    frenchText: `Test ${i}`,
+                    answer: `Answer ${i}`
+                });
+            }
+            
+            // 設定一些熟練度
+            for (let i = 1; i <= 20; i++) {
+                pm.proficiencyData[`Test ${i}`] = {
+                    level: Math.floor(i / 4), // 0-5
+                    lastReviewed: new Date().toISOString(),
+                    reviewCount: i
+                };
+            }
+            pm.saveProficiency();
+            
+            const selected = pm.selectQuestions(testQuestions, 30);
+            log(`從 ${testQuestions.length} 題中選出 ${selected.length} 題`);
+            
+            const stats = pm.getProficiencyStats(selected);
+            log('熟練度分布:');
+            log(`  🆕 新題目: ${stats.new}`);
+            log(`  ❌ 低熟練: ${stats.low}`);
+            log(`  📚 中等: ${stats.medium}`);
+            log(`  ✅ 高熟練: ${stats.high}`);
+            log('✅ 題目選擇測試完成\n');
+        }
+        
+        function showProficiencyData() {
+            log('=== 當前熟練度資料 ===');
+            
+            const data = pm.proficiencyData;
+            const entries = Object.entries(data);
+            
+            if (entries.length === 0) {
+                log('❌ 目前沒有任何熟練度資料');
+                return;
+            }
+            
+            entries.sort((a, b) => a[1].level - b[1].level);
+            
+            entries.forEach(([text, info]) => {
+                const levelClass = `level-${info.level}`;
+                const date = new Date(info.lastReviewed).toLocaleString('zh-TW');
+                log(`${text}: Level ${info.level} | 複習 ${info.reviewCount} 次 | ${date}`);
+            });
+            
+            log(`\n總計: ${entries.length} 個句子\n`);
+        }
+        
+        function showStatistics() {
+            log('=== 熟練度統計 ===');
+            
+            const data = pm.proficiencyData;
+            const entries = Object.entries(data);
+            
+            if (entries.length === 0) {
+                log('❌ 目前沒有任何資料');
+                return;
+            }
+            
+            const stats = {
+                total: entries.length,
+                byLevel: [0, 0, 0, 0, 0, 0],
+                totalReviews: 0,
+                avgLevel: 0
+            };
+            
+            entries.forEach(([_, info]) => {
+                stats.byLevel[info.level]++;
+                stats.totalReviews += info.reviewCount;
+                stats.avgLevel += info.level;
+            });
+            
+            stats.avgLevel /= stats.total;
+            
+            log(`總句子數: ${stats.total}`);
+            log(`總複習次數: ${stats.totalReviews}`);
+            log(`平均熟練度: ${stats.avgLevel.toFixed(2)}`);
+            log('\n各等級分布:');
+            stats.byLevel.forEach((count, level) => {
+                const percentage = ((count / stats.total) * 100).toFixed(1);
+                log(`  Level ${level}: ${count} 句 (${percentage}%)`);
+            });
+            log('');
+        }
+        
+        function simulateLearning() {
+            log('=== 模擬學習過程 ===');
+            
+            const sentences = ['Bonjour', 'Merci', 'Au revoir', 'Comment allez-vous?', 'Je m\'appelle'];
+            
+            log('開始模擬 10 次練習...\n');
+            
+            for (let i = 1; i <= 10; i++) {
+                const sentence = sentences[Math.floor(Math.random() * sentences.length)];
+                const level = Math.random() > 0.7 ? 'not_proficient' : 'proficient';
+                pm.recordProficiency(sentence, level);
+                log(`第 ${i} 次: ${sentence} → ${level === 'proficient' ? '✅' : '❌'}`);
+            }
+            
+            log('\n最終結果:');
+            sentences.forEach(s => {
+                const data = pm.proficiencyData[s];
+                if (data) {
+                    log(`${s}: Level ${data.level}, 權重 ${pm.getWeight(s).toFixed(2)}`);
+                }
+            });
+            log('');
+        }
+        
+        function testSelectionBias() {
+            log('=== 測試選題偏好（1000次） ===');
+            
+            // 創建3個不同熟練度的題目
+            const questions = [
+                { frenchText: 'Low', answer: 'Low' },
+                { frenchText: 'Medium', answer: 'Medium' },
+                { frenchText: 'High', answer: 'High' }
+            ];
+            
+            pm.proficiencyData = {
+                'Low': { level: 0, lastReviewed: new Date().toISOString(), reviewCount: 1 },
+                'Medium': { level: 3, lastReviewed: new Date().toISOString(), reviewCount: 1 },
+                'High': { level: 5, lastReviewed: new Date().toISOString(), reviewCount: 1 }
+            };
+            pm.saveProficiency();
+            
+            const counts = { 'Low': 0, 'Medium': 0, 'High': 0 };
+            
+            // 重複選題1000次
+            for (let i = 0; i < 1000; i++) {
+                const selected = pm.selectQuestions(questions, 1);
+                counts[selected[0].frenchText]++;
+            }
+            
+            const total = counts.Low + counts.Medium + counts.High;
+            log(`Low (Level 0): ${counts.Low} 次 (${(counts.Low/total*100).toFixed(1)}%)`);
+            log(`Medium (Level 3): ${counts.Medium} 次 (${(counts.Medium/total*100).toFixed(1)}%)`);
+            log(`High (Level 5): ${counts.High} 次 (${(counts.High/total*100).toFixed(1)}%)`);
+            log('\n✅ 可以看出低熟練度的題目被選中的機會明顯較高\n');
+        }
+        
+        function resetProficiencyData() {
+            if (confirm('確定要重置所有熟練度資料嗎？此操作無法復原！')) {
+                localStorage.removeItem('frenchDiary_proficiency');
+                pm.proficiencyData = {};
+                log('✅ 已重置所有熟練度資料\n');
+            }
+        }
+        
+        function exportData() {
+            const data = JSON.stringify(pm.proficiencyData, null, 2);
+            log('=== 匯出資料 ===');
+            log(data);
+            log('\n可以複製上面的資料進行備份\n');
+        }
+        
+        // 頁面載入時顯示歡迎訊息
+        window.onload = function() {
+            log('📊 熟練度系統測試工具已載入');
+            log('點擊上方按鈕開始測試\n');
+        };
+    </script>
+</body>
+</html>

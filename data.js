@@ -17,19 +17,29 @@ window.getDayContent = function(day) {
 window.getCustomPhrasesContent = function() {
     const customQuestions = window.customQuestions || [];
     
-    // 隨機打亂題目順序（使用 Fisher-Yates 洗牌演算法）
-    const shuffledQuestions = [...customQuestions]; // 創建副本
-    for (let i = shuffledQuestions.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffledQuestions[i], shuffledQuestions[j]] = [shuffledQuestions[j], shuffledQuestions[i]];
-    }
+    // 使用熟練度系統選擇題目（最多30題）
+    const proficiencyManager = window.game?.proficiencyManager;
+    let selectedQuestions;
     
-    console.log(`🔀 已隨機打亂 ${shuffledQuestions.length} 個自訂題目`);
+    if (proficiencyManager) {
+        // 根據熟練度加權選題
+        selectedQuestions = proficiencyManager.selectQuestions(customQuestions, 30);
+        console.log(`🎯 已根據熟練度選出 ${selectedQuestions.length} 題（最多30題）`);
+    } else {
+        // 如果沒有熟練度管理器，隨機選30題
+        const shuffled = [...customQuestions];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        selectedQuestions = shuffled.slice(0, 30);
+        console.log(`🔀 隨機選出 ${selectedQuestions.length} 題`);
+    }
     
     return {
         title: "必學句型",
-        story: "這裡是你自己新增的法文句子練習！題目順序已隨機打亂，每次都不一樣喔！",
-        questions: shuffledQuestions
+        story: `這裡是你自己新增的法文句子練習！本次練習 ${selectedQuestions.length} 題，會根據你的熟練度調整出題頻率。`,
+        questions: selectedQuestions
     };
 };
 

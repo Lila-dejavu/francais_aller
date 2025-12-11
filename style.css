@@ -1500,3 +1500,49 @@ body {
 .modal-content::-webkit-scrollbar-track {
     background: var(--bg-primary);
 }
+
+/* 熟練度選擇按鈕 */
+.proficiency-buttons {
+    margin: 20px 0;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border: 2px dashed #dee2e6;
+}
+
+.btn-proficiency {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.btn-not-proficient {
+    background: #ff6b6b;
+    color: white;
+}
+
+.btn-not-proficient:hover {
+    background: #ee5a52;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(255,107,107,0.3);
+}
+
+.btn-proficient {
+    background: #50c878;
+    color: white;
+}
+
+.btn-proficient:hover {
+    background: #40a868;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(80,200,120,0.3);
+}
+
+.proficiency-feedback {
+    animation: fadeIn 0.5s ease;
+}
