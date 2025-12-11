@@ -560,7 +560,10 @@ class FrenchDiaryGame {
         optionsContainer.style.display = 'grid';
         optionsContainer.innerHTML = '';
         
-        question.options.forEach((option, index) => {
+        // 打亂選項順序，讓答案位置隨機
+        const shuffledOptions = [...question.options].sort(() => Math.random() - 0.5);
+        
+        shuffledOptions.forEach((option, index) => {
             const btn = document.createElement('button');
             btn.className = 'option-btn';
             

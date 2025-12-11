@@ -12,6 +12,28 @@ const basicExamples = [
         explanation: "Bonjour 是法文最常用的問候語。",
         vocabulary: [{ french: "Bonjour", chinese: "你好", pronunciation: "Bonjour" }]
     }
+
+    // 範例：排序題（拖曳排列）
+    ,{
+        type: "sorting",
+        question: "請排列正確的句子:「我愛你」",
+        words: ["t'", "Je", "aime"],
+        answer: "Je t' aime",
+        frenchText: "Je t'aime",
+        explanation: "Je t'aime 是法文「我愛你」的表達方式。",
+        vocabulary: [{ french: "Je t'aime", chinese: "我愛你", pronunciation: "Je t'aime" }]
+    }
+
+    // 範例：排序題
+    ,{
+        type: "sorting",
+        question: "請排列正確的句子:「我很好」",
+        words: ["bien", "vais", "Je"],
+        answer: "Je vais bien",
+        frenchText: "Je vais bien",
+        explanation: "Je vais bien 表示「我很好」。",
+        vocabulary: [{ french: "Je vais bien", chinese: "我很好", pronunciation: "Je vais bien" }]
+    }
     
     // === 新增的 基礎範例 題目 ===
     ,{
