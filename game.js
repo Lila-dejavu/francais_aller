@@ -78,6 +78,9 @@ class VoiceManager {
             return;
         }
         
+        // 移除括號內的內容（如發音提示），只朗讀主要文字
+        const cleanText = text.replace(/\([^)]*\)/g, '').trim();
+        
         // 強制重新載入語音列表（解決某些瀏覽器的問題）
         if (this.voices.length === 0) {
             this.voices = this.synth.getVoices();
@@ -112,7 +115,7 @@ class VoiceManager {
         // 停止當前播放
         this.synth.cancel();
         
-        const utterance = new SpeechSynthesisUtterance(text);
+        const utterance = new SpeechSynthesisUtterance(cleanText);
         utterance.voice = this.frenchVoice;
         utterance.lang = 'fr-FR';
         utterance.rate = options.rate || this.rate;
@@ -121,7 +124,7 @@ class VoiceManager {
         
         // 事件監聽
         utterance.onstart = () => {
-            console.log('🔊 開始朗讀:', text);
+            console.log('🔊 開始朗讀:', cleanText, '(原文:', text, ')');
         };
         
         utterance.onend = () => {
@@ -137,9 +140,12 @@ class VoiceManager {
             }
         };
         
-        console.log('📢 準備朗讀:', text.substring(0, 30) + (text.length > 30 ? '...' : ''));
+        console.log('📢 準備朗讀:', cleanText.substring(0, 30) + (cleanText.length > 30 ? '...' : ''));
         console.log('   使用語音:', this.frenchVoice?.name || '預設');
         console.log('   語音數量:', this.voices.length);
+        if (text !== cleanText) {
+            console.log('   ℹ️  已移除括號內容');
+        }
         
         this.synth.speak(utterance);
         
