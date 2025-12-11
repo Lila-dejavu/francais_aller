@@ -214,6 +214,147 @@ const basicExamples = [
         vocabulary: [{ french: "Pourquoi tu es si mignon ?", chinese: "妳為什麼這樣子口愛 ?", pronunciation: "Pourquoi tu es si mignon ?" }]
     }
 
+    // === 新增的 基礎範例 題目 ===
+    ,{
+        type: "multiple",
+        question: "「不錯 !」的法文是?",
+        options: ["Pas mal.","Je suis","Bonjour","Il est"],
+        answer: "Pas mal.",
+        frenchText: "Pas mal.",
+        explanation: "Pas mal. 是「不錯 !」的法文表達。",
+        vocabulary: "pas mal. - 不錯 !"
+    }
+
+    ,{
+        type: "multiple",
+        question: "「還不太差。」的法文是?",
+        options: ["Pas trop mal.","Il est","Je suis","Pardon"],
+        answer: "Pas trop mal.",
+        frenchText: "Pas trop mal.",
+        explanation: "Pas trop mal. 是「還不太差。」的法文表達。",
+        vocabulary: "pas trop mal. - 還不太差。"
+    }
+
+    ,{
+        type: "multiple",
+        question: "「不懂。」的法文是?",
+        options: ["Pas compris.","Bon matin","Comment allez-vous","Merci"],
+        answer: "Pas compris.",
+        frenchText: "Pas compris.",
+        explanation: "Pas compris. 是「不懂。」的法文表達。",
+        vocabulary: "pas compris. - 不懂。"
+    }
+
+    ,{
+        type: "multiple",
+        question: "「不貴。便宜。」的法文是?",
+        options: ["Pas cher.","Bon matin","Au revoir","Merci"],
+        answer: "Pas cher.",
+        frenchText: "Pas cher.",
+        explanation: "Pas cher. 是「不貴。便宜。」的法文表達。",
+        vocabulary: "pas cher. - 不貴。便宜。"
+    }
+
+    ,{
+        type: "multiple",
+        question: "「沒甚麼。不客氣。」的法文是?",
+        options: ["Pas de quoi.","Tu es","Oui","Ça va"],
+        answer: "Pas de quoi.",
+        frenchText: "Pas de quoi.",
+        explanation: "Pas de quoi. 是「沒甚麼。不客氣。」的法文表達。",
+        vocabulary: "pas de quoi. - 沒甚麼。不客氣。"
+    }
+
+    ,{
+        type: "multiple",
+        question: "「別費勁 ! 沒必要 !」的法文是?",
+        options: ["Pas la peine.","Bonne nuit","Je suis","Excusez-moi"],
+        answer: "Pas la peine.",
+        frenchText: "Pas la peine.",
+        explanation: "Pas la peine. 是「別費勁 ! 沒必要 !」的法文表達。",
+        vocabulary: "pas la peine. - 別費勁 ! 沒必要 !"
+    }
+
+    ,{
+        type: "multiple",
+        question: "「沒問題 !」的法文是?",
+        options: ["Pas de problèmes.","S'il vous plaît","Au revoir","Pardon"],
+        answer: "Pas de problèmes.",
+        frenchText: "Pas de problèmes.",
+        explanation: "Pas de problèmes. 是「沒問題 !」的法文表達。",
+        vocabulary: "pas de problèmes. - 沒問題 !"
+    }
+
+    ,{
+        type: "multiple",
+        question: "「別傷腦筋 !」的法文是?",
+        options: ["Pas de soucis.","Merci","Bonne nuit","Au revoir"],
+        answer: "Pas de soucis.",
+        frenchText: "Pas de soucis.",
+        explanation: "Pas de soucis. 是「別傷腦筋 !」的法文表達。",
+        vocabulary: "pas de soucis. - 別傷腦筋 !"
+    }
+
+    ,{
+        type: "multiple",
+        question: "「此刻還不行。」的法文是?",
+        options: ["Pas pourle moment.","Non","Bonjour","Il est"],
+        answer: "Pas pourle moment.",
+        frenchText: "Pas pourle moment.",
+        explanation: "Pas pourle moment. 是「此刻還不行。」的法文表達。",
+        vocabulary: "pas pourle moment. - 此刻還不行。"
+    }
+
+    ,{
+        type: "multiple",
+        question: "「我不要。」的法文是?",
+        options: ["Pas pour moi.","Au revoir","Tu es","Bonne nuit"],
+        answer: "Pas pour moi.",
+        frenchText: "Pas pour moi.",
+        explanation: "Pas pour moi. 是「我不要。」的法文表達。",
+        vocabulary: "pas pour moi. - 我不要。"
+    }
+
+    ,{
+        type: "multiple",
+        question: "「此刻不行。」的法文是?",
+        options: ["Pas pour l’instant.","Pardon","Merci","Au revoir"],
+        answer: "Pas pour l’instant.",
+        frenchText: "Pas pour l’instant.",
+        explanation: "Pas pour l’instant. 是「此刻不行。」的法文表達。",
+        vocabulary: "pas pour l’instant. - 此刻不行。"
+    }
+
+    ,{
+        type: "multiple",
+        question: "「不要太早。」的法文是?",
+        options: ["Pas trop tôt.","Bon matin","J'ai","Il est"],
+        answer: "Pas trop tôt.",
+        frenchText: "Pas trop tôt.",
+        explanation: "Pas trop tôt. 是「不要太早。」的法文表達。",
+        vocabulary: "pas trop tôt. - 不要太早。"
+    }
+
+    ,{
+        type: "multiple",
+        question: "「不要太晚。」的法文是?",
+        options: ["Pas trop tard.","Au revoir","Bon matin","Oui"],
+        answer: "Pas trop tard.",
+        frenchText: "Pas trop tard.",
+        explanation: "Pas trop tard. 是「不要太晚。」的法文表達。",
+        vocabulary: "pas trop tard. - 不要太晚。"
+    }
+
+    ,{
+        type: "multiple",
+        question: "「沒太累吧?」的法文是?",
+        options: ["Pas trop fatigue ?","Au revoir","Bonne nuit","Je suis"],
+        answer: "Pas trop fatigue ?",
+        frenchText: "Pas trop fatigue ?",
+        explanation: "Pas trop fatigue ? 是「沒太累吧?」的法文表達。",
+        vocabulary: "pas trop fatigue ? - 沒太累吧?"
+    }
+
     // === 基礎範例 題目結束 ===
 ];
 
