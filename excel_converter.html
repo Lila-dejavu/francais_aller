@@ -275,10 +275,32 @@
                 </div>
             </div>
 
-            <!-- 步驟 3: 選擇分類 -->
+            <!-- 步驟 3: 選擇題型 -->
             <div class="section">
                 <div class="section-title">
                     <span class="step-number">3</span>
+                    <span>選擇題目類型</span>
+                </div>
+                <div class="format-selector" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="format-option active" onclick="selectQuestionType('multiple')">
+                        <h3>✅ 選擇題</h3>
+                        <p>4個選項<br>選出正確答案</p>
+                    </div>
+                    <div class="format-option" onclick="selectQuestionType('sorting')">
+                        <h3>🔤 排序題</h3>
+                        <p>排列單字<br>組成句子</p>
+                    </div>
+                    <div class="format-option" onclick="selectQuestionType('input')">
+                        <h3>✍️ 填空題</h3>
+                        <p>自己輸入<br>法文答案</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 步驟 4: 選擇分類 -->
+            <div class="section">
+                <div class="section-title">
+                    <span class="step-number">4</span>
                     <span>選擇題目分類</span>
                 </div>
                 <div class="category-info" style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin-bottom: 15px; border-radius: 5px;">
@@ -297,10 +319,10 @@
                 </div>
             </div>
 
-            <!-- 步驟 4: 轉換 -->
+            <!-- 步驟 6: 轉換 -->
             <div class="section">
                 <div class="section-title">
-                    <span class="step-number">4</span>
+                    <span class="step-number">6</span>
                     <span>轉換成題目</span>
                 </div>
                 <div class="button-group">
@@ -310,10 +332,10 @@
                 <div class="info-box" id="statusBox" style="display:none;"></div>
             </div>
 
-            <!-- 步驟 5: 複製加入題庫 -->
+            <!-- 步驟 7: 複製加入題庫 -->
             <div class="section">
                 <div class="section-title">
-                    <span class="step-number">5</span>
+                    <span class="step-number">7</span>
                     <span>複製加入題庫</span>
                 </div>
                 <div class="info-box" style="background: #e8f4fd; border-left-color: #2196F3;">
@@ -344,10 +366,27 @@
 
     <script>
         let currentFormat = 'notebook';
+        let currentQuestionType = 'multiple'; // 預設選擇題
+        
+        function selectQuestionType(type) {
+            currentQuestionType = type;
+            // 更新題型選項的視覺效果
+            const options = document.querySelectorAll('.format-selector .format-option');
+            options.forEach(opt => {
+                const h3 = opt.querySelector('h3').textContent;
+                if ((type === 'multiple' && h3.includes('選擇題')) ||
+                    (type === 'sorting' && h3.includes('排序題')) ||
+                    (type === 'input' && h3.includes('填空題'))) {
+                    opt.classList.add('active');
+                } else {
+                    opt.classList.remove('active');
+                }
+            });
+        }
         
         function selectFormat(format) {
             currentFormat = format;
-            document.querySelectorAll('.format-option').forEach(el => {
+            document.querySelectorAll('.format-selector:first-of-type .format-option').forEach(el => {
                 el.classList.remove('active');
             });
             event.target.closest('.format-option').classList.add('active');
@@ -487,18 +526,49 @@
                         return;
                     }
 
-                    // 生成選擇題
-                    const question = {
-                        type: "multiple",
-                        question: `「${chinese}」的法文是?`,
-                        options: generateOptions(french),
-                        answer: 0,
-                        frenchText: french,
-                        explanation: `${french} 是「${chinese}」的法文表達。`,
-                        vocabulary: [
-                            { french: french.toLowerCase(), chinese: chinese, pronunciation: "請補充發音" }
-                        ]
-                    };
+                    // 根據選擇的題型生成題目
+                    let question;
+                    
+                    if (currentQuestionType === 'multiple') {
+                        // 選擇題
+                        question = {
+                            type: "multiple",
+                            question: `「${chinese}」的法文是?`,
+                            options: generateOptions(french),
+                            answer: 0,
+                            frenchText: french,
+                            explanation: `${french} 是「${chinese}」的法文表達。`,
+                            vocabulary: [
+                                { french: french.toLowerCase(), chinese: chinese, pronunciation: "請補充發音" }
+                            ]
+                        };
+                    } else if (currentQuestionType === 'sorting') {
+                        // 排序題
+                        const words = french.split(/\s+/); // 用空格分割成單字
+                        question = {
+                            type: "sorting",
+                            question: `請排列以下單字組成「${chinese}」的法文：`,
+                            words: words,
+                            answer: french,
+                            frenchText: french,
+                            explanation: `正確答案是：${french}`,
+                            vocabulary: [
+                                { french: french.toLowerCase(), chinese: chinese, pronunciation: "請補充發音" }
+                            ]
+                        };
+                    } else if (currentQuestionType === 'input') {
+                        // 填空題
+                        question = {
+                            type: "input",
+                            question: `請輸入「${chinese}」的法文：`,
+                            answer: french,
+                            frenchText: french,
+                            explanation: `正確答案是：${french}`,
+                            vocabulary: [
+                                { french: french.toLowerCase(), chinese: chinese, pronunciation: "請補充發音" }
+                            ]
+                        };
+                    }
 
                     questions.push(question);
                 });
@@ -572,29 +642,44 @@
                 'colloquial': 'colloquial'
             };
             
+            const typeNames = {
+                'multiple': '選擇題',
+                'sorting': '排序題',
+                'input': '填空題'
+            };
+            
             // 使用說明（在複製區外）
             let instructions = `📁 請將以下內容貼到: custom_questions/${category}.js\n`;
             instructions += `📝 位置：找到 const ${variableNames[category]} = [ 陣列\n`;
+            instructions += `🎯 題型：${typeNames[currentQuestionType]}\n`;
             instructions += `⚠️ 重要：在「// === 新增的 ${categoryNames[category]} 題目 ===」註解下方貼上\n`;
-            instructions += `⚠️ 記得：如果陣列裡已有題目，在最後一題的 } 後面加逗號！\n`;
-            instructions += `\n========== 👇 從這裡開始複製 👇 ==========\n\n`;
+            instructions += `⚠️ 記得：如果陣列裡已有題目，在最後一題的 } 後面加逗號！\n\n`;
             
             // 題目程式碼（真正要複製的部分）
             let code = '';
             
             questions.forEach((q, index) => {
                 code += `    ,{\n`;
-                code += `        type: "multiple",\n`;
+                code += `        type: "${q.type}",\n`;
                 code += `        question: "${q.question}",\n`;
-                code += `        options: ${JSON.stringify(q.options)},\n`;
-                code += `        answer: "${q.options[q.answer]}",\n`;
+                
+                if (q.type === 'multiple') {
+                    code += `        options: ${JSON.stringify(q.options)},\n`;
+                    code += `        answer: "${q.options[q.answer]}",\n`;
+                } else if (q.type === 'sorting') {
+                    code += `        words: ${JSON.stringify(q.words)},\n`;
+                    code += `        answer: "${q.answer}",\n`;
+                } else if (q.type === 'input') {
+                    code += `        answer: "${q.answer}",\n`;
+                }
+                
                 code += `        frenchText: "${q.frenchText}",\n`;
                 code += `        explanation: "${q.explanation}",\n`;
                 code += `        vocabulary: ${JSON.stringify(q.vocabulary)}\n`;
                 code += `    }\n\n`;
             });
             
-            return instructions + code + '\n========== 👆 複製到這裡 👆 ==========';
+            return instructions + code;
         }
 
         function showStatus(message, type) {
@@ -617,14 +702,12 @@
                 return;
             }
             
-            // 只複製程式碼部分（在兩個分隔線之間）
-            const startMarker = '========== 👇 從這裡開始複製 👇 ==========';
-            const endMarker = '========== 👆 複製到這裡 👆 ==========';
-            const startIndex = text.indexOf(startMarker);
-            const endIndex = text.indexOf(endMarker);
+            // 只複製程式碼部分（跳過說明行）
+            const lines = text.split('\n');
+            const codeStartIndex = lines.findIndex(line => line.trim().startsWith(',{'));
             
-            if (startIndex !== -1 && endIndex !== -1) {
-                text = text.substring(startIndex + startMarker.length, endIndex).trim();
+            if (codeStartIndex !== -1) {
+                text = lines.slice(codeStartIndex).join('\n').trim();
             }
             
             // 取得目標檔案名

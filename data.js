@@ -16,10 +16,20 @@ window.getDayContent = function(day) {
 // 取得自訂題庫內容
 window.getCustomPhrasesContent = function() {
     const customQuestions = window.customQuestions || [];
+    
+    // 隨機打亂題目順序（使用 Fisher-Yates 洗牌演算法）
+    const shuffledQuestions = [...customQuestions]; // 創建副本
+    for (let i = shuffledQuestions.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledQuestions[i], shuffledQuestions[j]] = [shuffledQuestions[j], shuffledQuestions[i]];
+    }
+    
+    console.log(`🔀 已隨機打亂 ${shuffledQuestions.length} 個自訂題目`);
+    
     return {
         title: "必學句型",
-        story: "這裡是你自己新增的法文句子練習!",
-        questions: customQuestions
+        story: "這裡是你自己新增的法文句子練習！題目順序已隨機打亂，每次都不一樣喔！",
+        questions: shuffledQuestions
     };
 };
 

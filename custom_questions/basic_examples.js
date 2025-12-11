@@ -356,6 +356,216 @@ const basicExamples = [
     }
 
     // === 基礎範例 題目結束 ===
+    ,{
+        type: "multiple",
+        question: "「太客氣了！」的法文是?",
+        options: ["C'est très gentil !","J'ai","Comment allez-vous","S'il vous plaît"],
+        answer: "C'est très gentil !",
+        frenchText: "C'est très gentil !",
+        explanation: "C'est très gentil ! 是「太客氣了！」的法文表達。",
+        vocabulary: [{"french":"c'est très gentil !","chinese":"太客氣了！","pronunciation":""}]
+    }
+
+    ,{
+        type: "multiple",
+        question: "「真是超級NICE！」的法文是?",
+        options: ["C'est super sympa !","Bon matin","J'ai","Il est"],
+        answer: "C'est super sympa !",
+        frenchText: "C'est super sympa !",
+        explanation: "C'est super sympa ! 是「真是超級NICE！」的法文表達。",
+        vocabulary: [{"french":"c'est super sympa !","chinese":"真是超級NICE！","pronunciation":""}]
+    }
+
+    ,{
+        type: "multiple",
+        question: "「您實在不必如此！/ 您太破費了！」的法文是?",
+        options: ["Vous n'auriez pas dû !","Oui","Au revoir","Pardon"],
+        answer: "Vous n'auriez pas dû !",
+        frenchText: "Vous n'auriez pas dû !",
+        explanation: "Vous n'auriez pas dû ! 是「您實在不必如此！/ 您太破費了！」的法文表達。",
+        vocabulary: [{"french":"vous n'auriez pas dû !","chinese":"您實在不必如此！/ 您太破費了！","pronunciation":""}]
+    }
+
+    ,{
+        type: "multiple",
+        question: "「我感謝您的邀請。」的法文是?",
+        options: ["Je vous remercie de votre invitation.","Tu es","Ça va","Bonne nuit"],
+        answer: "Je vous remercie de votre invitation.",
+        frenchText: "Je vous remercie de votre invitation.",
+        explanation: "Je vous remercie de votre invitation. 是「我感謝您的邀請。」的法文表達。",
+        vocabulary: [{"french":"je vous remercie de votre invitation.","chinese":"我感謝您的邀請。","pronunciation":""}]
+    }
+
+    ,{
+        type: "multiple",
+        question: "「非常感謝！/ 多謝！」的法文是?",
+        options: ["Merci beaucoup !","Merci","Ça va","Bonjour"],
+        answer: "Merci beaucoup !",
+        frenchText: "Merci beaucoup !",
+        explanation: "Merci beaucoup ! 是「非常感謝！/ 多謝！」的法文表達。",
+        vocabulary: [{"french":"merci beaucoup !","chinese":"非常感謝！/ 多謝！","pronunciation":""}]
+    }
+
+    ,{
+        type: "multiple",
+        question: "「萬分感謝！/ 數不盡的感謝！」的法文是?",
+        options: ["Mille mercis !","Je suis","Bonjour","Bon matin"],
+        answer: "Mille mercis !",
+        frenchText: "Mille mercis !",
+        explanation: "Mille mercis ! 是「萬分感謝！/ 數不盡的感謝！」的法文表達。",
+        vocabulary: [{"french":"mille mercis !","chinese":"萬分感謝！/ 數不盡的感謝！","pronunciation":""}]
+    }
+
+    ,{
+        type: "multiple",
+        question: "「我很感動！/ 我很受用！」的法文是?",
+        options: ["Je suis touché(e) !","Bonne nuit","Non","Bon matin"],
+        answer: "Je suis touché(e) !",
+        frenchText: "Je suis touché(e) !",
+        explanation: "Je suis touché(e) ! 是「我很感動！/ 我很受用！」的法文表達。",
+        vocabulary: [{"french":"je suis touché(e) !","chinese":"我很感動！/ 我很受用！","pronunciation":""}]
+    }
+
+    ,{
+        type: "multiple",
+        question: "「這讓我非常高興！」的法文是?",
+        options: ["Ça me fait très plaisir !","Non","Il est","Bonjour"],
+        answer: "Ça me fait très plaisir !",
+        frenchText: "Ça me fait très plaisir !",
+        explanation: "Ça me fait très plaisir ! 是「這讓我非常高興！」的法文表達。",
+        vocabulary: [{"french":"ça me fait très plaisir !","chinese":"這讓我非常高興！","pronunciation":""}]
+    }
+
+    ,{
+        type: "multiple",
+        question: "「由衷感謝！/ 衷心感謝！」的法文是?",
+        options: ["Merci du fond du cœur !","J'ai","Ça va","Merci"],
+        answer: "Merci du fond du cœur !",
+        frenchText: "Merci du fond du cœur !",
+        explanation: "Merci du fond du cœur ! 是「由衷感謝！/ 衷心感謝！」的法文表達。",
+        vocabulary: [{"french":"merci du fond du cœur !","chinese":"由衷感謝！/ 衷心感謝！","pronunciation":""}]
+    }
+
+    ,{
+        type: "multiple",
+        question: "「我只想睡覺。」的法文是?",
+        options: ["- Je veux juste dormir.","Non","Il est","Je suis"],
+        answer: "- Je veux juste dormir.",
+        frenchText: "- Je veux juste dormir.",
+        explanation: "- Je veux juste dormir. 是「我只想睡覺。」的法文表達。",
+        vocabulary: [{"french":"- je veux juste dormir.","chinese":"我只想睡覺。","pronunciation":""}]
+    }
+
+    ,{
+        type: "multiple",
+        question: "「我只想吃一塊。」的法文是?",
+        options: ["- Je veux juste manger un morceau.","Ça va","Comment allez-vous","Au revoir"],
+        answer: "- Je veux juste manger un morceau.",
+        frenchText: "- Je veux juste manger un morceau.",
+        explanation: "- Je veux juste manger un morceau. 是「我只想吃一塊。」的法文表達。",
+        vocabulary: [{"french":"- je veux juste manger un morceau.","chinese":"我只想吃一塊。","pronunciation":""}]
+    }
+
+    ,{
+        type: "multiple",
+        question: "「我只想安靜一下。」的法文是?",
+        options: ["- Je veux juste être tranquille.","Il est","Excusez-moi","Bonne nuit"],
+        answer: "- Je veux juste être tranquille.",
+        frenchText: "- Je veux juste être tranquille.",
+        explanation: "- Je veux juste être tranquille. 是「我只想安靜一下。」的法文表達。",
+        vocabulary: [{"french":"- je veux juste être tranquille.","chinese":"我只想安靜一下。","pronunciation":""}]
+    }
+
+    ,{
+        type: "multiple",
+        question: "「我就只想和你共度光陰。」的法文是?",
+        options: ["- Je veux juste passer du temps avec toi.","Excusez-moi","Bonjour","Tu es"],
+        answer: "- Je veux juste passer du temps avec toi.",
+        frenchText: "- Je veux juste passer du temps avec toi.",
+        explanation: "- Je veux juste passer du temps avec toi. 是「我就只想和你共度光陰。」的法文表達。",
+        vocabulary: [{"french":"- je veux juste passer du temps avec toi.","chinese":"我就只想和你共度光陰。","pronunciation":""}]
+    }
+
+    ,{
+        type: "multiple",
+        question: "「我只是想知道。」的法文是?",
+        options: ["- Je veux juste comprendre.","Excusez-moi","Bonne nuit","J'ai"],
+        answer: "- Je veux juste comprendre.",
+        frenchText: "- Je veux juste comprendre.",
+        explanation: "- Je veux juste comprendre. 是「我只是想知道。」的法文表達。",
+        vocabulary: [{"french":"- je veux juste comprendre.","chinese":"我只是想知道。","pronunciation":""}]
+    }
+
+    ,{
+        type: "multiple",
+        question: "「我只想嘗試一下。」的法文是?",
+        options: ["- Je veux juste essayer.","Tu es","Non","Ça va"],
+        answer: "- Je veux juste essayer.",
+        frenchText: "- Je veux juste essayer.",
+        explanation: "- Je veux juste essayer. 是「我只想嘗試一下。」的法文表達。",
+        vocabulary: [{"french":"- je veux juste essayer.","chinese":"我只想嘗試一下。","pronunciation":""}]
+    }
+
+    ,{
+        type: "multiple",
+        question: "「我就只想度假。」的法文是?",
+        options: ["- Je veux juste partir en vacances.","Il est","Pardon","S'il vous plaît"],
+        answer: "- Je veux juste partir en vacances.",
+        frenchText: "- Je veux juste partir en vacances.",
+        explanation: "- Je veux juste partir en vacances. 是「我就只想度假。」的法文表達。",
+        vocabulary: [{"french":"- je veux juste partir en vacances.","chinese":"我就只想度假。","pronunciation":""}]
+    }
+
+    ,{
+        type: "multiple",
+        question: "「我只想對你說謝謝。」的法文是?",
+        options: ["- Je veux juste te dire merci.","Non","Je suis","Bonne nuit"],
+        answer: "- Je veux juste te dire merci.",
+        frenchText: "- Je veux juste te dire merci.",
+        explanation: "- Je veux juste te dire merci. 是「我只想對你說謝謝。」的法文表達。",
+        vocabulary: [{"french":"- je veux juste te dire merci.","chinese":"我只想對你說謝謝。","pronunciation":""}]
+    }
+
+    ,{
+        type: "multiple",
+        question: "「我只想忘記。」的法文是?",
+        options: ["- Je veux juste oublier.","Ça va","Merci","Il est"],
+        answer: "- Je veux juste oublier.",
+        frenchText: "- Je veux juste oublier.",
+        explanation: "- Je veux juste oublier. 是「我只想忘記。」的法文表達。",
+        vocabulary: [{"french":"- je veux juste oublier.","chinese":"我只想忘記。","pronunciation":""}]
+    }
+
+    ,{
+        type: "multiple",
+        question: "「我只想要快樂。」的法文是?",
+        options: ["- Je veux juste être heureux.","Au revoir","Non","Comment allez-vous"],
+        answer: "- Je veux juste être heureux.",
+        frenchText: "- Je veux juste être heureux.",
+        explanation: "- Je veux juste être heureux. 是「我只想要快樂。」的法文表達。",
+        vocabulary: [{"french":"- je veux juste être heureux.","chinese":"我只想要快樂。","pronunciation":""}]
+    }
+
+    ,{
+        type: "multiple",
+        question: "「我只想喝杯咖啡。」的法文是?",
+        options: ["- Je veux juste boire un café.","Comment allez-vous","J'ai","Bonne nuit"],
+        answer: "- Je veux juste boire un café.",
+        frenchText: "- Je veux juste boire un café.",
+        explanation: "- Je veux juste boire un café. 是「我只想喝杯咖啡。」的法文表達。",
+        vocabulary: [{"french":"- je veux juste boire un café.","chinese":"我只想喝杯咖啡。","pronunciation":""}]
+    }
+
+    ,{
+        type: "multiple",
+        question: "「我只想跟你說件事 : 我愛你。」的法文是?",
+        options: ["- Je veux juste te dire une chose : je t’aime.","Tu es","Je suis","Ça va"],
+        answer: "- Je veux juste te dire une chose : je t’aime.",
+        frenchText: "- Je veux juste te dire une chose : je t’aime.",
+        explanation: "- Je veux juste te dire une chose : je t’aime. 是「我只想跟你說件事 : 我愛你。」的法文表達。",
+        vocabulary: [{"french":"- je veux juste te dire une chose : je t’aime.","chinese":"我只想跟你說件事 : 我愛你。","pronunciation":""}]
+    }
+
 ];
 
 // 匯出
