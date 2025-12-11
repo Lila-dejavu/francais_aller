@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>測試自訂題目載入</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
+        .success { color: green; }
+        .error { color: red; }
+        pre { background: #f5f5f5; padding: 10px; border-radius: 5px; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>🔍 自訂題目載入測試</h1>
+    
+    <div id="status">載入中...</div>
+    
+    <h2>控制台日誌：</h2>
+    <pre id="console"></pre>
+    
+    <h2>題目內容：</h2>
+    <button onclick="showQuestions()">顯示所有題目</button>
+    <button onclick="showByCategory()">按分類顯示</button>
+    <pre id="questions"></pre>
+
+    <!-- 載入所有題目檔案 -->
+    <script src="custom_questions/basic_examples.js"></script>
+    <script src="custom_questions/intentions.js"></script>
+    <script src="custom_questions/effects.js"></script>
+    <script src="custom_questions/laziness.js"></script>
+    <script src="custom_questions/colloquial.js"></script>
+    <script src="custom_questions/emotions.js"></script>
+    <script src="custom_questions_loader.js"></script>
+    
+    <script>
+        const logs = [];
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalTable = console.table;
+        
+        console.log = function(...args) {
+            logs.push('[LOG] ' + args.join(' '));
+            originalLog.apply(console, args);
+            updateConsole();
+        };
+        
+        console.error = function(...args) {
+            logs.push('[ERROR] ' + args.join(' '));
+            originalError.apply(console, args);
+            updateConsole();
+        };
+        
+        console.table = function(data) {
+            logs.push('[TABLE] ' + JSON.stringify(data, null, 2));
+            originalTable.apply(console, arguments);
+            updateConsole();
+        };
+        
+        function updateConsole() {
+            document.getElementById('console').textContent = logs.join('\n');
+        }
+        
+        function checkStatus() {
+            const status = document.getElementById('status');
+            
+            if (typeof window.customQuestions !== 'undefined' && window.customQuestions.length > 0) {
+                status.innerHTML = `<span class="success">✅ 成功載入 ${window.customQuestions.length} 個題目！</span>`;
+            } else {
+                status.innerHTML = `<span class="error">❌ 尚未載入題目或題目為空</span>`;
+            }
+        }
+        
+        function showQuestions() {
+            const questionsDiv = document.getElementById('questions');
+            if (window.customQuestions) {
+                questionsDiv.textContent = JSON.stringify(window.customQuestions, null, 2);
+            } else {
+                questionsDiv.textContent = '❌ window.customQuestions 不存在';
+            }
+        }
+        
+        function showByCategory() {
+            const questionsDiv = document.getElementById('questions');
+            const categories = {
+                '基礎範例': window.basicExamples,
+                '意願表達': window.intentions,
+                '影響與改變': window.effects,
+                '懶散表達': window.laziness,
+                '口語俚語': window.colloquial,
+                '情感與反應': window.emotions
+            };
+            
+            let output = '';
+            for (const [name, data] of Object.entries(categories)) {
+                output += `\n=== ${name} ===\n`;
+                output += `題目數: ${data?.length || 0}\n`;
+                if (data && data.length > 0) {
+                    output += `第一題: ${data[0].question}\n`;
+                }
+            }
+            questionsDiv.textContent = output;
+        }
+        
+        // 定期檢查狀態
+        setInterval(checkStatus, 500);
+        
+        // 監聽自訂題目載入事件
+        window.addEventListener('customQuestionsLoaded', () => {
+            console.log('🎉 收到 customQuestionsLoaded 事件！');
+            checkStatus();
+        });
+    </script>
+</body>
+</html>

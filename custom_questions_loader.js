@@ -62,22 +62,53 @@ function loadAllQuestions() {
 
 // 設定為全域變數供遊戲使用
 if (typeof window !== 'undefined') {
-    // 延遲載入，確保所有分類檔案都已載入
-    window.addEventListener('DOMContentLoaded', () => {
-        window.customQuestions = loadAllQuestions();
-        console.log(`✅ 已載入 ${window.customQuestions.length} 個自訂題目`);
+    // 立即嘗試載入（如果檔案已載入）
+    function tryLoadQuestions() {
+        const questions = loadAllQuestions();
+        console.log('🔍 嘗試載入自訂題目...', {
+            '基礎範例': typeof window.basicExamples !== 'undefined',
+            '意願表達': typeof window.intentions !== 'undefined',
+            '影響與改變': typeof window.effects !== 'undefined',
+            '懶散表達': typeof window.laziness !== 'undefined',
+            '口語俚語': typeof window.colloquial !== 'undefined',
+            '情感與反應': typeof window.emotions !== 'undefined',
+            '總題數': questions.length
+        });
         
-        // 列出各分類題數
-        const counts = {
-            '基礎範例': window.basicExamples?.length || 0,
-            '意願表達': window.intentions?.length || 0,
-            '影響與改變': window.effects?.length || 0,
-            '懶散表達': window.laziness?.length || 0,
-            '口語俚語': window.colloquial?.length || 0,
-            '情感與反應': window.emotions?.length || 0
-        };
-        console.table(counts);
-    });
+        if (questions.length > 0) {
+            window.customQuestions = questions;
+            console.log(`✅ 已載入 ${window.customQuestions.length} 個自訂題目`);
+            
+            // 列出各分類題數
+            const counts = {
+                '基礎範例': window.basicExamples?.length || 0,
+                '意願表達': window.intentions?.length || 0,
+                '影響與改變': window.effects?.length || 0,
+                '懶散表達': window.laziness?.length || 0,
+                '口語俚語': window.colloquial?.length || 0,
+                '情感與反應': window.emotions?.length || 0
+            };
+            console.table(counts);
+            
+            // 觸發自訂事件通知遊戲
+            window.dispatchEvent(new Event('customQuestionsLoaded'));
+            return true;
+        } else {
+            console.warn('⚠️ 沒有載入到任何自訂題目');
+        }
+        return false;
+    }
+    
+    // 立即嘗試載入
+    const loaded = tryLoadQuestions();
+    if (!loaded) {
+        console.log('📝 等待 DOMContentLoaded 事件...');
+        // 如果還沒載入，在 DOMContentLoaded 時再試
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log('📝 DOMContentLoaded 觸發，再次嘗試載入...');
+            tryLoadQuestions();
+        });
+    }
 }
 
 // Node.js 環境支援

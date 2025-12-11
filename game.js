@@ -145,17 +145,17 @@ class FrenchDiaryGame {
     // 初始化UI
     initializeUI() {
         console.log('🎬 初始化UI...');
-        console.log('完成天数:', this.completedDays.length);
-        console.log('当前天数:', this.currentDay);
+        console.log('完成天數:', this.completedDays.length);
+        console.log('當前天數:', this.currentDay);
         
         this.updateStats();
-        console.log('✅ 统计更新完成');
+        console.log('✅ 統計更新完成');
         
         this.renderDiaryList();
-        console.log('✅ 日记列表渲染完成');
+        console.log('✅ 日記列表渲染完成');
         
         this.initializeCustomPhrases();
-        console.log('✅ 自定义句型初始化完成');
+        console.log('✅ 自訂句型初始化完成');
         
         // 如果有進度，顯示繼續按鈕
         if (this.completedDays.length > 0) {
@@ -167,14 +167,37 @@ class FrenchDiaryGame {
     // 初始化自訂句型按鈕
     initializeCustomPhrases() {
         const customPhrasesBtn = document.getElementById('customPhrasesBtn');
+        if (!customPhrasesBtn) {
+            console.error('❌ 找不到自訂句型按鈕元素');
+            return;
+        }
+        
         const hasCustomQuestions = typeof window.customQuestions !== 'undefined' && 
+                                   window.customQuestions && 
                                    window.customQuestions.length > 0;
+        
+        console.log('🔍 檢查自訂題目:', {
+            '是否存在': typeof window.customQuestions !== 'undefined',
+            '題目數量': window.customQuestions?.length || 0,
+            '將顯示按鈕': hasCustomQuestions
+        });
         
         if (hasCustomQuestions) {
             customPhrasesBtn.style.display = 'block';
-            customPhrasesBtn.querySelector('.phrases-button').addEventListener('click', () => {
-                this.startCustomPhrases();
-            });
+            const button = customPhrasesBtn.querySelector('.phrases-button');
+            if (button) {
+                // 移除舊的事件監聽器（如果有）
+                const newButton = button.cloneNode(true);
+                button.parentNode.replaceChild(newButton, button);
+                // 添加新的事件監聽器
+                newButton.addEventListener('click', () => {
+                    this.startCustomPhrases();
+                });
+                console.log('✅ 自訂句型按鈕已啟用');
+            }
+        } else {
+            customPhrasesBtn.style.display = 'none';
+            console.log('ℹ️ 沒有自訂題目，按鈕已隱藏');
         }
     }
 
@@ -1027,10 +1050,10 @@ class FrenchDiaryGame {
 
     // 渲染日記列表
     renderDiaryList() {
-        console.log('📚 开始渲染日记列表...');
+        console.log('📚 開始渲染日記列表...');
         const listContainer = document.getElementById('diaryList');
         if (!listContainer) {
-            console.error('❌ 找不到日记列表容器 #diaryList');
+            console.error('❌ 找不到日記列表容器 #diaryList');
             return;
         }
         listContainer.innerHTML = '';
@@ -1038,7 +1061,7 @@ class FrenchDiaryGame {
         // 計算可解鎖的最大天數：已完成天數 + 1
         const maxUnlockedDay = this.completedDays.length + 1;
         const totalDays = Math.min(maxUnlockedDay + 2, 365);
-        console.log(`📚 将渲染第1-${totalDays}天 (maxUnlockedDay: ${maxUnlockedDay})`);
+        console.log(`📚 將渲染第1-${totalDays}天 (maxUnlockedDay: ${maxUnlockedDay})`);
         
         for (let i = 1; i <= totalDays; i++) {
             const completed = this.completedDays.find(d => d.day === i);
@@ -1074,7 +1097,7 @@ class FrenchDiaryGame {
             
             listContainer.appendChild(item);
         }
-        console.log('📚 日记列表渲染完成！');
+        console.log('📚 日記列表渲染完成！');
     }
 
     // 取得天數標題
@@ -1248,4 +1271,12 @@ class FrenchDiaryGame {
 // 初始化遊戲
 document.addEventListener('DOMContentLoaded', () => {
     window.game = new FrenchDiaryGame();
+    
+    // 監聽自訂題目載入事件
+    window.addEventListener('customQuestionsLoaded', () => {
+        console.log('🔄 自訂題目已載入，重新初始化按鈕');
+        if (window.game) {
+            window.game.initializeCustomPhrases();
+        }
+    });
 });
