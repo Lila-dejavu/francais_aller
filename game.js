@@ -9,6 +9,10 @@ class VoiceManager {
         this.autoPlay = true;
         this.rate = 0.9; // 語速
         this.pitch = 1; // 音調
+        this.voicesLoaded = false;
+        
+        // 先嘗試取得語音來觸發載入
+        this.synth.getVoices();
         
         this.initVoices();
     }
@@ -20,8 +24,11 @@ class VoiceManager {
             
             if (this.voices.length === 0) {
                 console.warn('⚠️ 語音尚未載入，稍後重試...');
-                return;
+                this.voicesLoaded = false;
+                return false;
             }
+            
+            this.voicesLoaded = true;
             
             // 尋找法文語音
             this.frenchVoice = this.voices.find(voice => 
@@ -32,47 +39,78 @@ class VoiceManager {
             
             console.log('✅ 可用語音:', this.voices.length);
             console.log('✅ 選擇的法文語音:', this.frenchVoice?.name, this.frenchVoice?.lang);
+            
+            // 列出所有法文語音
+            const frenchVoices = this.voices.filter(v => v.lang.includes('fr'));
+            if (frenchVoices.length > 0) {
+                console.log('📋 所有法文語音:', frenchVoices.map(v => `${v.name} (${v.lang})`).join(', '));
+            }
+            
+            return true;
         };
         
+        // 立即嘗試載入
         loadVoices();
         
-        // 某些瀏覽器需要等待語音載入
+        // 某些瀏覽器需要等待語音載入事件
         if (this.synth.onvoiceschanged !== undefined) {
-            this.synth.onvoiceschanged = loadVoices;
+            this.synth.onvoiceschanged = () => {
+                console.log('🔄 語音列表已更新');
+                loadVoices();
+            };
         }
         
-        // 延遲重試載入（某些瀏覽器需要時間）
-        setTimeout(() => {
-            if (this.voices.length === 0) {
-                console.log('🔄 延遲重新載入語音...');
-                loadVoices();
-            }
-        }, 1000);
+        // 多次重試載入（某些瀏覽器需要時間）
+        const retryIntervals = [500, 1000, 2000, 3000];
+        retryIntervals.forEach(delay => {
+            setTimeout(() => {
+                if (!this.voicesLoaded) {
+                    console.log(`🔄 ${delay}ms後重試載入語音...`);
+                    loadVoices();
+                }
+            }, delay);
+        });
     }
     
     speak(text, options = {}) {
-        // 停止當前播放
-        this.synth.cancel();
-        
         if (!text) {
             console.warn('⚠️ 沒有文字需要朗讀');
             return;
         }
         
-        // 檢查語音是否已載入
+        // 強制重新載入語音列表（解決某些瀏覽器的問題）
         if (this.voices.length === 0) {
-            console.warn('⚠️ 語音尚未載入，嘗試重新載入...');
-            this.initVoices();
-            // 等待語音載入後再試
+            this.voices = this.synth.getVoices();
+            if (this.voices.length > 0 && !this.frenchVoice) {
+                this.frenchVoice = this.voices.find(voice => 
+                    voice.lang.startsWith('fr') || voice.lang === 'fr-FR'
+                ) || this.voices.find(voice => 
+                    voice.lang.includes('fr')
+                ) || this.voices[0];
+                console.log('🔄 即時載入語音:', this.voices.length, '個，使用:', this.frenchVoice?.name);
+            }
+        }
+        
+        // 如果還是沒有語音，延遲重試
+        if (this.voices.length === 0) {
+            console.warn('⚠️ 語音尚未載入，1秒後重試...');
             setTimeout(() => {
+                this.voices = this.synth.getVoices();
                 if (this.voices.length > 0) {
+                    console.log('✅ 延遲載入成功，現在播放');
                     this.speak(text, options);
                 } else {
-                    console.error('❌ 無法載入語音');
+                    console.error('❌ 無法載入語音。可能需要：');
+                    console.error('   1. 重新整理頁面');
+                    console.error('   2. 檢查瀏覽器是否支援語音');
+                    console.error('   3. 確認系統已安裝語音包');
                 }
-            }, 500);
+            }, 1000);
             return;
         }
+        
+        // 停止當前播放
+        this.synth.cancel();
         
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.voice = this.frenchVoice;
@@ -93,17 +131,25 @@ class VoiceManager {
         utterance.onerror = (event) => {
             console.error('❌ 語音錯誤:', event.error, event);
             if (event.error === 'not-allowed') {
-                console.error('❌ 語音被瀏覽器阻止。請確保使用者已與頁面互動。');
+                console.error('💡 提示：某些瀏覽器需要使用者互動才能播放語音');
+            } else if (event.error === 'synthesis-failed') {
+                console.error('💡 提示：語音合成失敗，可能需要重新整理頁面');
             }
         };
         
-        console.log('📢 準備朗讀:', text, '使用語音:', this.frenchVoice?.name);
+        console.log('📢 準備朗讀:', text.substring(0, 30) + (text.length > 30 ? '...' : ''));
+        console.log('   使用語音:', this.frenchVoice?.name || '預設');
+        console.log('   語音數量:', this.voices.length);
+        
         this.synth.speak(utterance);
         
         // 檢查是否真的在播放
         setTimeout(() => {
             if (!this.synth.speaking && !this.synth.pending) {
-                console.warn('⚠️ 語音可能未能播放。請檢查瀏覽器權限。');
+                console.warn('⚠️ 語音可能未能播放。嘗試的解決方法：');
+                console.warn('   1. 點擊頁面任何地方後再試');
+                console.warn('   2. 檢查瀏覽器是否允許自動播放');
+                console.warn('   3. 確認系統音量已開啟');
             }
         }, 100);
     }
@@ -1298,10 +1344,27 @@ class FrenchDiaryGame {
     
     // 啟用語音功能（需要使用者互動）
     enableVoice() {
+        // 強制取得語音列表
+        const voices = this.voiceManager.synth.getVoices();
+        console.log('🔄 使用者互動：強制載入語音，數量:', voices.length);
+        
+        if (voices.length > 0) {
+            this.voiceManager.voices = voices;
+            this.voiceManager.frenchVoice = voices.find(v => 
+                v.lang.startsWith('fr') || v.lang === 'fr-FR'
+            ) || voices.find(v => 
+                v.lang.includes('fr')
+            ) || voices[0];
+            this.voiceManager.voicesLoaded = true;
+            console.log('✅ 語音已載入:', this.voiceManager.frenchVoice?.name);
+        }
+        
         // 播放一個靜音來啟用語音功能（某些瀏覽器需要）
-        const utterance = new SpeechSynthesisUtterance('');
-        utterance.volume = 0;
+        const utterance = new SpeechSynthesisUtterance(' ');
+        utterance.volume = 0.01;
+        utterance.rate = 10;
         this.voiceManager.synth.speak(utterance);
+        
         console.log('✅ 語音功能已啟用');
     }
     
@@ -1360,6 +1423,135 @@ class FrenchDiaryGame {
             }, 300);
         }, 2000);
     }
+}
+
+// 測試語音功能
+window.testVoice = function() {
+    const statusEl = document.getElementById('voiceStatus');
+    const synth = window.speechSynthesis;
+    
+    // 先停止所有播放
+    synth.cancel();
+    
+    console.log('🧪 ========== 語音診斷開始 ==========');
+    console.log('✓ 瀏覽器支援:', 'speechSynthesis' in window ? '是' : '否');
+    
+    // 強制取得語音（多次嘗試）
+    let voices = synth.getVoices();
+    console.log('✓ 第一次取得語音數量:', voices.length);
+    
+    if (voices.length === 0) {
+        console.log('⚠️ 語音未載入，等待 500ms 後重試...');
+        statusEl.innerHTML = '<span style="color: #f39c12;">⏳ 正在載入語音...</span>';
+        
+        setTimeout(() => {
+            voices = synth.getVoices();
+            console.log('✓ 第二次取得語音數量:', voices.length);
+            
+            if (voices.length === 0) {
+                statusEl.innerHTML = '<span style="color: #e74c3c;">❌ 語音載入失敗！<a href="voice_test.html" target="_blank" style="color:#3498db;">開啟詳細測試</a></span>';
+                console.error('❌ 語音載入失敗');
+                console.log('💡 可能原因：');
+                console.log('   1. 瀏覽器版本過舊');
+                console.log('   2. 系統未安裝語音包');
+                console.log('   3. 需要重新啟動瀏覽器');
+                return;
+            }
+            
+            // 成功載入，執行播放
+            testPlay(voices, statusEl, synth);
+        }, 500);
+        return;
+    }
+    
+    // 直接播放
+    testPlay(voices, statusEl, synth);
+};
+
+function testPlay(voices, statusEl, synth) {
+    const frenchVoices = voices.filter(v => v.lang.includes('fr'));
+    const frenchVoice = voices.find(v => v.lang === 'fr-FR') ||
+                        voices.find(v => v.lang.startsWith('fr-')) ||
+                        voices.find(v => v.lang.includes('fr')) || 
+                        voices[0];
+    
+    console.log('✓ 總語音數量:', voices.length);
+    console.log('✓ 法文語音數量:', frenchVoices.length);
+    console.log('✓ 選擇的語音:', frenchVoice?.name || '無', '(' + (frenchVoice?.lang || '無') + ')');
+    
+    if (frenchVoices.length > 0) {
+        console.log('✓ 可用的法文語音:');
+        frenchVoices.forEach((v, i) => {
+            console.log(`   ${i + 1}. ${v.name} (${v.lang})`);
+        });
+    }
+    
+    statusEl.innerHTML = '<span style="color: #3498db;">🔊 準備播放...</span>';
+    
+    const testText = 'Bonjour! Comment allez-vous?';
+    const utterance = new SpeechSynthesisUtterance(testText);
+    utterance.voice = frenchVoice;
+    utterance.lang = 'fr-FR';
+    utterance.rate = 0.85;
+    utterance.pitch = 1;
+    utterance.volume = 1;
+    
+    let started = false;
+    
+    utterance.onstart = () => {
+        started = true;
+        statusEl.innerHTML = '<span style="color: #27ae60;">🔊 正在播放：' + testText + '</span>';
+        console.log('✅ 開始播放:', testText);
+    };
+    
+    utterance.onend = () => {
+        statusEl.innerHTML = '<span style="color: #27ae60;">✅ 語音功能正常！遊戲中的朗讀也應該正常了</span>';
+        console.log('✅ 播放完成');
+        console.log('=========================================');
+        setTimeout(() => {
+            statusEl.innerHTML = '';
+        }, 5000);
+    };
+    
+    utterance.onerror = (e) => {
+        statusEl.innerHTML = '<span style="color: #e74c3c;">❌ 播放錯誤: ' + e.error + '</span>';
+        console.error('❌ 播放錯誤:', e.error, e);
+        
+        if (e.error === 'not-allowed') {
+            console.error('💡 瀏覽器阻止了語音播放（需要使用者互動）');
+            console.log('   解決方法：再次點擊測試按鈕');
+        } else if (e.error === 'synthesis-failed') {
+            console.error('💡 語音合成失敗');
+            console.log('   解決方法：');
+            console.log('   1. 重新整理頁面');
+            console.log('   2. 檢查系統是否安裝語音包');
+        } else if (e.error === 'audio-busy') {
+            console.error('💡 音訊設備忙碌中');
+            console.log('   解決方法：等待幾秒後再試');
+        }
+        console.log('=========================================');
+    };
+    
+    console.log('📢 發送播放指令...');
+    synth.speak(utterance);
+    
+    // 檢查播放狀態
+    setTimeout(() => {
+        console.log('✓ 檢查播放狀態:');
+        console.log('   speaking:', synth.speaking);
+        console.log('   pending:', synth.pending);
+        console.log('   paused:', synth.paused);
+        
+        if (!started && !synth.speaking && !synth.pending) {
+            statusEl.innerHTML = '<span style="color: #e74c3c;">⚠️ 語音未能播放。請按 F12 查看控制台詳細資訊</span>';
+            console.warn('⚠️ 語音指令已發送但未開始播放');
+            console.log('💡 常見原因：');
+            console.log('   1. 瀏覽器自動播放政策（需多次點擊）');
+            console.log('   2. 語音引擎問題（嘗試重啟瀏覽器）');
+            console.log('   3. 系統音訊問題（檢查其他應用是否有聲音）');
+            console.log('=========================================');
+        }
+    }, 300);
 }
 
 // 初始化遊戲

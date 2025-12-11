@@ -204,13 +204,28 @@
             synth.onvoiceschanged = loadVoices;
         }
 
-        // 等待一秒後再次嘗試載入
-        setTimeout(() => {
-            if (voices.length === 0) {
-                console.log('延遲載入語音...');
+        // 多次重試載入
+        const retryLoad = (attempt, maxAttempts) => {
+            setTimeout(() => {
+                if (voices.length === 0 && attempt < maxAttempts) {
+                    console.log(`第 ${attempt + 1} 次延遲載入語音...`);
+                    loadVoices();
+                    retryLoad(attempt + 1, maxAttempts);
+                }
+            }, 1000 * attempt);
+        };
+        
+        retryLoad(1, 5);
+        
+        // 使用者點擊時強制載入
+        document.addEventListener('click', function forceLoadOnce() {
+            const newVoices = synth.getVoices();
+            if (newVoices.length > voices.length) {
+                console.log('✅ 點擊後載入成功！');
                 loadVoices();
+                document.removeEventListener('click', forceLoadOnce);
             }
-        }, 1000);
+        }, { once: false });
     </script>
 </body>
 </html>
