@@ -1027,13 +1027,20 @@ class FrenchDiaryGame {
 
     // 渲染日記列表
     renderDiaryList() {
+        console.log('📚 开始渲染日记列表...');
         const listContainer = document.getElementById('diaryList');
+        if (!listContainer) {
+            console.error('❌ 找不到日记列表容器 #diaryList');
+            return;
+        }
         listContainer.innerHTML = '';
         
         // 計算可解鎖的最大天數：已完成天數 + 1
         const maxUnlockedDay = this.completedDays.length + 1;
+        const totalDays = Math.min(maxUnlockedDay + 2, 365);
+        console.log(`📚 将渲染第1-${totalDays}天 (maxUnlockedDay: ${maxUnlockedDay})`);
         
-        for (let i = 1; i <= Math.min(maxUnlockedDay + 2, 365); i++) {
+        for (let i = 1; i <= totalDays; i++) {
             const completed = this.completedDays.find(d => d.day === i);
             const isLocked = i > maxUnlockedDay;
             const isCurrent = i === this.currentDay;
@@ -1043,13 +1050,16 @@ class FrenchDiaryGame {
             item.dataset.day = i;
             item.dataset.status = isLocked ? 'locked' : completed ? 'completed' : 'available';
             
+            const dayTitle = this.getDayTitle(i);
+            console.log(`  第${i}天: ${dayTitle} (${item.dataset.status})`);
+            
             item.innerHTML = `
                 <div class="diary-item-header">
                     <span class="diary-day">第${i}天</span>
                     ${completed ? `<span class="diary-stars">${'⭐'.repeat(completed.stars)}</span>` : ''}
                     ${isLocked ? '<span class="diary-lock">🔒</span>' : ''}
                 </div>
-                <div class="diary-item-title">${this.getDayTitle(i)}</div>
+                <div class="diary-item-title">${dayTitle}</div>
             `;
             
             if (!isLocked) {
@@ -1064,6 +1074,7 @@ class FrenchDiaryGame {
             
             listContainer.appendChild(item);
         }
+        console.log('📚 日记列表渲染完成！');
     }
 
     // 取得天數標題
