@@ -563,7 +563,24 @@
                 'colloquial': '口語俚語'
             };
             
-            let code = `\n    // === 新增的 ${categoryNames[category]} 題目 ===\n`;
+            const variableNames = {
+                'basic_examples': 'basicExamples',
+                'emotions': 'emotions',
+                'intentions': 'intentions',
+                'effects': 'effects',
+                'laziness': 'laziness',
+                'colloquial': 'colloquial'
+            };
+            
+            // 使用說明（在複製區外）
+            let instructions = `📁 請將以下內容貼到: custom_questions/${category}.js\n`;
+            instructions += `📝 位置：找到 const ${variableNames[category]} = [ 陣列\n`;
+            instructions += `⚠️ 重要：在「// === 新增的 ${categoryNames[category]} 題目 ===」註解下方貼上\n`;
+            instructions += `⚠️ 記得：如果陣列裡已有題目，在最後一題的 } 後面加逗號！\n`;
+            instructions += `\n========== 👇 從這裡開始複製 👇 ==========\n\n`;
+            
+            // 題目程式碼（真正要複製的部分）
+            let code = '';
             
             questions.forEach((q, index) => {
                 code += `    ,{\n`;
@@ -573,17 +590,11 @@
                 code += `        answer: "${q.options[q.answer]}",\n`;
                 code += `        frenchText: "${q.frenchText}",\n`;
                 code += `        explanation: "${q.explanation}",\n`;
-                // 輸出 vocabulary 為結構化 JSON（陣列或物件），保留 pronunciation 欄位
                 code += `        vocabulary: ${JSON.stringify(q.vocabulary)}\n`;
                 code += `    }\n\n`;
             });
             
-            code += `    // === ${categoryNames[category]} 題目結束 ===\n`;
-            code += `\n📁 請將以上內容貼到: custom_questions/${category}.js\n`;
-            code += `📝 貼在 const ${category === 'basic_examples' ? 'basicExamples' : category} = [ 的陣列中\n`;
-            code += `⚠️ 記得在上一題後面加逗號！\n`;
-            
-            return code;
+            return instructions + code + '\n========== 👆 複製到這裡 👆 ==========';
         }
 
         function showStatus(message, type) {
@@ -599,25 +610,38 @@
 
         function copyResult() {
             const resultBox = document.getElementById('resultBox');
-            const text = resultBox.textContent;
+            let text = resultBox.textContent;
             
             if (!text || text === '轉換結果會顯示在這裡...') {
                 showStatus('❌ 請先轉換題目!', 'error');
                 return;
             }
             
+            // 只複製程式碼部分（在兩個分隔線之間）
+            const startMarker = '========== 👇 從這裡開始複製 👇 ==========';
+            const endMarker = '========== 👆 複製到這裡 👆 ==========';
+            const startIndex = text.indexOf(startMarker);
+            const endIndex = text.indexOf(endMarker);
+            
+            if (startIndex !== -1 && endIndex !== -1) {
+                text = text.substring(startIndex + startMarker.length, endIndex).trim();
+            }
+            
+            // 取得目標檔案名
+            const targetFile = document.getElementById('targetFileName').textContent;
+            
             navigator.clipboard.writeText(text).then(() => {
                 const successBox = document.getElementById('successBox');
                 successBox.innerHTML = `
-                    ✅ <strong>已複製到剪貼簿！</strong><br>
+                    ✅ <strong>已複製程式碼到剪貼簿！</strong><br>
                     <span style="font-size: 0.95em;">
                     📝 <strong>下一步：</strong><br>
-                    1. 打開 <code>custom_questions.js</code><br>
-                    2. 找到 <strong style="color: #667eea;">「📝 新題目貼上區（安全區域）」</strong><br>
-                    3. 在標示 <code>// ← 在這一行按 Ctrl+V 貼上新題目</code> 的那一行<br>
-                    4. 按 <kbd>Ctrl+V</kbd> 貼上 → 完成！<br>
+                    1. 打開 <code>${targetFile}</code><br>
+                    2. 找到 <strong style="color: #667eea;">「=== 新增的 XXX 題目 ===」</strong> 這一行<br>
+                    3. 在這行<strong>下方</strong>按 <kbd>Ctrl+V</kbd> 貼上<br>
+                    4. 完成！記得存檔<br>
                     <br>
-                    ⚠️ <strong>只在指定區域貼上，不會影響其他題目</strong>
+                    ⚠️ <strong>注意：如果陣列裡已有其他題目，記得在上一題的 } 後面加逗號</strong>
                     </span>
                 `;
                 successBox.style.display = 'block';
@@ -625,7 +649,7 @@
                 
                 setTimeout(() => {
                     successBox.style.display = 'none';
-                }, 8000);
+                }, 10000);
             }).catch(err => {
                 showStatus('❌ 複製失敗: ' + err, 'error');
             });
