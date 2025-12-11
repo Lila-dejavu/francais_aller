@@ -144,14 +144,24 @@ class FrenchDiaryGame {
 
     // 初始化UI
     initializeUI() {
+        console.log('🎬 初始化UI...');
+        console.log('完成天数:', this.completedDays.length);
+        console.log('当前天数:', this.currentDay);
+        
         this.updateStats();
+        console.log('✅ 统计更新完成');
+        
         this.renderDiaryList();
+        console.log('✅ 日记列表渲染完成');
+        
         this.initializeCustomPhrases();
+        console.log('✅ 自定义句型初始化完成');
         
         // 如果有進度，顯示繼續按鈕
         if (this.completedDays.length > 0) {
             document.getElementById('continueBtn').style.display = 'block';
         }
+        console.log('🎬 UI初始化完成！');
     }
 
     // 初始化自訂句型按鈕
@@ -266,8 +276,23 @@ class FrenchDiaryGame {
 
     // 開始指定天數
     startDay(day) {
+        console.log('🎮 開始第', day, '天');
         this.currentDay = day;
         this.currentDayData = this.getDayData(day);
+        
+        if (!this.currentDayData) {
+            console.error('❌ 無法載入第', day, '天的數據！');
+            alert(`無法載入第${day}天的內容，請檢查數據檔案。`);
+            return;
+        }
+        
+        if (!this.currentDayData.questions || this.currentDayData.questions.length === 0) {
+            console.error('❌ 第', day, '天沒有題目！');
+            alert(`第${day}天沒有題目，請檢查數據檔案。`);
+            return;
+        }
+        
+        console.log('✅ 成功載入第', day, '天:', this.currentDayData.title);
         
         // 檢查是否有未完成的進度
         const saved = localStorage.getItem('frenchDiary365');
@@ -314,8 +339,18 @@ class FrenchDiaryGame {
 
     // 取得當天數據
     getDayData(day) {
-        // 從data.js取得數據
-        return window.getDayContent(day);
+        try {
+            // 從data.js取得數據
+            const data = window.getDayContent(day);
+            if (!data) {
+                console.error(`第${day}天的數據不存在`);
+                return null;
+            }
+            return data;
+        } catch (error) {
+            console.error(`載入第${day}天數據時發生錯誤:`, error);
+            return null;
+        }
     }
 
     // 更新關卡標題
@@ -1033,8 +1068,16 @@ class FrenchDiaryGame {
 
     // 取得天數標題
     getDayTitle(day) {
-        const data = this.getDayData(day);
-        return data.title;
+        try {
+            const data = this.getDayData(day);
+            if (data && data.title) {
+                return data.title;
+            }
+            return `第${day}天`; // 預設標題
+        } catch (error) {
+            console.error('無法取得天數標題:', day, error);
+            return `第${day}天`; // 預設標題
+        }
     }
 
     // 篩選日記列表
