@@ -17,6 +17,12 @@ class VoiceManager {
         // 載入可用的語音
         const loadVoices = () => {
             this.voices = this.synth.getVoices();
+            
+            if (this.voices.length === 0) {
+                console.warn('⚠️ 語音尚未載入，稍後重試...');
+                return;
+            }
+            
             // 尋找法文語音
             this.frenchVoice = this.voices.find(voice => 
                 voice.lang.startsWith('fr') || voice.lang === 'fr-FR'
@@ -24,8 +30,8 @@ class VoiceManager {
                 voice.lang.includes('fr')
             ) || this.voices[0]; // 如果找不到法文語音，使用第一個
             
-            console.log('可用語音:', this.voices.length);
-            console.log('選擇的法文語音:', this.frenchVoice?.name);
+            console.log('✅ 可用語音:', this.voices.length);
+            console.log('✅ 選擇的法文語音:', this.frenchVoice?.name, this.frenchVoice?.lang);
         };
         
         loadVoices();
@@ -34,13 +40,39 @@ class VoiceManager {
         if (this.synth.onvoiceschanged !== undefined) {
             this.synth.onvoiceschanged = loadVoices;
         }
+        
+        // 延遲重試載入（某些瀏覽器需要時間）
+        setTimeout(() => {
+            if (this.voices.length === 0) {
+                console.log('🔄 延遲重新載入語音...');
+                loadVoices();
+            }
+        }, 1000);
     }
     
     speak(text, options = {}) {
         // 停止當前播放
         this.synth.cancel();
         
-        if (!text) return;
+        if (!text) {
+            console.warn('⚠️ 沒有文字需要朗讀');
+            return;
+        }
+        
+        // 檢查語音是否已載入
+        if (this.voices.length === 0) {
+            console.warn('⚠️ 語音尚未載入，嘗試重新載入...');
+            this.initVoices();
+            // 等待語音載入後再試
+            setTimeout(() => {
+                if (this.voices.length > 0) {
+                    this.speak(text, options);
+                } else {
+                    console.error('❌ 無法載入語音');
+                }
+            }, 500);
+            return;
+        }
         
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.voice = this.frenchVoice;
@@ -51,14 +83,29 @@ class VoiceManager {
         
         // 事件監聽
         utterance.onstart = () => {
-            console.log('開始朗讀:', text);
+            console.log('🔊 開始朗讀:', text);
+        };
+        
+        utterance.onend = () => {
+            console.log('✅ 朗讀完成');
         };
         
         utterance.onerror = (event) => {
-            console.error('語音錯誤:', event);
+            console.error('❌ 語音錯誤:', event.error, event);
+            if (event.error === 'not-allowed') {
+                console.error('❌ 語音被瀏覽器阻止。請確保使用者已與頁面互動。');
+            }
         };
         
+        console.log('📢 準備朗讀:', text, '使用語音:', this.frenchVoice?.name);
         this.synth.speak(utterance);
+        
+        // 檢查是否真的在播放
+        setTimeout(() => {
+            if (!this.synth.speaking && !this.synth.pending) {
+                console.warn('⚠️ 語音可能未能播放。請檢查瀏覽器權限。');
+            }
+        }, 100);
     }
     
     stop() {
@@ -222,10 +269,14 @@ class FrenchDiaryGame {
     // 綁定事件
     bindEvents() {
         document.getElementById('startBtn').addEventListener('click', () => {
+            // 啟用語音功能（需要使用者互動）
+            this.enableVoice();
             this.startNewGame();
         });
 
         document.getElementById('continueBtn').addEventListener('click', () => {
+            // 啟用語音功能（需要使用者互動）
+            this.enableVoice();
             this.startDay(this.currentDay);
         });
 
@@ -796,11 +847,13 @@ class FrenchDiaryGame {
         if (isCorrect) {
             icon.textContent = '✅';
             title.textContent = '太棒了！';
+            const vocabDisplay = this.formatVocabulary(question.vocabulary);
+            const vocabSpeakText = this.getVocabFrenchText(question.vocabulary).replace(/'/g, "\\'");
             message.innerHTML = `
                 <p>${question.explanation || '答對了！'}</p>
                 ${question.vocabulary ? `<div class="vocab-learned">
-                    <strong>📚 學到了：</strong> ${question.vocabulary}
-                    <button class="voice-btn-inline" onclick="window.game.speakVocabulary('${question.vocabulary.split('-')[0].trim().replace(/'/g, "\\'")}')">🔊 聽發音</button>
+                    <strong>📚 學到了：</strong> ${vocabDisplay}
+                    <button class="voice-btn-inline" onclick="window.game.speakVocabulary('${vocabSpeakText}')">🔊 聽發音</button>
                 </div>` : ''}
             `;
             
@@ -812,10 +865,10 @@ class FrenchDiaryGame {
             }
             this.correctAnswers++;
             
-            // 記錄學習的單字
+            // 記錄學習的單字（儲存為顯示用字串）
             if (question.vocabulary) {
                 this.learnedWords.push({
-                    word: question.vocabulary,
+                    word: this.formatVocabulary(question.vocabulary),
                     day: this.currentDay,
                     date: new Date().toISOString()
                 });
@@ -1033,10 +1086,11 @@ class FrenchDiaryGame {
         const notesContent = document.getElementById('notesContent');
         
         if (question.vocabulary) {
+            const vocabDisplay = this.formatVocabulary(question.vocabulary);
             notesContent.innerHTML = `
                 <div class="note-item">
                     <h4>📖 單字</h4>
-                    <p>${question.vocabulary}</p>
+                    <p>${vocabDisplay}</p>
                 </div>
                 ${question.explanation ? `
                 <div class="note-item">
@@ -1209,6 +1263,46 @@ class FrenchDiaryGame {
         // 移除中文部分，只保留法文
         const frenchText = text.split('-')[0].trim();
         this.voiceManager.speak(frenchText);
+    }
+
+    // 格式化 vocabulary，支援 string / object / array
+    formatVocabulary(vocab) {
+        if (!vocab) return '';
+        if (typeof vocab === 'string') return vocab;
+        if (Array.isArray(vocab)) {
+            const first = vocab[0];
+            if (!first) return '';
+            if (typeof first === 'string') return first;
+            return `${first.french || ''} - ${first.chinese || ''}`.trim();
+        }
+        if (typeof vocab === 'object') {
+            return `${vocab.french || ''} - ${vocab.chinese || ''}`.trim();
+        }
+        return String(vocab);
+    }
+
+    // 從 vocabulary 取得要朗讀的法文（優先 pronunciation、french 欄位，否則嘗試從字串前半段擷取）
+    getVocabFrenchText(vocab) {
+        if (!vocab) return '';
+        if (typeof vocab === 'string') return vocab.split('-')[0].trim();
+        if (Array.isArray(vocab)) {
+            const first = vocab[0];
+            if (!first) return '';
+            return first.pronunciation || first.french || '';
+        }
+        if (typeof vocab === 'object') {
+            return vocab.pronunciation || vocab.french || '';
+        }
+        return '';
+    }
+    
+    // 啟用語音功能（需要使用者互動）
+    enableVoice() {
+        // 播放一個靜音來啟用語音功能（某些瀏覽器需要）
+        const utterance = new SpeechSynthesisUtterance('');
+        utterance.volume = 0;
+        this.voiceManager.synth.speak(utterance);
+        console.log('✅ 語音功能已啟用');
     }
     
     // 切換自動播放

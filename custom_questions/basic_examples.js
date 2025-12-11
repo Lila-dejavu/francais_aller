@@ -10,7 +10,7 @@ const basicExamples = [
         answer: "Bonjour",
         frenchText: "Bonjour",
         explanation: "Bonjour 是法文最常用的問候語。",
-        vocabulary: "Bonjour - 你好"
+        vocabulary: [{ french: "Bonjour", chinese: "你好", pronunciation: "Bonjour" }]
     }
     
     // === 新增的 基礎範例 題目 ===
@@ -21,7 +21,7 @@ const basicExamples = [
         answer: "- Pourquoi tu es là ?",
         frenchText: "- Pourquoi tu es là ?",
         explanation: "- Pourquoi tu es là ? 是「妳怎麼在這?」的法文表達。",
-        vocabulary: "- pourquoi tu es là ? - 妳怎麼在這?"
+        vocabulary: [{ french: "Pourquoi tu es là ?", chinese: "妳怎麼在這?", pronunciation: "Pourquoi tu es là ?" }]
     }
 
     ,{
@@ -31,7 +31,7 @@ const basicExamples = [
         answer: "- Pourquoi tu es triste ?",
         frenchText: "- Pourquoi tu es triste ?",
         explanation: "- Pourquoi tu es triste ? 是「妳為何傷悲?」的法文表達。",
-        vocabulary: "- pourquoi tu es triste ? - 妳為何傷悲?"
+        vocabulary: [{ french: "Pourquoi tu es triste ?", chinese: "妳為何傷悲?", pronunciation: "Pourquoi tu es triste ?" }]
     }
 
     ,{
@@ -41,7 +41,7 @@ const basicExamples = [
         answer: "- Pourquoi tu es si froid avec moi ?",
         frenchText: "- Pourquoi tu es si froid avec moi ?",
         explanation: "- Pourquoi tu es si froid avec moi ? 是「你為什麼對我這麼冷淡?」的法文表達。",
-        vocabulary: "- pourquoi tu es si froid avec moi ? - 你為什麼對我這麼冷淡?"
+        vocabulary: [{ french: "Pourquoi tu es si froid avec moi ?", chinese: "你為什麼對我這麼冷淡?", pronunciation: "Pourquoi tu es si froid avec moi ?" }]
     }
 
     ,{
@@ -51,7 +51,7 @@ const basicExamples = [
         answer: "- Pourquoi tu ris ?",
         frenchText: "- Pourquoi tu ris ?",
         explanation: "- Pourquoi tu ris ? 是「你為何笑?」的法文表達。",
-        vocabulary: "- pourquoi tu ris ? - 你為何笑?"
+        vocabulary: [{ french: "Pourquoi tu ris ?", chinese: "你為何笑?", pronunciation: "Pourquoi tu ris ?" }]
     }
 
     ,{
@@ -61,7 +61,7 @@ const basicExamples = [
         answer: "- Pourquoi tu pleures ?",
         frenchText: "- Pourquoi tu pleures ?",
         explanation: "- Pourquoi tu pleures ? 是「你為何哭 ?」的法文表達。",
-        vocabulary: "- pourquoi tu pleures ? - 你為何哭 ?"
+        vocabulary: [{ french: "Pourquoi tu pleures ?", chinese: "你為何哭 ?", pronunciation: "Pourquoi tu pleures ?" }]
     }
 
     ,{
@@ -71,7 +71,7 @@ const basicExamples = [
         answer: "- Pourquoi tu me regardes ?",
         frenchText: "- Pourquoi tu me regardes ?",
         explanation: "- Pourquoi tu me regardes ? 是「你看著我幹嘛 ?」的法文表達。",
-        vocabulary: "- pourquoi tu me regardes ? - 你看著我幹嘛 ?"
+        vocabulary: [{ french: "Pourquoi tu me regardes ?", chinese: "你看著我幹嘛 ?", pronunciation: "Pourquoi tu me regardes ?" }]
     }
 
     ,{
@@ -81,7 +81,7 @@ const basicExamples = [
         answer: "- Pourquoi tu ne parles pas ?",
         frenchText: "- Pourquoi tu ne parles pas ?",
         explanation: "- Pourquoi tu ne parles pas ? 是「你為什麼惦惦 ?」的法文表達。",
-        vocabulary: "- pourquoi tu ne parles pas ? - 你為什麼惦惦 ?"
+        vocabulary: [{ french: "Pourquoi tu ne parles pas ?", chinese: "你為什麼惦惦 ?", pronunciation: "Pourquoi tu ne parles pas ?" }]
     }
 
     ,{
@@ -91,7 +91,7 @@ const basicExamples = [
         answer: "- Pourquoi tu pars ?",
         frenchText: "- Pourquoi tu pars ?",
         explanation: "- Pourquoi tu pars ? 是「你為何離去?」的法文表達。",
-        vocabulary: "- pourquoi tu pars ? - 你為何離去?"
+        vocabulary: [{ french: "Pourquoi tu pars ?", chinese: "你為何離去?", pronunciation: "Pourquoi tu pars ?" }]
     }
 
     ,{
@@ -101,7 +101,7 @@ const basicExamples = [
         answer: "- Pourquoi tu ne m’aimes pas ?",
         frenchText: "- Pourquoi tu ne m’aimes pas ?",
         explanation: "- Pourquoi tu ne m’aimes pas ? 是「你為什麼不喜歡我 ?」的法文表達。",
-        vocabulary: "- pourquoi tu ne m’aimes pas ? - 你為什麼不喜歡我 ?"
+        vocabulary: [{ french: "Pourquoi tu ne m’aimes pas ?", chinese: "你為什麼不喜歡我 ?", pronunciation: "Pourquoi tu ne m’aimes pas ?" }]
     }
 
     ,{
@@ -111,7 +111,7 @@ const basicExamples = [
         answer: "- Pourquoi tu m’aimes ?",
         frenchText: "- Pourquoi tu m’aimes ?",
         explanation: "- Pourquoi tu m’aimes ? 是「你為什麼喜歡我 ?」的法文表達。",
-        vocabulary: "- pourquoi tu m’aimes ? - 你為什麼喜歡我 ?"
+        vocabulary: [{ french: "Pourquoi tu m’aimes ?", chinese: "你為什麼喜歡我 ?", pronunciation: "Pourquoi tu m’aimes ?" }]
     }
 
     ,{
@@ -121,7 +121,7 @@ const basicExamples = [
         answer: "- Pourquoi tu ne me parles pas ?",
         frenchText: "- Pourquoi tu ne me parles pas ?",
         explanation: "- Pourquoi tu ne me parles pas ? 是「你為什麼不跟我說話 ?」的法文表達。",
-        vocabulary: "- pourquoi tu ne me parles pas ? - 你為什麼不跟我說話 ?"
+        vocabulary: [{ french: "Pourquoi tu ne me parles pas ?", chinese: "你為什麼不跟我說話 ?", pronunciation: "Pourquoi tu ne me parles pas ?" }]
     }
 
     ,{
@@ -131,7 +131,7 @@ const basicExamples = [
         answer: "- Pourquoi tu es en retard ?",
         frenchText: "- Pourquoi tu es en retard ?",
         explanation: "- Pourquoi tu es en retard ? 是「你為什麼遲到 ?」的法文表達。",
-        vocabulary: "- pourquoi tu es en retard ? - 你為什麼遲到 ?"
+        vocabulary: [{ french: "Pourquoi tu es en retard ?", chinese: "你為什麼遲到 ?", pronunciation: "Pourquoi tu es en retard ?" }]
     }
 
     ,{
@@ -141,7 +141,7 @@ const basicExamples = [
         answer: "- Pourquoi tu dis ça ?",
         frenchText: "- Pourquoi tu dis ça ?",
         explanation: "- Pourquoi tu dis ça ? 是「你幹嘛這樣說 ?」的法文表達。",
-        vocabulary: "- pourquoi tu dis ça ? - 你幹嘛這樣說 ?"
+        vocabulary: [{ french: "Pourquoi tu dis ça ?", chinese: "你幹嘛這樣說 ?", pronunciation: "Pourquoi tu dis ça ?" }]
     }
 
     ,{
@@ -151,7 +151,7 @@ const basicExamples = [
         answer: "- Pourquoi tu mens ?",
         frenchText: "- Pourquoi tu mens ?",
         explanation: "- Pourquoi tu mens ? 是「你為什麼撒謊 ?」的法文表達。",
-        vocabulary: "- pourquoi tu mens ? - 你為什麼撒謊 ?"
+        vocabulary: [{ french: "Pourquoi tu mens ?", chinese: "你為什麼撒謊 ?", pronunciation: "Pourquoi tu mens ?" }]
     }
 
     ,{
@@ -161,7 +161,7 @@ const basicExamples = [
         answer: "- Pourquoi tu ne me réponds pas ?",
         frenchText: "- Pourquoi tu ne me réponds pas ?",
         explanation: "- Pourquoi tu ne me réponds pas ? 是「你為什麼不回我話 ?」的法文表達。",
-        vocabulary: "- pourquoi tu ne me réponds pas ? - 你為什麼不回我話 ?"
+        vocabulary: [{ french: "Pourquoi tu ne me réponds pas ?", chinese: "你為什麼不回我話 ?", pronunciation: "Pourquoi tu ne me réponds pas ?" }]
     }
 
     ,{
@@ -171,7 +171,7 @@ const basicExamples = [
         answer: "- Pourquoi tu ne veux pas me parler ?",
         frenchText: "- Pourquoi tu ne veux pas me parler ?",
         explanation: "- Pourquoi tu ne veux pas me parler ? 是「你為什麼不理我 ?」的法文表達。",
-        vocabulary: "- pourquoi tu ne veux pas me parler ? - 你為什麼不理我 ?"
+        vocabulary: [{ french: "Pourquoi tu ne veux pas me parler ?", chinese: "你為什麼不理我 ?", pronunciation: "Pourquoi tu ne veux pas me parler ?" }]
     }
 
     ,{
@@ -181,7 +181,7 @@ const basicExamples = [
         answer: "- Pourquoi tu ne veux pas sortir avec moi ?",
         frenchText: "- Pourquoi tu ne veux pas sortir avec moi ?",
         explanation: "- Pourquoi tu ne veux pas sortir avec moi ? 是「你為什麼不跟我出門約會 ?」的法文表達。",
-        vocabulary: "- pourquoi tu ne veux pas sortir avec moi ? - 你為什麼不跟我出門約會 ?"
+        vocabulary: [{ french: "Pourquoi tu ne veux pas sortir avec moi ?", chinese: "你為什麼不跟我出門約會 ?", pronunciation: "Pourquoi tu ne veux pas sortir avec moi ?" }]
     }
 
     ,{
@@ -191,7 +191,7 @@ const basicExamples = [
         answer: "- Pourquoi tu me fais ça ?",
         frenchText: "- Pourquoi tu me fais ça ?",
         explanation: "- Pourquoi tu me fais ça ? 是「你為什麼這樣對我 ?」的法文表達。",
-        vocabulary: "- pourquoi tu me fais ça ? - 你為什麼這樣對我 ?"
+        vocabulary: [{ french: "Pourquoi tu me fais ça ?", chinese: "你為什麼這樣對我 ?", pronunciation: "Pourquoi tu me fais ça ?" }]
     }
 
     ,{
@@ -201,7 +201,7 @@ const basicExamples = [
         answer: "- Pourquoi tu ne me fais pas confiance ?",
         frenchText: "- Pourquoi tu ne me fais pas confiance ?",
         explanation: "- Pourquoi tu ne me fais pas confiance ? 是「你為什麼不相信我 ?」的法文表達。",
-        vocabulary: "- pourquoi tu ne me fais pas confiance ? - 你為什麼不相信我 ?"
+        vocabulary: [{ french: "Pourquoi tu ne me fais pas confiance ?", chinese: "你為什麼不相信我 ?", pronunciation: "Pourquoi tu ne me fais pas confiance ?" }]
     }
 
     ,{
@@ -211,7 +211,7 @@ const basicExamples = [
         answer: "- Pourquoi tu es si mignon ?",
         frenchText: "- Pourquoi tu es si mignon ?",
         explanation: "- Pourquoi tu es si mignon ? 是「妳為什麼這樣子口愛 ?」的法文表達。",
-        vocabulary: "- pourquoi tu es si mignon ? - 妳為什麼這樣子口愛 ?"
+        vocabulary: [{ french: "Pourquoi tu es si mignon ?", chinese: "妳為什麼這樣子口愛 ?", pronunciation: "Pourquoi tu es si mignon ?" }]
     }
 
     // === 基礎範例 題目結束 ===

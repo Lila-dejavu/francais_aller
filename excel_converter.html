@@ -399,54 +399,54 @@
             const skippedLines = []; // 記錄被跳過的行
 
             // 筆記本格式處理
-            if (currentFormat === 'notebook') {
-                const lines = input.split('\n').map(l => l.trim()).filter(l => l);
+                if (currentFormat === 'notebook') {
+                    const lines = input.split('\n').map(l => l.trim()).filter(l => l);
                 
-                for (let i = 0; i < lines.length; i++) {
-                    const line = lines[i];
+                    for (let i = 0; i < lines.length; i++) {
+                        const line = lines[i];
                     
-                    // 檢查是否為中文翻譯行 (包含括號和等號)
-                    if (line.match(/[（(]\s*[=＝]\s*.+[）)]/)) {
-                        continue; // 跳過翻譯行，等待配對
-                    }
+                        // 檢查是否為中文翻譯行 (包含括號和等號)
+                        if (line.match(/[（(]\s*[=＝]\s*.+[）)]/)) {
+                            continue; // 跳過翻譯行，等待配對
+                        }
                     
-                    // 移除題號（如 1. 或 2. 等）
-                    let french = line.replace(/^\d+\.\s*/, '').trim();
+                        // 移除題號（如 1. 或 2. 等）
+                        let french = line.replace(/^\d+\.\s*/, '').trim();
                     
-                    // 如果移除題號後為空，跳過
-                    if (!french) {
-                        skipped++;
-                        skippedLines.push(`第 ${i + 1} 行：移除題號後內容為空`);
-                        continue;
-                    }
+                        // 如果移除題號後為空，跳過
+                        if (!french) {
+                            skipped++;
+                            skippedLines.push(`第 ${i + 1} 行：移除題號後內容為空`);
+                            continue;
+                        }
                     
-                    const nextLine = i + 1 < lines.length ? lines[i + 1] : '';
+                        const nextLine = i + 1 < lines.length ? lines[i + 1] : '';
                     
-                    // 檢查下一行是否為翻譯
-                    const match = nextLine.match(/[（(]\s*[=＝]\s*(.+)[）)]/);
+                        // 檢查下一行是否為翻譯
+                        const match = nextLine.match(/[（(]\s*[=＝]\s*(.+)[）)]/);
                     
-                    if (match) {
-                        const chinese = match[1].trim();
+                        if (match) {
+                            const chinese = match[1].trim();
                         
-                        // 生成選擇題
-                        const question = {
-                            type: "multiple",
-                            question: `「${chinese}」的法文是?`,
-                            options: generateOptions(french),
-                            answer: 0,
-                            frenchText: french,
-                            explanation: `${french} 是「${chinese}」的法文表達。`,
-                            vocabulary: [
-                                { french: french.toLowerCase(), chinese: chinese, pronunciation: "請補充發音" }
-                            ]
-                        };
-                        questions.push(question);
-                        i++; // 跳過已處理的翻譯行
-                    } else {
-                        skipped++;
-                        skippedLines.push(`第 ${i + 1} 行：找不到對應的中文翻譯`);
+                            // 生成選擇題
+                            const question = {
+                                type: "multiple",
+                                question: `「${chinese}」的法文是?`,
+                                options: generateOptions(french),
+                                answer: 0,
+                                frenchText: french,
+                                explanation: `${french} 是「${chinese}」的法文表達。`,
+                                vocabulary: [
+                                    { french: french.toLowerCase(), chinese: chinese, pronunciation: "" }
+                                ]
+                            };
+                            questions.push(question);
+                            i++; // 跳過已處理的翻譯行
+                        } else {
+                            skipped++;
+                            skippedLines.push(`第 ${i + 1} 行：找不到對應的中文翻譯`);
+                        }
                     }
-                }
             } else {
                 // 原有的分隔符格式處理
                 const lines = input.split('\n').filter(line => line.trim());
@@ -566,14 +566,15 @@
             let code = `\n    // === 新增的 ${categoryNames[category]} 題目 ===\n`;
             
             questions.forEach((q, index) => {
-                code += `    ,{\n`;  // 開頭加逗號，避免語法錯誤
+                code += `    ,{\n`;
                 code += `        type: "multiple",\n`;
                 code += `        question: "${q.question}",\n`;
                 code += `        options: ${JSON.stringify(q.options)},\n`;
                 code += `        answer: "${q.options[q.answer]}",\n`;
                 code += `        frenchText: "${q.frenchText}",\n`;
                 code += `        explanation: "${q.explanation}",\n`;
-                code += `        vocabulary: "${q.vocabulary[0].french} - ${q.vocabulary[0].chinese}"\n`;
+                // 輸出 vocabulary 為結構化 JSON（陣列或物件），保留 pronunciation 欄位
+                code += `        vocabulary: ${JSON.stringify(q.vocabulary)}\n`;
                 code += `    }\n\n`;
             });
             
@@ -735,7 +736,7 @@
                     answer: q.options[q.answer], // 轉換索引為實際答案
                     frenchText: q.frenchText,
                     explanation: q.explanation,
-                    vocabulary: `${q.vocabulary[0].french} - ${q.vocabulary[0].chinese}`
+                    vocabulary: q.vocabulary
                 }));
 
                 localStorage.setItem('dailyPracticeQuestions', JSON.stringify(formattedQuestions));
